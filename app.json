@@ -1,15 +1,14 @@
 {
   "expo": {
-    "name": "whatsapp-status-saver",
-    "slug": "whatsapp-status-saver",
+    "name": "Status Saver",
+    "slug": "Status-saver",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -20,10 +19,14 @@
     "ios": {
       "supportsTablet": true
     },
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#00D426"
+    },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/adaptive-icon1.png",
+        "backgroundColor": "#00D426"
       }
     },
     "web": {
