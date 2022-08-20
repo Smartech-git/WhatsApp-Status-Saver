@@ -1,24 +1,38 @@
-import { StyleSheet, Text, View, SafeAreaView} from 'react-native';
-import { StatusBar } from 'expo-status-bar'
+import React, { useCallback} from 'react';
+import {View} from 'react-native';
+import * as SplashScreen from 'expo-splash-screen';
+import { useFonts, Lobster_400Regular } from '@expo-google-fonts/lobster';
+import { StatusBar } from 'expo-status-bar';
+import { StateProvider } from './StateProvider';
+import reducer, { initialState} from './Reducer';
 import Home from './Home';
 
+SplashScreen.preventAutoHideAsync();
+
 export default function App() {
+
+  let [fontsLoaded] = useFonts({
+    Lobster_400Regular,
+  });
+ 
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <View style={{
-      backgroundColor: '#fff',
-      flex: 1
-    }}>
-      <Home/>
-      <StatusBar style='auto' backgroundColor='#fff'/>
-    </View>
+    <StateProvider initialState={initialState} reducer={reducer}>
+       <View onLayout={onLayoutRootView} style={{
+        flex: 1,
+      }}>
+        <Home fontFamily= 'Lobster_400Regular'/>
+        {/* <StatusBar style='dark' backgroundColor='#fff'/> */}
+      </View>
+    </StateProvider>  
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
