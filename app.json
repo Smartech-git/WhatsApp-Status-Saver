@@ -23,6 +23,9 @@
       "barStyle": "light-content",
       "backgroundColor": "#00D426"
     },
+    "androidNavigationBar": {
+      "backgroundColor": "#00D426"
+    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",

@@ -1,8 +1,14 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, Animated, Pressable} from 'react-native'
+import { View, Text, Image, StyleSheet, Animated, Pressable, Easing} from 'react-native'
 import { useStateValue } from '../StateProvider'
 import { Shadow } from 'react-native-shadow-2'
 import { actionTypes } from '../Reducer'
-import React, {useRef, useEffect} from 'react'
+import { mergeToObjectSettings, settingsType } from '../APIs'
+import React from 'react'
+
+const themeEmojis = {
+  light : require('../assets/Images/EmojiPack/Sun_Behind_Small_Cloud.png'),
+  dark: require('../assets/Images/EmojiPack/Crescent_Moon.png')
+}
 
 export default function Header(props) {
   const [state, dispatch] = useStateValue();
@@ -14,7 +20,8 @@ export default function Header(props) {
       {
         toValue: state.theme === 'LIGHT' ? 35 : 0,
         duration: 170,
-        useNativeDriver: true
+        useNativeDriver: true,
+        easing: Easing.out(Easing.back(2.8))
       }
     ).start(() => {
       const action = {
@@ -22,6 +29,7 @@ export default function Header(props) {
         theme: state.theme === 'LIGHT' ? 'DARK' : 'LIGHT'
         }
       dispatch(action);
+      mergeToObjectSettings(state.theme === 'LIGHT' ? settingsType.setThemeDark : settingsType.setThemeLight)
     });
   }
  
@@ -37,31 +45,37 @@ export default function Header(props) {
         }}>Status Saver</Text>
       </View>
 
-      <View style={{...styles.themeButton, 
+      <Pressable onPress={handlePressEvent}  style={{...styles.themeButton, 
         backgroundColor: state.themeHue.primary_dark, 
         borderColor: state.themeHue.secondary_sub,
       }}>
-        <Pressable onPress={handlePressEvent}>
+        <View style={{zIndex: 1}}>
           <Animated.View style={{position: 'relative', transform: [{ translateX: swipe}]}}>
             <View >
-                <Shadow startColor={'#00000020'} offset={[0, 1]} distance={4}>
+                <Shadow startColor={ state.theme === 'LIGHT' ? '#00000020' : '#e1e1e120'} offset={[0, 1]} distance={4}>
                 <View style={styles.themeButton_thumb}/>
               </Shadow>
             </View>
           </Animated.View>
-        </Pressable>
-            
-       
-
-        {/* <Image style={{ 
-          width: 22, height: 22,
-          position: 'absolute',
-          right: 7, zIndex: 1
-          }}  source={require('../assets/Images/EmojiPack/Sun_Behind_Small_Cloud.png')}/> */}
-        
-      </View>
+        </View>
+        { state.theme === 'LIGHT' ?
+          <EmojiThemeIcon size = {22} position={39} path = {themeEmojis.light}/> :
+          <EmojiThemeIcon size = {17} position={7} path = {themeEmojis.dark}/>
+        }
+      </Pressable>
        
     </View>
+  )
+}
+
+function EmojiThemeIcon(props) {
+  return (
+    <Image style={{ 
+      width: props.size, height: props.size,
+      position: 'absolute',
+      left: props.position,
+      }}  
+    source={props.path}/>
   )
 }
 
