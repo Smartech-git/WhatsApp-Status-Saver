@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "Status Saver",
+    "owner": "Chukwu Smart",
     "slug": "Status-saver",
     "version": "1.0.0",
     "orientation": "portrait",

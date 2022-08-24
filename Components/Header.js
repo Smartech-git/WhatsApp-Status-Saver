@@ -1,7 +1,8 @@
-import { View, Text, Image, StyleSheet, Animated, Pressable, Easing} from 'react-native'
+import { View, Text, Image, StyleSheet, Animated, Pressable, Easing, StatusBar} from 'react-native'
 import { useStateValue } from '../StateProvider'
 import { Shadow } from 'react-native-shadow-2'
 import { actionTypes } from '../Reducer'
+import * as NavigationBar from 'expo-navigation-bar';
 import { mergeToObjectSettings, settingsType } from '../APIs'
 import React from 'react'
 
@@ -29,7 +30,12 @@ export default function Header(props) {
         theme: state.theme === 'LIGHT' ? 'DARK' : 'LIGHT'
         }
       dispatch(action);
-      mergeToObjectSettings(state.theme === 'LIGHT' ? settingsType.setThemeDark : settingsType.setThemeLight)
+        StatusBar.setBackgroundColor(state.theme === 'LIGHT' ? '#0D1F29' : '#ffffff');
+        StatusBar.setBarStyle(state.theme === 'LIGHT' ? 'light-content' : 'dark-content');
+
+        NavigationBar.setBackgroundColorAsync(state.theme === 'LIGHT' ? '#0D1F29' : '#ffffff')
+        NavigationBar.setButtonStyleAsync(state.theme === 'LIGHT' ? "light" : "dark")
+        mergeToObjectSettings(state.theme === 'LIGHT' ? settingsType.setThemeDark : settingsType.setThemeLight)
     });
   }
  
@@ -84,7 +90,7 @@ const styles = StyleSheet.create({
     height: 40,
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 60,
+    marginTop: 14,
     justifyContent: 'space-between',
     alignItems: 'center',
   },
