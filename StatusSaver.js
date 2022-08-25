@@ -64,7 +64,6 @@ export default function StatusSaver() {
         paddingTop: StatusBar.currentHeight,
         backgroundColor: state.themeHue.primary,
         flex: 1,
-        paddingHorizontal: 15
     }}>
        <Home fontFamily = 'Lobster_400Regular'/>
        {/* <StatusBar barStyle={ state.theme === 'LIGHT' ? 'dark-content' : 'light-content'} backgroundColor={state.themeHue.primary}/> */}

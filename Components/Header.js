@@ -4,7 +4,7 @@ import { Shadow } from 'react-native-shadow-2'
 import { actionTypes } from '../Reducer'
 import * as NavigationBar from 'expo-navigation-bar';
 import { mergeToObjectSettings, settingsType } from '../APIs'
-import React from 'react'
+import React, {useEffect} from 'react'
 
 const themeEmojis = {
   light : require('../assets/Images/EmojiPack/Sun_Behind_Small_Cloud.png'),
@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     marginTop: 14,
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 15
   },
   themeButton: {
     width: 70,
