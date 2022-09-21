@@ -4,8 +4,10 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StateProvider } from './StateProvider';
 import reducer, { initialState} from './Reducer';
 import StatusSaver from './StatusSaver'
+import * as NavigationBar from 'expo-navigation-bar';
 
-// NavigationBar.setBackgroundColorAsync("#e1e1e101"); 
+NavigationBar.setBackgroundColorAsync('#00D426')
+NavigationBar.setButtonStyleAsync("light")
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
@@ -15,7 +17,6 @@ export default function App() {
         flex: 1,
       }}>
         <StatusSaver/>
-        {/* <StatusBar style='dark' backgroundColor='#fff'/> */}
       </View>
     </StateProvider>  
   );

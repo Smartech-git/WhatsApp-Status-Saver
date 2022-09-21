@@ -11,6 +11,17 @@
       "image": "./assets/splash.png",
       "resizeMode": "cover"
     },
+    "plugins": [
+      [
+        "expo-media-library",
+
+        {
+          "photosPermission": "Allow $(Status Saver) to access your photos.",
+          "savePhotosPermission": "Allow $(Status Saver) to save photos.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ]
+    ],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -22,9 +33,6 @@
     },
     "androidStatusBar": {
       "barStyle": "light-content",
-      "backgroundColor": "#00D426"
-    },
-    "androidNavigationBar": {
       "backgroundColor": "#00D426"
     },
     "android": {

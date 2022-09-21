@@ -8,7 +8,7 @@ import React, {useEffect} from 'react'
 
 const themeEmojis = {
   light : require('../assets/Images/EmojiPack/Sun_Behind_Small_Cloud.png'),
-  dark: require('../assets/Images/EmojiPack/Crescent_Moon.png')
+  dark : require('../assets/Images/EmojiPack/Crescent_Moon.png')
 }
 
 export default function Header(props) {
@@ -22,7 +22,7 @@ export default function Header(props) {
         toValue: state.theme === 'LIGHT' ? 35 : 0,
         duration: 170,
         useNativeDriver: true,
-        easing: Easing.out(Easing.back(2.8))
+        easing: Easing.out(Easing.back(3))
       }
     ).start(() => {
       const action = {
@@ -43,9 +43,9 @@ export default function Header(props) {
     <View style={styles.Header}>
       <View style={{flexDirection: 'row'}}>
         <View style={{backgroundColor: state.themeHue.primary_dark, padding: 6, borderRadius: 50}}>
-          <Image style={{ width: 28, height: 28}} source={require('../assets/Images/Status.png')} />
+          <Image style={{ width: 28, height: 28}} source={require('../assets/Images/Status.png')}/>
         </View>
-        <Text style={{fontFamily: props.fontFamily, color: state.themeHue.secondary, fontSize: 23,
+        <Text style={{fontFamily: props.font, color: state.themeHue.secondary, fontSize: 24,
           marginTop: 6,
           marginLeft: 5
         }}>Status Saver</Text>
@@ -65,8 +65,24 @@ export default function Header(props) {
           </Animated.View>
         </View>
         { state.theme === 'LIGHT' ?
-          <EmojiThemeIcon size = {22} position={39} path = {themeEmojis.light}/> :
-          <EmojiThemeIcon size = {17} position={7} path = {themeEmojis.dark}/>
+          <Animated.View style={{position: 'absolute',
+            opacity: swipe.interpolate({
+              inputRange: [0,1],
+              outputRange: state.theme === 'LIGHT'? [1, 0] : [0, 1]
+            })
+          }}>
+            <EmojiThemeIcon size = {22} position={39} path = {themeEmojis.light}/> 
+          </Animated.View>
+          :
+          <Animated.View style={{position: 'absolute',
+            opacity: swipe.interpolate({
+              inputRange: [0,1],
+              outputRange: state.theme === 'DARK'? [0, 1] : [1, 0]
+            })
+          }}>
+            <EmojiThemeIcon size = {17} position={7} path = {themeEmojis.dark}/>
+          </Animated.View>
+          
         }
       </Pressable>
        
@@ -78,7 +94,6 @@ function EmojiThemeIcon(props) {
   return (
     <Image style={{ 
       width: props.size, height: props.size,
-      position: 'absolute',
       left: props.position,
       }}  
     source={props.path}/>

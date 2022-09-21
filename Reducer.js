@@ -14,21 +14,28 @@ export const themeHueDark = {
 
 export let initialState = {
     theme: 'LIGHT',
-    themeHue: themeHueLight
+    themeHue: themeHueLight,
+    permissionState: false
  }
  
  export const actionTypes = {
-    setTheme: "SETTHEME"
+    setTheme: "SETTHEME",
+    setPermissionState: 'SETPERMISSIONSTATE'
  }
  
  const reducer = (state, action) => {
      switch (action.type) {
          case actionTypes.setTheme:
-             return {
+            return {
+            ...state,
+            theme: action.theme,
+            themeHue: action.theme === 'LIGHT' ? themeHueLight : themeHueDark
+            };
+        case actionTypes.setPermissionState:
+            return {
                 ...state,
-                theme: action.theme,
-                themeHue: action.theme === 'LIGHT' ? themeHueLight : themeHueDark
-             };        
+                permissionState: action.permissionState
+            }
          default: 
              return state;
      }

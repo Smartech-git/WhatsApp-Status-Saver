@@ -15,9 +15,9 @@ export default function Home(props) {
 
   return (
     <View style={{
-      flex: 1
+      flex: 1,
     }}>
-        <Header fontFamily={props.fontFamily}/>
+        <Header font={props.font}/>
         <NavigationContainer>
            <Tab.Navigator
             tabBar ={props => <TopTabBar {...props} />}
@@ -25,9 +25,9 @@ export default function Home(props) {
               backgroundColor: state.themeHue.primary,
               paddingHorizontal: 15
             }}
-            style={{marginTop: 20}}
+            style={{marginTop: 18}}
            >
-            <Tab.Screen 
+            <Tab.Screen options={{ tabBarBounces: false}}
              name="Images" component={Home_Images} />
             <Tab.Screen name="Videos" component={Home_Videos} />
           </Tab.Navigator>
