@@ -45,7 +45,7 @@ export default function Header(props) {
         <View style={{backgroundColor: state.themeHue.primary_dark, padding: 6, borderRadius: 50}}>
           <Image style={{ width: 28, height: 28}} source={require('../assets/Images/Status.png')}/>
         </View>
-        <Text style={{fontFamily: props.font, color: state.themeHue.secondary, fontSize: 24,
+        <Text style={{fontFamily: state.fontFamily, color: state.themeHue.secondary, fontSize: 24,
           marginTop: 6,
           marginLeft: 5
         }}>Status Saver</Text>
@@ -57,11 +57,11 @@ export default function Header(props) {
       }}>
         <View style={{zIndex: 1}}>
           <Animated.View style={{position: 'relative', transform: [{ translateX: swipe}]}}>
-            <View >
-                <Shadow startColor={ state.theme === 'LIGHT' ? '#00000020' : '#e1e1e120'} offset={[0, 1]} distance={4}>
-                <View style={styles.themeButton_thumb}/>
-              </Shadow>
-            </View>
+          
+            <Shadow startColor={ state.theme === 'LIGHT' ? '#00000020' : '#e1e1e120'} offset={[0, 1]} distance={4}>
+              <View style={styles.themeButton_thumb}/>
+            </Shadow>
+            
           </Animated.View>
         </View>
         { state.theme === 'LIGHT' ?
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     marginTop: 14,
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
   },
   themeButton: {
     width: 70,

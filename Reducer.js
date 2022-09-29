@@ -15,7 +15,8 @@ export const themeHueDark = {
 export let initialState = {
     theme: 'LIGHT',
     themeHue: themeHueLight,
-    permissionState: false
+    permissionState: false,
+    fontFamily : 'Lobster-Regular'
  }
  
  export const actionTypes = {

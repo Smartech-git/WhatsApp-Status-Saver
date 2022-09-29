@@ -2,7 +2,7 @@
   "expo": {
     "name": "Status Saver",
     "owner": "Chukwu Smart",
-    "slug": "Status-saver",
+    "slug": "Status-Saver",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
@@ -11,6 +11,7 @@
       "image": "./assets/splash.png",
       "resizeMode": "cover"
     },
+    
     "plugins": [
       [
         "expo-media-library",
@@ -39,7 +40,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#00D426"
-      }
+      },
+      "permissions": ["MANAGE_EXTERNAL_STORAGE"]
     },
     "web": {
       "favicon": "./assets/favicon.png"

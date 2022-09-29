@@ -1,6 +1,6 @@
 import { View, Text, ScrollView} from 'react-native'
 import React from 'react'
-import { useStateValue } from '../StateProvider'
+import { useStateValue } from '../../StateProvider'
 
 export default function Home_Images() {
   const [state, dispatch] =useStateValue();

@@ -4,6 +4,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StateProvider } from './StateProvider';
 import reducer, { initialState} from './Reducer';
 import StatusSaver from './StatusSaver'
+import { NavigationContainer } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
 
 NavigationBar.setBackgroundColorAsync('#00D426')
@@ -12,12 +13,14 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   return (
-    <StateProvider initialState={initialState} reducer={reducer}>
-       <View style={{
-        flex: 1,
-      }}>
-        <StatusSaver/>
-      </View>
-    </StateProvider>  
+    <NavigationContainer>
+      <StateProvider initialState={initialState} reducer={reducer}>
+        <View style={{
+          flex: 1,
+        }}>
+          <StatusSaver/>
+        </View>
+      </StateProvider> 
+    </NavigationContainer>   
   );
 }

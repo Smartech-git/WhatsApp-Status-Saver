@@ -1,6 +1,10 @@
 import { View, StatusBar, SafeAreaView} from 'react-native'
 import React, { useCallback, useState, useEffect}  from 'react'
-import Home from './Home';
+import Home from './Screens/HomeScreens/Home'
+import Gallary from './Screens/Gallary';
+import Settings from './Screens/Settings'
+import ScreenHeaders from './Components/ScreenHeaders';
+import BottomNavTabBar from './Components/BottomNavTabBar'
 import * as SplashScreen from 'expo-splash-screen';
 import { actionTypes } from './Reducer';
 import { useStateValue } from './StateProvider';
@@ -9,6 +13,10 @@ import * as MediaLibrary from 'expo-media-library';
 import PermissionScreen from './PermissionScreen';
 import {useFonts} from 'expo-font';
 import { getObjectSettings, initialSettings, setObjectSettings, clearObjectSettings } from './APIs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { getHeaderTitle } from '@react-navigation/elements'
+
+const BottomTab = createBottomTabNavigator()
 
 export default function StatusSaver() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -27,7 +35,6 @@ export default function StatusSaver() {
           setObjectSettings(initialSettings);
         } else {
             let settings = await getObjectSettings();
-            console.log(settings)
             let action = {
                 type : actionTypes.setTheme,
                 theme: settings.theme
@@ -74,14 +81,36 @@ export default function StatusSaver() {
   return (
     <SafeAreaView onLayout={onLayoutRootView} style={{
         paddingTop: StatusBar.currentHeight,
-        backgroundColor: state.themeHue.primary,
         flex: 1,
     }}>
       {
         state.permissionState === false ? (
           <PermissionScreen/>
         ) : (
-          <Home font = "Lobster-Regular"/>
+          <BottomTab.Navigator
+            sceneContainerStyle = {{
+              backgroundColor: state.themeHue.primary,
+            }}
+            tabBar={props => <BottomNavTabBar {...props}/>}
+            screenOptions = {{
+              header: ({ navigation, route, options }) => {
+                const title = getHeaderTitle(options, route.name);
+                return <ScreenHeaders title={title}/>;
+              }
+            }}
+          >
+            <BottomTab.Screen name = "Home" 
+              component={Home}
+              options= {{
+                headerShown: false,
+                title: 'Status',
+              }}
+            />
+            <BottomTab.Screen name = "Gallary"
+             component={Gallary}
+            />
+            <BottomTab.Screen name = "Settings" component={Settings}/>
+          </BottomTab.Navigator>
         )
       }  
     </SafeAreaView>

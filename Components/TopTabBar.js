@@ -12,9 +12,9 @@ export default function TopTabBar({ state, descriptors, navigation, position }) 
     {
       toValue: 1,
       duration: 300,
-      delay: 300,
+      delay: 700,
       useNativeDriver: true,
-      easing: Easing.out(Easing.back(3))
+      easing: Easing.out(Easing.back(4))
     }
   ).start()
 
@@ -22,7 +22,7 @@ export default function TopTabBar({ state, descriptors, navigation, position }) 
     <View style={{ 
       flexDirection: 'row',
       paddingHorizontal: 50,
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
     }}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
@@ -75,12 +75,15 @@ export default function TopTabBar({ state, descriptors, navigation, position }) 
               position: 'relative',
               transform: [{translateX: animate.interpolate({
                 inputRange: [0, 1],
-                outputRange: index === 0 ? [-20, 0] : [20, 0] 
-              })}],
+                outputRange: index === 0 ? [-15, 0] : [15, 0] 
+              })}], 
             }}
           >
             <Animated.View style={{
-              opacity: animate
+               opacity: animate.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 1]
+               })
             }}>
               <Animated.View style={{ opacity,
                 backgroundColor: isFocused ? '#00D426' : status.themeHue.primary_dark,
