@@ -1,5 +1,5 @@
 import { View, TouchableOpacity, Animated, Text, Easing} from 'react-native'
-import react, {useRef} from 'react';
+import react, {useRef, useEffect} from 'react';
 import { useStateValue } from '../StateProvider';
 
 
@@ -7,22 +7,25 @@ export default function TopTabBar({ state, descriptors, navigation, position }) 
   const [status, dispatch] = useStateValue();
 
   let animate = useRef(new Animated.Value(0)).current;
-  
-  Animated.timing(animate,
+
+  useEffect(()=> {
+    Animated.timing(animate,
     {
       toValue: 1,
       duration: 300,
-      delay: 700,
+      delay: 600,
       useNativeDriver: true,
-      easing: Easing.out(Easing.back(4))
+      easing: Easing.out(Easing.back(3))
     }
   ).start()
-
+  }, [])
+  
   return (
     <View style={{ 
       flexDirection: 'row',
       paddingHorizontal: 50,
       justifyContent: 'space-between',
+      paddingBottom: 8
     }}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
@@ -71,19 +74,18 @@ export default function TopTabBar({ state, descriptors, navigation, position }) 
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{
-              position: 'relative',
-              transform: [{translateX: animate.interpolate({
-                inputRange: [0, 1],
-                outputRange: index === 0 ? [-15, 0] : [15, 0] 
-              })}], 
+            style={{ 
             }}
           >
             <Animated.View style={{
                opacity: animate.interpolate({
                 inputRange: [0, 1],
                 outputRange: [0, 1]
-               })
+               }),
+               transform: [{translateX: animate.interpolate({
+                inputRange: [0, 1],
+                outputRange: index === 0 ? [-20, 0] : [20, 0] 
+              })}],
             }}>
               <Animated.View style={{ opacity,
                 backgroundColor: isFocused ? '#00D426' : status.themeHue.primary_dark,
