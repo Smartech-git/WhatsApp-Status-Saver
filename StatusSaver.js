@@ -11,7 +11,7 @@ import { useStateValue } from './StateProvider';
 import * as NavigationBar from 'expo-navigation-bar';
 import * as MediaLibrary from 'expo-media-library';
 import PermissionScreen from './PermissionScreen';
-import {useFonts} from 'expo-font';
+import * as Font from 'expo-font';
 import { getObjectSettings, initialSettings, setObjectSettings, clearObjectSettings } from './APIs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getHeaderTitle } from '@react-navigation/elements'
@@ -22,14 +22,15 @@ export default function StatusSaver() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [state, dispatch] = useStateValue();
 
-  const [fontLoaded] = useFonts({
-    'Lobster-Regular': require('./assets/Fonts/Lobster-Regular.ttf')
-  })
+  // const [fontLoaded] = useFonts({
+  //   'Lobster-Regular': require('./assets/Fonts/Lobster-Regular.ttf')
+  // })
 
   useEffect(() => {
     async function prepare() {
       
       try {
+        await Font.loadAsync({'Lobster-Regular': require('./assets/Fonts/Lobster-Regular.ttf')})
         let value = await getObjectSettings();
         if( value === null) {
           setObjectSettings(initialSettings);
