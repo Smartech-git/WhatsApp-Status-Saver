@@ -16,15 +16,12 @@ import { getObjectSettings, initialSettings, setObjectSettings, clearObjectSetti
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getHeaderTitle } from '@react-navigation/elements'
 
+
 const BottomTab = createBottomTabNavigator()
 
 export default function StatusSaver() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [state, dispatch] = useStateValue();
-
-  // const [fontLoaded] = useFonts({
-  //   'Lobster-Regular': require('./assets/Fonts/Lobster-Regular.ttf')
-  // })
 
   useEffect(() => {
     async function prepare() {

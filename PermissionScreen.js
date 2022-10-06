@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Animated, Easing, Image, StyleSheet, StatusBar} from 'react-native'
-import React, {useRef} from 'react'
+import React, {useRef, useEffect} from 'react'
 import * as MediaLibrary from 'expo-media-library';
 import * as NavigationBar from 'expo-navigation-bar';
 import { useStateValue } from './StateProvider';
@@ -10,7 +10,9 @@ export default function PermissionScreen() {
   const [state, dispatch] = useStateValue()
 
   let animate = useRef(new Animated.Value(0)). current
-  Animated.timing(animate,
+
+  useEffect(() => {
+     Animated.timing(animate,
     {
       toValue: 1,
       duration: 300,
@@ -19,7 +21,8 @@ export default function PermissionScreen() {
       easing: Easing.out(Easing.back(3))
     }
   ).start()
-
+  }, [])
+ 
   const handlePermissionRequest = async () => {
     const status = await MediaLibrary.requestPermissionsAsync();
     console.log(status);

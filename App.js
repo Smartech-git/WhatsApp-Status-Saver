@@ -21,6 +21,6 @@ export default function App() {
           <StatusSaver/>
         </View>
       </StateProvider> 
-    </NavigationContainer>   
+    </NavigationContainer>    
   );
 }

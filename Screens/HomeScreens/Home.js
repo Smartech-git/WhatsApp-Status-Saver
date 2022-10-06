@@ -32,10 +32,11 @@ export default function Home(props) {
           tabBar ={props => <TopTabBar {...props} />}
           sceneContainerStyle = {{
             backgroundColor: state.themeHue.primary,
-            paddingHorizontal: 15
           }}
-          screenOptions={{}}
-          style={{marginTop: 18}}
+          screenOptions={{
+           
+          }}
+          style={{marginTop: 10}}
         >
         <Tab.Screen name="Images" component={Home_Images} />
         <Tab.Screen name="Videos" component={Home_Videos} />
