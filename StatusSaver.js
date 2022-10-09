@@ -65,7 +65,7 @@ export default function StatusSaver() {
       StatusBar.setBackgroundColor(state.themeHue.primary);
       StatusBar.setBarStyle(state.theme === 'LIGHT' ? 'dark-content' : 'light-content');
 
-      NavigationBar.setBackgroundColorAsync(state.themeHue.primary)
+      NavigationBar.setBackgroundColorAsync(state.themeHue.primary_dark)
       NavigationBar.setButtonStyleAsync(state.theme === 'LIGHT' ? "dark" : "light")
 
       await SplashScreen.hideAsync();
@@ -94,7 +94,8 @@ export default function StatusSaver() {
               header: ({ navigation, route, options }) => {
                 const title = getHeaderTitle(options, route.name);
                 return <ScreenHeaders title={title}/>;
-              }
+              },
+            
             }}
           >
             <BottomTab.Screen name = "Home" 
