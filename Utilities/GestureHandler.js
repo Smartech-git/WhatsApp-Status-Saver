@@ -4,7 +4,7 @@ export const handleOnScroll = (e, setOffsetTop, setOffsetBottom) => {
 }
 
 export const panGestureConditional = (offsetTop, offsetBottom) => {
-  return offsetTop === 0 ? [-30, 4]
-        : offsetTop === offsetBottom ? [-4, 30]
+  return offsetTop === 0 ? [-30, 0]
+        : offsetTop === offsetBottom ? [0, 30]
         : [-200, 200]
 }
