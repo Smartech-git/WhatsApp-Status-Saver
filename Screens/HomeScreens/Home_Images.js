@@ -1,11 +1,11 @@
 import { View, Text, FlatList, Image, ImageBackground} from 'react-native'
-import React, {useState}from 'react'
+import React, {useEffect, useState}from 'react'
 import { useStateValue } from '../../StateProvider'
 import { ImageArray } from '../../Utilities/GetViewedStatus';
 import ImageThumbnail from '../../Components/ImageThumbnail';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
-import Animated, { Easing, useAnimatedStyle, useSharedValue, withRepeat, withSequence, withSpring, withTiming } from 'react-native-reanimated';
-import { panGestureConditional, handleOnScroll} from '../../Utilities/GestureHandler';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import { panGestureConditional, handleOnScroll, handleMomemtumScrollEnd, handleScrollEndDrag} from '../../Utilities/GestureHandler';
 
 export default function Home_Images() {
   const [state, dispatch] = useStateValue();
@@ -13,7 +13,7 @@ export default function Home_Images() {
   const [contentOffsetBottom, setContentOffsetBottom] = useState(0)
 
   const startPosition = useSharedValue(0)
-
+  
   const animatedStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -23,6 +23,7 @@ export default function Home_Images() {
   })
 
   const panGestureEvent = Gesture.Pan()
+    .maxPointers(1)
     .activeOffsetY(
       panGestureConditional(contentOffsetTop ,contentOffsetBottom)
     )
@@ -47,15 +48,16 @@ export default function Home_Images() {
             // keyExtractor = {(item, index)=> index}
             numColumns = '2'
             contentContainerStyle = {{
-              paddingVertical: 5,
-              paddingHorizontal: 10
+              paddingTop: 5,
+              paddingBottom: 20,
+              paddingHorizontal: 5,
             }}
             decelerationRate = 'normal'
             persistentScrollbar = {false}
             overScrollMode = 'never'
             showsVerticalScrollIndicator = {false}
             onScroll={(e) => handleOnScroll(e, setContentOffsetTop, setContentOffsetBottom)}
-            onMomentumScrollEnd={(e) => console.log(e.nativeEvent.contentOffset.y)}
+            onScrollEndDrag={(e) => handleScrollEndDrag(e)}
           />
         </Animated.View>
       </GestureDetector>
