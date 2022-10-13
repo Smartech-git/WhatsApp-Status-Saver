@@ -1,7 +1,7 @@
 import { View, Text, FlatList, Image, ImageBackground} from 'react-native'
 import React, {useEffect, useState}from 'react'
 import { useStateValue } from '../../StateProvider'
-import { ImageArray } from '../../Utilities/GetViewedStatus';
+import { ImageArray, viewedStatusImagesArr } from '../../Utilities/GetViewedStatus';
 import ImageThumbnail from '../../Components/ImageThumbnail';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
@@ -35,7 +35,7 @@ export default function Home_Images() {
     })
 
   const renderItem = ({item}) => ( 
-    <ImageThumbnail imageSrc={item.image}/>
+    <ImageThumbnail imageSrc={item.URL}/>
   )
 
   return (
@@ -43,7 +43,7 @@ export default function Home_Images() {
       <GestureDetector gesture={panGestureEvent}>
         <Animated.View style={[animatedStyle]}>
           <FlatList
-            data={ImageArray}
+            data={viewedStatusImagesArr}
             renderItem={renderItem}
             // keyExtractor = {(item, index)=> index}
             numColumns = '2'
