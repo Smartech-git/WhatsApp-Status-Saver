@@ -15,6 +15,7 @@ import * as Font from 'expo-font';
 import { getObjectSettings, initialSettings, setObjectSettings, clearObjectSettings } from './APIs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getHeaderTitle } from '@react-navigation/elements'
+import { getViewedStatusImages } from './Utilities/GetViewedStatus';
 
 
 const BottomTab = createBottomTabNavigator()
@@ -23,31 +24,45 @@ export default function StatusSaver() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [state, dispatch] = useStateValue();
 
+  const getObjectSettingsRef = async () => {
+    let value = await getObjectSettings();
+
+    if( value === null) {
+      setObjectSettings(initialSettings);
+
+    } else {
+        let settings = await getObjectSettings();
+        let action = {
+            type : actionTypes.setTheme,
+            theme: settings.theme
+        }
+        dispatch(action);
+    }
+  }
+
+  const getPermissionsAsync = async () => {
+    
+    let status = await MediaLibrary.getPermissionsAsync();
+
+    if(status.granted === true){
+       let action = {
+        type : actionTypes.setPermissionState,
+        permissionState: true
+      }
+      dispatch(action)
+    }
+  }
+
   useEffect(() => {
     async function prepare() {
       
       try {
-        await Font.loadAsync({'Lobster-Regular': require('./assets/Fonts/Lobster-Regular.ttf')})
-        let value = await getObjectSettings();
-        if( value === null) {
-          setObjectSettings(initialSettings);
-        } else {
-            let settings = await getObjectSettings();
-            let action = {
-                type : actionTypes.setTheme,
-                theme: settings.theme
-            }
-            dispatch(action);
-        }
-
-        let status = await MediaLibrary.getPermissionsAsync();
-        if(status.granted === true){
-           let action = {
-            type : actionTypes.setPermissionState,
-            permissionState: true
-          }
-          dispatch(action)
-        }
+        await Promise.all([
+          Font.loadAsync({'Lobster-Regular': require('./assets/Fonts/Lobster-Regular.ttf')}),
+          getObjectSettingsRef(),
+          getPermissionsAsync(),
+          getViewedStatusImages()
+        ])
        
       } catch (e) { 
         console.warn(e);
@@ -65,7 +80,7 @@ export default function StatusSaver() {
       StatusBar.setBackgroundColor(state.themeHue.primary);
       StatusBar.setBarStyle(state.theme === 'LIGHT' ? 'dark-content' : 'light-content');
 
-      NavigationBar.setBackgroundColorAsync(state.themeHue.primary_dark)
+      NavigationBar.setBackgroundColorAsync(state.themeHue.primary)
       NavigationBar.setButtonStyleAsync(state.theme === 'LIGHT' ? "dark" : "light")
 
       await SplashScreen.hideAsync();
