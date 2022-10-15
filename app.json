@@ -36,10 +36,13 @@
       "barStyle": "light-content",
       "backgroundColor": "#00D426"
     },
+    "androidNavigationBar": {
+      
+    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#00D426"
+        "backgroundColor": "#FFFFFF"
       },
       "permissions": ["MANAGE_EXTERNAL_STORAGE"]
     },
