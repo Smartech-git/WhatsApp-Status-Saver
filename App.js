@@ -6,7 +6,8 @@ import reducer, { initialState} from './Reducer';
 import StatusSaver from './StatusSaver'
 import { NavigationContainer } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
-
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+ 
 NavigationBar.setBackgroundColorAsync('#00D426')
 NavigationBar.setButtonStyleAsync("light")
 SplashScreen.preventAutoHideAsync();
@@ -15,11 +16,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <StateProvider initialState={initialState} reducer={reducer}>
-        <View style={{
+        <GestureHandlerRootView style={{
           flex: 1,
         }}>
           <StatusSaver/>
-        </View>
+        </GestureHandlerRootView>
       </StateProvider> 
     </NavigationContainer>    
   );
