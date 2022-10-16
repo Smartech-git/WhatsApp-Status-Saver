@@ -31,7 +31,7 @@ export default function Home_Images() {
       startPosition.value =  e.translationY * 0.2
     })
     .onEnd(() =>{
-      startPosition.value = withSpring(0, {mass: 0.6})
+      startPosition.value = withSpring(0, {mass: 0.8})
     })
 
   const renderItem = ({item}) => ( 
@@ -49,8 +49,8 @@ export default function Home_Images() {
             numColumns = '2'
             contentContainerStyle = {{
               paddingTop: 5,
-              paddingBottom: 20,
-              paddingHorizontal: 5,
+              paddingBottom: 70,
+              paddingHorizontal: 2,
             }}
             decelerationRate = 'normal'
             persistentScrollbar = {false}
