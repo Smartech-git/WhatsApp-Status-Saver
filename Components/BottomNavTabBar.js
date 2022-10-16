@@ -10,18 +10,26 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
   const [shouldTabHide, setShouldTabHide] = useState('')
   const translation = useSharedValue(0)
   const opacity = useSharedValue(0)
+  const display = useSharedValue('flex')
 
 
  const shouldTabHide_Animation = (trans, opac) => {
+  
+  if(opac === 1){display.value= 'flex'}
+
     translation.value = withSpring(trans, {mass: 0.8})
       opacity.value = withTiming(opac , {
         duration: 300,
+      }, () => {
+        if(opac === 0){
+          display.value = 'none'
+        }
       })
   }
 
   useEffect(() => {
     setShouldTabHideRef = setShouldTabHide
-    translation.value = withDelay(900, withSpring(-35, {mass: 0.8}))
+    translation.value = withDelay(900, withSpring(-30, {mass: 0.8}))
     opacity.value = withDelay(900, withTiming(1, {
       duration: 300,
     }))
@@ -29,9 +37,9 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
 
   useEffect(() => {
     if(shouldTabHide === 'true') {
-     shouldTabHide_Animation(0, 0)
+     shouldTabHide_Animation(0, 0,)
     } else if( shouldTabHide === 'false') {
-     shouldTabHide_Animation(-30, 1)
+     shouldTabHide_Animation(-20, 1, )
     }   
   }, [shouldTabHide])
 
@@ -43,7 +51,8 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
           translateY: translation.value
         }
       ],
-      opacity: opacity.value
+      opacity: opacity.value,
+      display: display.value
     }
   })
 
@@ -53,7 +62,7 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
         position: 'absolute',
         bottom: 0,
         width:  '100%',
-        alignItems: 'center'
+        alignItems: 'center',
       },
       animatedStyle
     ]}>
