@@ -11,7 +11,7 @@
       "image": "./assets/splash.png",
       "resizeMode": "cover"
     },
-    "primaryColor": "#00D426",
+    "primaryColor": "#FFFFFF",
     "plugins": [
       [
         "expo-media-library",
@@ -35,9 +35,6 @@
     "androidStatusBar": {
       "barStyle": "light-content",
       "backgroundColor": "#00D426"
-    },
-    "androidNavigationBar": {
-      
     },
     "android": {
       "adaptiveIcon": {
