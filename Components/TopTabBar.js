@@ -25,7 +25,8 @@ export default function TopTabBar({ state, descriptors, navigation, position }) 
       flexDirection: 'row',
       paddingHorizontal: 50,
       justifyContent: 'space-between',
-      paddingBottom: 8
+      paddingBottom: 6,
+      
     }}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
