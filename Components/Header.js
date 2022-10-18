@@ -43,11 +43,12 @@ export default function Header(props) {
   return (
     <View style={styles.Header}>
       <View style={{flexDirection: 'row'}}>
-        <View style={{backgroundColor: state.themeHue.primary_dark, padding: 6, borderRadius: 50}}>
-          <Image style={{ width: 28, height: 28}} source={require('../assets/Images/Status.png')}/>
-        </View>
+         {
+          state.theme === 'LIGHT' ? <Image style={{ width: 42, height: 42}} source={require('../assets/Images/Logo_light.png')}/>
+                                  : <Image style={{ width: 42, height: 42}} source={require('../assets/Images/Logo_dark.png')}/>
+         }
         <Text style={{fontFamily: state.fontFamily, color: state.themeHue.secondary, fontSize: 24,
-          marginTop: 6,
+          marginTop: 4,
           marginLeft: 5
         }}>Status Saver</Text>
       </View>
