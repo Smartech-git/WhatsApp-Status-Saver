@@ -5,6 +5,7 @@ import { actionTypes } from '../Reducer'
 import * as NavigationBar from 'expo-navigation-bar';
 import { mergeToObjectSettings, settingsType } from '../APIs'
 import React, {useEffect} from 'react'
+import { LinearGradient } from 'expo-linear-gradient';
 
 const themeEmojis = {
   light : require('../assets/Images/EmojiPack/Sun_Behind_Small_Cloud.png'),
@@ -33,7 +34,7 @@ export default function Header(props) {
         StatusBar.setBackgroundColor(state.theme === 'LIGHT' ? '#0D1F29' : '#ffffff');
         StatusBar.setBarStyle(state.theme === 'LIGHT' ? 'light-content' : 'dark-content');
 
-        NavigationBar.setBackgroundColorAsync(state.theme === 'LIGHT' ? '#0D1F29' : '#ffffff')
+        NavigationBar.setBackgroundColorAsync(state.theme === 'LIGHT' ? '#0D1F29' : '#FFFFFF')
         NavigationBar.setButtonStyleAsync(state.theme === 'LIGHT' ? "light" : "dark")
         mergeToObjectSettings(state.theme === 'LIGHT' ? settingsType.setThemeDark : settingsType.setThemeLight)
     });
