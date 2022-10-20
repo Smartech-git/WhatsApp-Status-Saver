@@ -10,9 +10,10 @@ export default function ListHeader() {
   
   return (
     <View style={{
-        flex: 1, 
-        marginHorizontal: 6,
-        paddingVertical: 5,
+        width: '100%',
+        paddingVertical: 10,
+        alignItems: 'center',
+        paddingHorizontal: 4,
     }}>
         <View style={[Styles.Stats]}>
             <View style={{flexDirection: 'row', alignItems:'center'}}>
@@ -24,8 +25,7 @@ export default function ListHeader() {
                 </View>
                 <Text style={{
                     color: state.theme === 'LIGHT'? '#000' : "#FFF",
-                    fontSize: 13, 
-                    fontWeight: '500',
+                    fontSize: 14, 
                     marginLeft: 5
                 }}>Total viewed images/data size </Text>
             </View>
@@ -36,11 +36,10 @@ export default function ListHeader() {
                 backgroundColor: state.themeHue.primary_dark,
                 borderRadius: 50
             }}>
-                <Text style={{fontSize:14, fontWeight: '600', color: state.theme === 'LIGHT'? '#000' : "#FFF"}}>{TotalViewedImages}/
-                    <Text style={{color: '#6525EC', letterSpacing: 1}}>{DataSize}MB</Text>
+                <Text style={{fontSize:14, color: state.theme === 'LIGHT'? '#000' : "#FFF"}}>{TotalViewedImages}/
+                    {DataSize}MB
                 </Text>
             </View>
-
         </View>
     </View>
   )
@@ -48,10 +47,10 @@ export default function ListHeader() {
 
 const Styles = StyleSheet.create({
     Stats: {
-        flex: 1,
+        width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
 
     Icon :{
