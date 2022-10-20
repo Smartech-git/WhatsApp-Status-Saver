@@ -1,11 +1,12 @@
-import { View, Text, FlatList, Image, ImageBackground} from 'react-native'
-import React, {useEffect, useState}from 'react'
+import { View, Text, FlatList, Dimensions} from 'react-native'
+import React, {useState}from 'react'
 import { useStateValue } from '../../StateProvider'
-import { ImageArray, viewedStatusImagesArr } from '../../Utilities/GetViewedStatus';
+import { viewedImagesArr } from '../../Utilities/ViewedStatusManager';
 import ImageThumbnail from '../../Components/ImageThumbnail';
+import ListHeader from '../../Components/ListHeader';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { panGestureConditional, handleOnScroll, handleMomemtumScrollEnd, handleScrollEndDrag} from '../../Utilities/GestureHandler';
+import { panGestureConditional, handleOnScroll, handleScrollEndDrag} from '../../Utilities/GestureHandler';
 
 export default function Home_Images() {
   const [state, dispatch] = useStateValue();
@@ -35,22 +36,22 @@ export default function Home_Images() {
     })
 
   const renderItem = ({item}) => ( 
-    <ImageThumbnail imageSrc={item.URL}/>
+    <ImageThumbnail  imageSrc={item.URL}/>
   )
 
   return (
     <View>
       <GestureDetector gesture={panGestureEvent}>
-        <Animated.View style={[animatedStyle]}>
+        <Animated.View style={[{flexDirection: 'row', width:'100%'},animatedStyle]}>
           <FlatList
-            data={viewedStatusImagesArr}
+            data={viewedImagesArr}
             renderItem={renderItem}
             // keyExtractor = {(item, index)=> index}
             numColumns = '2'
             contentContainerStyle = {{
               paddingTop: 5,
               paddingBottom: 70,
-              paddingHorizontal: 2,
+              paddingHorizontal: 2
             }}
             decelerationRate = 'normal'
             persistentScrollbar = {false}
@@ -58,6 +59,7 @@ export default function Home_Images() {
             showsVerticalScrollIndicator = {false}
             onScroll={(e) => handleOnScroll(e, setContentOffsetTop, setContentOffsetBottom)}
             onScrollEndDrag={(e) => handleScrollEndDrag(e)}
+            ListHeaderComponent={<ListHeader/>}
           />
         </Animated.View>
       </GestureDetector>
