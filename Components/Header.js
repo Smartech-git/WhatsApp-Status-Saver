@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, Animated, Pressable, Easing, StatusBar} from 'react-native'
+import { View, Text, Image, StyleSheet, Animated, Pressable, Easing, StatusBar, PixelRatio} from 'react-native'
 import { useStateValue } from '../StateProvider'
 import { Shadow } from 'react-native-shadow-2'
 import { actionTypes } from '../Reducer'
@@ -44,8 +44,8 @@ export default function Header(props) {
     <View style={styles.Header}>
       <View style={{flexDirection: 'row'}}>
          {
-          state.theme === 'LIGHT' ? <Image style={{ width: 42, height: 42}} source={require('../assets/Images/Logo_light.png')}/>
-                                  : <Image style={{ width: 42, height: 42}} source={require('../assets/Images/Logo_dark.png')}/>
+          state.theme === 'LIGHT' ? <Image style={{ width: PixelRatio.getPixelSizeForLayoutSize(22), height: PixelRatio.getPixelSizeForLayoutSize(22)}} source={require('../assets/Images/Logo_light.png')}/>
+                                  : <Image style={{ width: PixelRatio.getPixelSizeForLayoutSize(22), height: PixelRatio.getPixelSizeForLayoutSize(22)}} source={require('../assets/Images/Logo_dark.png')}/>
          }
         <Text style={{fontFamily: state.fontFamily, color: state.themeHue.secondary, fontSize: 24,
           marginTop: 4,
@@ -73,7 +73,7 @@ export default function Header(props) {
               outputRange: state.theme === 'LIGHT'? [1, 0] : [0, 1]
             })
           }}>
-            <EmojiThemeIcon size = {22} position={39} path = {themeEmojis.light}/> 
+            <EmojiThemeIcon size = {12} position={39} path = {themeEmojis.light}/> 
           </Animated.View>
           :
           <Animated.View style={{position: 'absolute',
@@ -82,7 +82,7 @@ export default function Header(props) {
               outputRange: state.theme === 'DARK'? [0, 1] : [1, 0]
             })
           }}>
-            <EmojiThemeIcon size = {17} position={7} path = {themeEmojis.dark}/>
+            <EmojiThemeIcon size = {10} position={7} path = {themeEmojis.dark}/>
           </Animated.View>
           
         }
@@ -95,7 +95,7 @@ export default function Header(props) {
 function EmojiThemeIcon(props) {
   return (
     <Image style={{ 
-      width: props.size, height: props.size,
+      width: PixelRatio.getPixelSizeForLayoutSize(props.size), height: PixelRatio.getPixelSizeForLayoutSize(props.size),
       left: props.position,
       }}  
     source={props.path}/>
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     height: 40,
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 14,
+    marginTop: 8,
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 15,
