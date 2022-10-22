@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image} from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming } from 'react-native-reanimated';
+import { View, Text, TouchableOpacity, Image, PixelRatio} from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming} from 'react-native-reanimated';
 import { useStateValue } from '../StateProvider';
 
 export let setShouldTabHideRef;  // imported in Utilities/GestureHandler.js
@@ -29,7 +29,7 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
 
   useEffect(() => {
     setShouldTabHideRef = setShouldTabHide
-    translation.value = withDelay(900, withSpring(-30, {mass: 0.8}))
+    translation.value = withDelay(900, withSpring(-20, {mass: 0.8}))
     opacity.value = withDelay(900, withTiming(1, {
       duration: 300,
     }))
@@ -68,7 +68,7 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
     ]}>
         <View style={{
             height: 70,
-            width: 260,
+            width: '70%',
             flexDirection: 'row',
             justifyContent: 'space-around',
             alignItems: 'center',
@@ -124,24 +124,23 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
                 }}
               >
                 <View style={{
-                  backgroundColor: State.themeHue.primary,
                   borderRadius: 10,
                   width: 32,
                   height: 32,
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}>
-                  {label === "Status" && (isFocused ? <Image style={{width: 26, height: 26}} source={require('../assets/Icons/StatusIconActive.png')}/>
-                  : <Image style={{width: 26, height: 26}} source={require('../assets/Icons/StatusIconInactive.png')} />)}
+                  {label === "Status" && (isFocused ? <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(14), height: PixelRatio.getPixelSizeForLayoutSize(14)}} source={require('../assets/Icons/StatusIconActive.png')}/>
+                  : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(14), height: PixelRatio.getPixelSizeForLayoutSize(14)}} source={require('../assets/Icons/StatusIconInactive.png')} />)}
 
-                  {label === "Gallary" && ( isFocused ? <Image style={{width: 26, height: 26}} source={require('../assets/Icons/GallaryIconActive.png')}/>
-                  :<Image style={{width: 26, height: 26}} source={require('../assets/Icons/GallaryIconInactive.png')}/>)}
+                  {label === "Gallary" && ( isFocused ? <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(14), height: PixelRatio.getPixelSizeForLayoutSize(14)}} source={require('../assets/Icons/GallaryIconActive.png')}/>
+                  :<Image style={{width: PixelRatio.getPixelSizeForLayoutSize(14), height: PixelRatio.getPixelSizeForLayoutSize(14)}} source={require('../assets/Icons/GallaryIconInactive.png')}/>)}
 
-                  {label === "Settings" && ( isFocused ? <Image style={{width: 30, height:30}} source={require('../assets/Icons/SettingsIconActive.png')}/>
-                  :<Image style={{width: 30, height: 30}} source={require('../assets/Icons/SettingsIconInactive.png')}/>)}
+                  {label === "Settings" && ( isFocused ? <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(18), height:PixelRatio.getPixelSizeForLayoutSize(18)}} source={require('../assets/Icons/SettingsIconActive.png')}/>
+                  :<Image style={{width: PixelRatio.getPixelSizeForLayoutSize(16), height: PixelRatio.getPixelSizeForLayoutSize(16)}} source={require('../assets/Icons/SettingsIconInactive.png')}/>)}
                 </View>  
 
-                <Text style={{ color: isFocused ? (State.theme === 'LIGHT' ? '#000': '#fff') : '#617986', fontSize: 12, marginTop: 4, fontWeight: '900'}}>
+                <Text style={{ color: isFocused ? (State.theme === 'LIGHT' ? '#000': '#fff') : '#617986', fontSize: 12, marginTop: 4, fontWeight: '600'}}>
                   {label}
                 </Text>
                 
