@@ -5,7 +5,7 @@ import { actionTypes } from '../Reducer'
 import * as NavigationBar from 'expo-navigation-bar';
 import { mergeToObjectSettings, settingsType } from '../APIs'
 import React, {useEffect} from 'react'
-import { LinearGradient } from 'expo-linear-gradient';
+import EmojiProfile from './EmojiProfile';
 
 const themeEmojis = {
   light : require('../assets/Images/EmojiPack/Sun_Behind_Small_Cloud.png'),
@@ -43,10 +43,7 @@ export default function Header(props) {
   return (
     <View style={styles.Header}>
       <View style={{flexDirection: 'row'}}>
-         {
-          state.theme === 'LIGHT' ? <Image style={{ width: PixelRatio.getPixelSizeForLayoutSize(22), height: PixelRatio.getPixelSizeForLayoutSize(22)}} source={require('../assets/Images/Logo_light.png')}/>
-                                  : <Image style={{ width: PixelRatio.getPixelSizeForLayoutSize(22), height: PixelRatio.getPixelSizeForLayoutSize(22)}} source={require('../assets/Images/Logo_dark.png')}/>
-         }
+        <EmojiProfile/> 
         <Text style={{fontFamily: state.fontFamily, color: state.themeHue.secondary, fontSize: 24,
           marginTop: 4,
           marginLeft: 5
