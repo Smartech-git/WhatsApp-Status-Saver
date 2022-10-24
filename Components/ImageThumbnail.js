@@ -1,6 +1,6 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
-import Animated, { Easing, useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
+import { View, Text, Image, StyleSheet, Pressable, ImageBackground} from 'react-native'
+import React, { useState, useEffect} from 'react'
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withSpring, withTiming, PixelRatio } from 'react-native-reanimated'
 import { useStateValue } from '../StateProvider'
 
 export default function ImageThumbnail({imageSrc}) {
@@ -35,36 +35,38 @@ export default function ImageThumbnail({imageSrc}) {
   }
 
   return (
-      <View style={{width: 168, height: 210, margin: 5,
+      <View  style={{aspectRatio: 1/1.3, width: '47.6%', margin: '1.2%',
+        borderRadius: 16,
+        borderColor: state.themeHue.primary_dark,
+        borderWidth: 2,
+        overflow: 'hidden'
       }}>
-        
-        <Image style={{width: '100%', 
-          height: '100%',
-          borderRadius: 15,
-          borderColor: state.theme ==='LIGHT' ? '#F3F5F7' : '#1A3848',
-          borderWidth: 1
-        }}  source={{uri: imageSrc}}/>
+        <ImageBackground source={{uri: imageSrc}} opacity ={1}blurRadius={8} resizeMode ='cover' style={{width: '100%', height: '100%'}}>
+          <Image style={{width: undefined, 
+            height: undefined,
+            flex: 1,
+          }} source={{uri: imageSrc}} resizeMode='contain'/>
 
-        {
-          pressed && (
-            <Animated.View style={[Styles.SavedTag, savedTagAnimatedStyle ]}>
-              <Text style={{
-                fontSize: 13,
-                fontWeight: '900',
-              }}>Saved</Text>
-            </Animated.View>
-          )
-        }
+          {
+            pressed && (
+              <Animated.View style={[Styles.SavedTag, savedTagAnimatedStyle ]}>
+                <Text style={{
+                  fontSize: 13,
+                  fontWeight: '900',
+                }}>Saved</Text>
+              </Animated.View>
+            )
+          }
         
-
-        <TouchableOpacity onPress={handleSave}>
-          <View style={[Styles.button, {backgroundColor: pressed ? '#00D426' : '#FFFFFF'}]}>
-            {
-            pressed ? <Animated.Image style={[{width: 23, height: 23}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
-                    : <Image style={{width: 20, height: 20}} source={require('../assets/Icons/SaveIcon.png')} />
-            }    
-          </View>
-        </TouchableOpacity>
+          <Pressable onPressIn={handleSave} >
+            <View style={[Styles.button, {backgroundColor: pressed ? '#00D426' : '#FFFFFF'}]}>
+              {
+              pressed ? <Animated.Image style={[{width: 23, height: 23}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
+                      : <Image style={{width: 20, height: 20}} source={require('../assets/Icons/SaveIcon.png')} />
+              }    
+            </View>
+          </Pressable>
+        </ImageBackground>
       </View>
     )
 }
@@ -86,7 +88,7 @@ const Styles = StyleSheet.create({
     top: 10,
     left: 10,
     borderRadius: 50,
-    paddingHorizontal: 16,
-    paddingVertical: 5,
+    paddingHorizontal: 14,
+    paddingVertical: 4,
   }
 })
