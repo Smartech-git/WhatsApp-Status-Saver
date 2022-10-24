@@ -2,6 +2,7 @@ import {Pressable, Image, PixelRatio} from 'react-native'
 import React, {useEffect, useState} from 'react'
 import { useStateValue } from '../StateProvider'
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withDecay, withDelay, withSpring, withTiming } from 'react-native-reanimated'
+import { getObjectSettings, settingsType, mergeToObjectSettings} from '../APIs'
 
 const EmojiArr = [
     { emoji : require('../assets/Images/EmojiPack/Emoji1.png') },
@@ -25,10 +26,15 @@ export default function EmojiProfile() {
     const scaleValue = useSharedValue(0.5)
 
     useEffect(() => {
-        scaleValue.value = withDelay(400, withTiming(1, {
-            duration: 800,
-            easing: Easing.elastic(3)
-          }))
+        const prepare = async () => {
+            const settings = await getObjectSettings()
+            setEmojiIdx(settings.emojiId)
+            scaleValue.value = withDelay(400, withTiming(1, {
+                duration: 800,
+                easing: Easing.elastic(3)
+            })) 
+        }
+        prepare()
     }, [])
 
     const emojiAnimatedStyle = useAnimatedStyle(()=> {
@@ -43,14 +49,18 @@ export default function EmojiProfile() {
         setEmojiIdx((prev) => {
             let ct = prev + 1
             if(ct < EmojiArr.length){
+                mergeToObjectSettings({[settingsType.emojiId]: ct })
                 return ct
             }
+            mergeToObjectSettings({[settingsType.emojiId]: 0 })
             return 0
         })
         scaleValue.value =  withTiming(0.7, {
             duration: 800,
             easing: Easing.elastic(3)
-          })
+        })
+
+
     }
 
     const handleBounceEffect = () => {
