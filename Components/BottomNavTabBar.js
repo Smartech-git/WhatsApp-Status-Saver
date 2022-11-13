@@ -12,14 +12,13 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
   const opacity = useSharedValue(0)
   const display = useSharedValue('flex')
 
-
  const shouldTabHide_Animation = (trans, opac) => {
   
   if(opac === 1){display.value= 'flex'}
 
     translation.value = withSpring(trans, {mass: 0.8})
       opacity.value = withTiming(opac , {
-        duration: 300,
+        duration: 200,
       }, () => {
         if(opac === 0){
           display.value = 'none'
@@ -68,14 +67,15 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
     ]}>
         <View style={{
             height: 70,
-            width: '70%',
+            width: '75%',
             flexDirection: 'row',
             justifyContent: 'space-around',
             alignItems: 'center',
             backgroundColor: State.themeHue.primary_dark,
             borderColor: State.themeHue.secondary_sub,
             borderWidth: 1,
-            borderRadius: 50
+            borderRadius: 50,
+            paddingHorizontal: 10
         }}>
           {state.routes.map((route, index) => {
             const { options } = descriptors[route.key];
@@ -130,13 +130,13 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}>
-                  {label === "Status" && (isFocused ? <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(14), height: PixelRatio.getPixelSizeForLayoutSize(14)}} source={require('../assets/Icons/StatusIconActive.png')}/>
-                  : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(14), height: PixelRatio.getPixelSizeForLayoutSize(14)}} source={require('../assets/Icons/StatusIconInactive.png')} />)}
+                  {label === "Status" && (isFocused ? <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(13), height: PixelRatio.getPixelSizeForLayoutSize(13)}} source={require('../assets/Icons/StatusIconActive.png')}/>
+                  : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(13), height: PixelRatio.getPixelSizeForLayoutSize(13)}} source={require('../assets/Icons/StatusIconInactive.png')} />)}
 
                   {label === "Gallary" && ( isFocused ? <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(14), height: PixelRatio.getPixelSizeForLayoutSize(14)}} source={require('../assets/Icons/GallaryIconActive.png')}/>
                   :<Image style={{width: PixelRatio.getPixelSizeForLayoutSize(14), height: PixelRatio.getPixelSizeForLayoutSize(14)}} source={require('../assets/Icons/GallaryIconInactive.png')}/>)}
 
-                  {label === "Settings" && ( isFocused ? <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(18), height:PixelRatio.getPixelSizeForLayoutSize(18)}} source={require('../assets/Icons/SettingsIconActive.png')}/>
+                  {label === "Settings" && ( isFocused ? <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(16), height:PixelRatio.getPixelSizeForLayoutSize(16)}} source={require('../assets/Icons/SettingsIconActive.png')}/>
                   :<Image style={{width: PixelRatio.getPixelSizeForLayoutSize(16), height: PixelRatio.getPixelSizeForLayoutSize(16)}} source={require('../assets/Icons/SettingsIconInactive.png')}/>)}
                 </View>  
 
