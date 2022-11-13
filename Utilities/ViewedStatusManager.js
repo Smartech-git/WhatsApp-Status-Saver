@@ -1,4 +1,5 @@
 import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
 
 const FILE_PATH = {
     WhatsApp : "file:///storage/emulated/0/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/",
@@ -6,9 +7,6 @@ const FILE_PATH = {
 }
 
 export const ImageArray = [
-    // {
-    //     image : require(FILE_PATH.WhatsApp + '12f431eb564a43d1b2bd5716440652c3.jpg')
-    // },
     {
         image : require('../Test/Images/image2.jpg')
     },
@@ -45,30 +43,75 @@ export const ImageArray = [
 export let viewedImagesArr = []
 
 export let viewedStatusImagesStats = {
-    TotalViewedImages : 34,
-    DataSize: 18
+    totalViewedImages : 34,
+    dataSize: "18 MB"
 }
-export const getViewedStatusImages = async () => {
 
-    const Dir  = FileSystem.documentDirectory;
-    const album = await FileSystem.readDirectoryAsync(FILE_PATH.WhatsApp)
-    const fileInfo = await FileSystem.getInfoAsync(FILE_PATH.WhatsApp)
+const Dir  = FileSystem.documentDirectory;
+
+
+export const getViewedStatusImages = async () => {
+    await FileSystem.makeDirectoryAsync(Dir + "helloworld/file", {intermediates: true})
+
+    const album = await FileSystem.readDirectoryAsync(FILE_PATH.WhatsApp);
     
     for(let item of album) {
         let metaData = await FileSystem.getInfoAsync(FILE_PATH.WhatsApp + item)
 
         if(metaData.uri.endsWith('jpg')){
-            viewedImagesArr.push(
-                {
-                    URL: FILE_PATH.WhatsApp + item,
-                    modificationTime : metaData.modificationTime
-                }
-            )
+
+            if(checkForDuplicates(FILE_PATH.WhatsApp, item) === undefined){
+                viewedImagesArr.push(
+                    {
+                        URL: FILE_PATH.WhatsApp + item,
+                        modificationTime : metaData.modificationTime,
+                        DataSize : metaData.size
+                    }
+                )
+            }
         } else {
 
         }
     }
 
-    viewedImagesArr.sort((a, b) => b.modificationTime - a.modificationTime)
+    viewedImagesArr.sort((a, b) => b.modificationTime - a.modificationTime);
+
+    getViewedStatusImagesStats()
     
+}
+
+const getViewedStatusImagesStats = () => {
+
+    const units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    let totalViewedImages = viewedImagesArr.length;
+
+    const totalDataSize_byte = viewedImagesArr.reduce(
+        (accumulator, currentValue) => accumulator + currentValue.DataSize,
+        0,
+      );
+    let dataSize;
+   
+    let l = 0, n = (parseInt(totalDataSize_byte, 10)/1024) || 0;
+
+    while(n >= 500  && ++l){
+        n = n/1024;
+    }
+  
+    dataSize = n.toFixed(n < 10 && l > 0 ? 1 : 0) + ' ' + units[l];
+
+    viewedStatusImagesStats = {
+        totalViewedImages : totalViewedImages,
+        dataSize: dataSize
+    }
+
+}
+
+const checkForDuplicates = (path, item) => {
+
+    for(let x of viewedImagesArr) {
+        if((path + item) === x.URL){
+            return true
+        }
+    }
 }
