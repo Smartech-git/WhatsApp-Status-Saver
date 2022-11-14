@@ -6,14 +6,14 @@ import { viewedStatusImagesStats } from '../Utilities/ViewedStatusManager'
 export default function ListHeader() {
   const [state, dispatch] = useStateValue()
 
-  let {TotalViewedImages, DataSize} = viewedStatusImagesStats
+  let {totalViewedImages, dataSize} = viewedStatusImagesStats
   
   return (
     <View style={{
         width: '100%',
         paddingVertical: 10,
         alignItems: 'center',
-        paddingHorizontal: 4,
+        paddingHorizontal: '1.2%',
     }}>
         <View style={[Styles.Stats]}>
             <View style={{flexDirection: 'row', alignItems:'center'}}>
@@ -32,12 +32,12 @@ export default function ListHeader() {
 
             <View style ={{
                 paddingHorizontal: 10,
-                paddingVertical: 2,
+                paddingVertical: 4,
                 backgroundColor: state.themeHue.primary_dark,
                 borderRadius: 50
             }}>
-                <Text style={{fontSize:14, color: state.theme === 'LIGHT'? '#000' : "#FFF"}}>{TotalViewedImages}/
-                    {DataSize}MB
+                <Text style={{fontSize:13, fontWeight: '600', color: state.theme === 'LIGHT'? '#000' : "#FFF"}}>{totalViewedImages}/
+                    {dataSize}
                 </Text>
             </View>
         </View>

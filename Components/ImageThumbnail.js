@@ -1,6 +1,6 @@
-import { View, Text, Image, StyleSheet, Pressable, ImageBackground} from 'react-native'
+import { View, Text, Image, StyleSheet, Pressable, ImageBackground, PixelRatio} from 'react-native'
 import React, { useState, useEffect} from 'react'
-import Animated, { Easing, useAnimatedStyle, useSharedValue, withSpring, withTiming, PixelRatio } from 'react-native-reanimated'
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withSpring, withTiming} from 'react-native-reanimated'
 import { useStateValue } from '../StateProvider'
 
 export default function ImageThumbnail({imageSrc}) {
@@ -41,7 +41,7 @@ export default function ImageThumbnail({imageSrc}) {
         borderWidth: 2,
         overflow: 'hidden'
       }}>
-        <ImageBackground source={{uri: imageSrc}} opacity ={1}blurRadius={8} resizeMode ='cover' style={{width: '100%', height: '100%'}}>
+        <ImageBackground source={{uri: imageSrc}} blurRadius={15} resizeMode ='cover' style={{width: '100%', height: '100%'}}>
           <Image style={{width: undefined, 
             height: undefined,
             flex: 1,
@@ -61,8 +61,8 @@ export default function ImageThumbnail({imageSrc}) {
           <Pressable onPressIn={handleSave} >
             <View style={[Styles.button, {backgroundColor: pressed ? '#00D426' : '#FFFFFF'}]}>
               {
-              pressed ? <Animated.Image style={[{width: 23, height: 23}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
-                      : <Image style={{width: 20, height: 20}} source={require('../assets/Icons/SaveIcon.png')} />
+              pressed ? <Animated.Image style={[{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
+                      : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/SaveIcon.png')} />
               }    
             </View>
           </Pressable>

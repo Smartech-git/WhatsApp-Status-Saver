@@ -44,7 +44,7 @@ export default function Header(props) {
     <View style={styles.Header}>
       <View style={{flexDirection: 'row'}}>
         <EmojiProfile/> 
-        <Text style={{fontFamily: state.fontFamily, color: state.themeHue.secondary, fontSize: 24,
+        <Text style={{fontFamily: state.fontFamily, color:  state.theme === 'LIGHT' ? '#000' : '#FFF', fontSize: 24,
           marginTop: 4,
           marginLeft: 5
         }}>Status Saver</Text>
