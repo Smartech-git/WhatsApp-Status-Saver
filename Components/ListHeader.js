@@ -36,7 +36,7 @@ export default function ListHeader() {
                 backgroundColor: state.themeHue.primary_dark,
                 borderRadius: 50
             }}>
-                <Text style={{fontSize:13, fontWeight: '600', color: state.theme === 'LIGHT'? '#000' : "#FFF"}}>{totalViewedImages}/
+                <Text style={{fontSize:13, fontWeight: '600', color: '#6525EC'}}>{totalViewedImages}/
                     {dataSize}
                 </Text>
             </View>

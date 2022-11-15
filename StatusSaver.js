@@ -15,7 +15,7 @@ import * as Font from 'expo-font';
 import { getObjectSettings, initialSettings, setObjectSettings, clearObjectSettings } from './APIs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getHeaderTitle } from '@react-navigation/elements'
-import { getViewedStatusImages } from './Utilities/GetViewedStatus';
+import { getViewedStatusImages } from './Utilities/ViewedStatusManager';
 
 
 const BottomTab = createBottomTabNavigator()
@@ -62,8 +62,7 @@ export default function StatusSaver() {
           getObjectSettingsRef(),
           getPermissionsAsync(),
           getViewedStatusImages()
-        ])
-       
+        ]) 
       } catch (e) { 
         console.warn(e);
       } finally {
@@ -103,6 +102,7 @@ export default function StatusSaver() {
           <BottomTab.Navigator
             sceneContainerStyle = {{
               backgroundColor: state.themeHue.primary,
+              borderBottomWidth: 0
             }}
             tabBar={props => <BottomNavTabBar {...props}/>}
             screenOptions = {{
