@@ -43,8 +43,8 @@ export const ImageArray = [
 export let viewedImagesArr = []
 
 export let viewedStatusImagesStats = {
-    totalViewedImages : 34,
-    dataSize: "18 MB"
+    totalViewedImages : 0,
+    dataSize: "0"
 }
 
 const Dir  = FileSystem.documentDirectory;
@@ -98,7 +98,7 @@ const getViewedStatusImagesStats = () => {
         n = n/1024;
     }
   
-    dataSize = n.toFixed(n < 10 && l > 0 ? 1 : 0) + ' ' + units[l];
+    dataSize = n.toFixed(n < 10 && l > 0 ? 1 : 0) + units[l];
 
     viewedStatusImagesStats = {
         totalViewedImages : totalViewedImages,

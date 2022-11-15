@@ -1,15 +1,25 @@
 import { setShouldTabHideRef } from "../Components/BottomNavTabBar";
 let contentOffsetState = 0;
 
-export const handleOnScroll = (e, setOffsetTop, setOffsetBottom) => {
-  let offsetY = e.nativeEvent.contentOffset.y
-  console.log(offsetY)
-  setOffsetTop(offsetY)
-  setOffsetBottom(e.nativeEvent.contentSize.height - e.nativeEvent.layoutMeasurement.height)
+export const handleOnScroll = (e, contentOffsetBottom, setOffsetTop, setOffsetBottom) => {
+  let offsetTop = e.nativeEvent.contentOffset.y
+  let offsetBottom = e.nativeEvent.contentSize.height - e.nativeEvent.layoutMeasurement.height;
 
-  if(offsetY > (contentOffsetState)){
+  if(offsetBottom !== contentOffsetBottom ){
+    setOffsetBottom(offsetBottom)
+  }
+
+  if(offsetTop === 0) {
+    setOffsetTop(0);
+  } else if (offsetTop === offsetBottom){
+    setOffsetTop(offsetBottom)
+  } else {
+    setOffsetTop(undefined)
+  }
+
+  if(offsetTop > (contentOffsetState)){
     setShouldTabHideRef('true')
-  } else if(offsetY < (contentOffsetState)){
+  } else {
     setShouldTabHideRef('false')
   }
 }
