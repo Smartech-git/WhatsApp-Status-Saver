@@ -11,7 +11,7 @@
       "image": "./assets/splash.png",
       "resizeMode": "cover"
     },
-    "primaryColor": "#FFFFFF",
+    "primaryColor": "#00D426",
     "plugins": [
       [
         "expo-media-library",

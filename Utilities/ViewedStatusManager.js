@@ -1,6 +1,7 @@
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 
+
 const FILE_PATH = {
     WhatsApp : "file:///storage/emulated/0/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/",
     WhatsApp4B : ""
@@ -51,7 +52,7 @@ const Dir  = FileSystem.documentDirectory;
 
 
 export const getViewedStatusImages = async () => {
-    await FileSystem.makeDirectoryAsync(Dir + "helloworld/file", {intermediates: true})
+    //await FileSystem.makeDirectoryAsync(Dir + "helloworld/file", {intermediates: true})
 
     const album = await FileSystem.readDirectoryAsync(FILE_PATH.WhatsApp);
     
