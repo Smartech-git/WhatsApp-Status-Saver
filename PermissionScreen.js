@@ -4,8 +4,12 @@ import * as MediaLibrary from 'expo-media-library';
 import * as NavigationBar from 'expo-navigation-bar';
 import { useStateValue } from './StateProvider';
 import { actionTypes } from './Reducer';
+import { getViewedStatusImages } from './Utilities/ViewedStatusManager';
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 
 export default function PermissionScreen() {
+
+  activateKeepAwake();
 
   const [state, dispatch] = useStateValue()
 
@@ -26,12 +30,17 @@ export default function PermissionScreen() {
   const handlePermissionRequest = async () => {
     const status = await MediaLibrary.requestPermissionsAsync();
     console.log(status);
+
     if(status.granted){
+      getViewedStatusImages()
+
       let action = {
        type : actionTypes.setPermissionState,
        permissionState: true
       }
      dispatch(action)
+
+     deactivateKeepAwake()
     }
   }
 
