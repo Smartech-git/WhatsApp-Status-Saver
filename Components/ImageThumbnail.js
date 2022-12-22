@@ -1,13 +1,16 @@
-import { View, Text, Image, StyleSheet, Pressable, ImageBackground, PixelRatio} from 'react-native'
+import { View, Text, Image, StyleSheet, Pressable, Dimensions, PixelRatio, ImageBackground} from 'react-native'
 import React, { useState, useEffect} from 'react'
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withSpring, withTiming} from 'react-native-reanimated'
 import { useStateValue } from '../StateProvider'
 
-export default function ImageThumbnail({imageSrc}) {
+const win = Dimensions.get('window').width/2 -8
+
+export default function ImageThumbnail({imageSrc, ratio}) {
   const [state, dispatch] = useStateValue()
   const [pressed, setPressed] = useState(false)
   const scaleValue = useSharedValue(0.5);
   const savedTagValue = useSharedValue(8)
+
 
   const saveButtonAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -35,18 +38,21 @@ export default function ImageThumbnail({imageSrc}) {
   }
 
   return (
-      <View  style={{aspectRatio: 1/1.3, width: '47.6%', margin: '1.2%',
+      <View  style={{width: win,
+        margin: 4,
+        aspectRatio: 1/1.3, 
         borderRadius: 16,
         borderColor: state.themeHue.primary_dark,
         borderWidth: 2,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        minHeight: 150
       }}>
-        <ImageBackground source={{uri: imageSrc}} blurRadius={15} resizeMode ='cover' style={{width: '100%', height: '100%'}}>
-          <Image style={{width: undefined, 
-            height: undefined,
-            flex: 1,
-          }} source={{uri: imageSrc}} resizeMode='contain'/>
-
+        <ImageBackground source={{uri: imageSrc}} blurRadius={15} resizeMode ='cover' style={{flex:1}}>
+          <Image style={{flex: 1, 
+            flexDirection: 'row',
+            
+          }} source={{uri: imageSrc}} resizeMode= 'contain'/>
+        
           {
             pressed && (
               <Animated.View style={[Styles.SavedTag, savedTagAnimatedStyle ]}>
@@ -83,7 +89,7 @@ const Styles = StyleSheet.create({
     justifyContent: 'center',
   },
   SavedTag : {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(255, 255, 255, 0.98)',
     position: 'absolute',
     top: 10,
     left: 10,

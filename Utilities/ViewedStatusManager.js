@@ -1,5 +1,6 @@
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
+import { Image } from 'react-native';
 
 
 const FILE_PATH = {
@@ -7,7 +8,7 @@ const FILE_PATH = {
     WhatsApp4B : ""
 }
 
-export const ImageArray = [
+export const VideosArray = [
     {
         image : require('../Test/Images/image2.jpg')
     },
@@ -61,12 +62,24 @@ export const getViewedStatusImages = async () => {
 
         if(metaData.uri.endsWith('jpg')){
 
-            if(checkForDuplicates(FILE_PATH.WhatsApp, item) === undefined){
+            if(checkForDuplicates(FILE_PATH.WhatsApp + item) === undefined){
+                // let h, w;
+
+                // await Image.getSize(
+                //     FILE_PATH.WhatsApp + item,
+                //     (width, height) =>{
+                //         w  = width;
+                //         h = height;
+                //     }
+                // )
                 viewedImagesArr.push(
                     {
                         URL: FILE_PATH.WhatsApp + item,
                         modificationTime : metaData.modificationTime,
-                        DataSize : metaData.size
+                        DataSize : metaData.size,
+                        // height: h,
+                        // width: w,
+                        // ratio: (h/w).toFixed(2)
                     }
                 )
             }
@@ -108,11 +121,11 @@ const getViewedStatusImagesStats = () => {
 
 }
 
-const checkForDuplicates = (path, item) => {
+const checkForDuplicates = (item) => {
 
     for(let x of viewedImagesArr) {
-        if((path + item) === x.URL){
+        if(item === x.URL){
             return true
         }
-    }
+    } 
 }

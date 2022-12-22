@@ -1,4 +1,4 @@
-import { View, Text, FlatList, RefreshControl} from 'react-native'
+import { View, Text, RefreshControl} from 'react-native'
 import React, {useState, useCallback, useEffect}from 'react'
 import { useStateValue } from '../../StateProvider'
 import { viewedImagesArr, getViewedStatusImages } from '../../Utilities/ViewedStatusManager';
@@ -8,10 +8,11 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { panGestureConditional, handleOnScroll, handleScrollEndDrag} from '../../Utilities/GestureHandler';
 import { createStackNavigator } from '@react-navigation/stack';
-import { get } from 'react-native/Libraries/Utilities/PixelRatio';
+import { FlashList } from '@shopify/flash-list';
+import MasonryList from '@react-native-seoul/masonry-list';
+
 
 const Stack = createStackNavigator()
-
 
 export default function Home_Images() {
   const [state, dispatch] = useStateValue();
@@ -20,8 +21,8 @@ export default function Home_Images() {
   const startPosition = useSharedValue(0)
   const [refreshing, setRefreshing] = useState(false)
 
-  useEffect(() => {
-    getViewedStatusImages()
+  useEffect(() =>{
+   getViewedStatusImages()
   }, [])
 
   const onRefresh = useCallback(() => {
@@ -62,19 +63,18 @@ export default function Home_Images() {
     })
    
   return (
-    <View onLayout={() => {console.log('layout')}}>   
+    <View>   
       <GestureDetector gesture={panGestureEvent}>
-        <Animated.View style={[{width:'100%'},animatedStyle]}>
-          <FlatList
+        <Animated.View style={[{width:'100%', height: "100%"}, animatedStyle]}>
+          <FlashList
             data={viewedImagesArr}
-            renderItem={({item})=> (<ImageThumbnail  imageSrc={item.URL}/>)}
-            keyExtractor = {(item)=> item.URL}
-            extraData = {viewedImagesArr.length}
-            numColumns = '2'
+            renderItem={({item})=> <ImageThumbnail   imageSrc={item.URL}/>}
+            //keyExtractor = {(item)=> item.URL}
+           
+            numColumns = {2}
+            estimatedItemSize={10}
             contentContainerStyle = {{
               paddingBottom: 70,
-              paddingHorizontal: 2,
-              flex: 1 
             }}
             decelerationRate = 'normal'
             persistentScrollbar = {false}
