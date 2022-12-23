@@ -7,12 +7,9 @@ import ListHeader from '../../Components/ListHeader';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { panGestureConditional, handleOnScroll, handleScrollEndDrag} from '../../Utilities/GestureHandler';
-import { createStackNavigator } from '@react-navigation/stack';
-import { FlashList } from '@shopify/flash-list';
+import { MasonryFlashList } from '@shopify/flash-list';
 import MasonryList from '@react-native-seoul/masonry-list';
 
-
-const Stack = createStackNavigator()
 
 export default function Home_Images() {
   const [state, dispatch] = useStateValue();
@@ -65,16 +62,17 @@ export default function Home_Images() {
   return (
     <View>   
       <GestureDetector gesture={panGestureEvent}>
-        <Animated.View style={[{width:'100%', height: "100%"}, animatedStyle]}>
-          <FlashList
+        <Animated.View style={[{width:'100%', height: "100%", paddingHorizontal: 5}, animatedStyle]}>
+          <MasonryFlashList
             data={viewedImagesArr}
-            renderItem={({item})=> <ImageThumbnail   imageSrc={item.URL}/>}
+            renderItem={({item})=> <ImageThumbnail ratio={item.ratio}  imageSrc={item.URL}/>}
             //keyExtractor = {(item)=> item.URL}
-           
+            extraData={viewedImagesArr.length}
             numColumns = {2}
             estimatedItemSize={10}
             contentContainerStyle = {{
               paddingBottom: 70,
+            
             }}
             decelerationRate = 'normal'
             persistentScrollbar = {false}
