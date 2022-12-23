@@ -63,23 +63,23 @@ export const getViewedStatusImages = async () => {
         if(metaData.uri.endsWith('jpg')){
 
             if(checkForDuplicates(FILE_PATH.WhatsApp + item) === undefined){
-                // let h, w;
+                let h, w;
 
-                // await Image.getSize(
-                //     FILE_PATH.WhatsApp + item,
-                //     (width, height) =>{
-                //         w  = width;
-                //         h = height;
-                //     }
-                // )
+                await Image.getSize(
+                    FILE_PATH.WhatsApp + item,
+                    (width, height) =>{
+                        w  = width;
+                        h = height;
+                    }
+                )
                 viewedImagesArr.push(
                     {
                         URL: FILE_PATH.WhatsApp + item,
                         modificationTime : metaData.modificationTime,
                         DataSize : metaData.size,
-                        // height: h,
-                        // width: w,
-                        // ratio: (h/w).toFixed(2)
+                        height: h,
+                        width: w,
+                        ratio: (h/w).toFixed(2)
                     }
                 )
             }
