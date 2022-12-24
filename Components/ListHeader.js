@@ -10,10 +10,9 @@ export default function ListHeader() {
   
   return (
     <View style={{
-        width: '100%',
         paddingVertical: 10,
         alignItems: 'center',
-        paddingHorizontal: '1.2%',
+        paddingHorizontal: 8
     }}>
         <View style={[Styles.Stats]}>
             <View style={{flexDirection: 'row', alignItems:'center'}}>

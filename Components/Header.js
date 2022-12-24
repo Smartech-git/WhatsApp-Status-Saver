@@ -31,10 +31,10 @@ export default function Header(props) {
         theme: state.theme === 'LIGHT' ? 'DARK' : 'LIGHT'
         }
       dispatch(action);
-        StatusBar.setBackgroundColor(state.theme === 'LIGHT' ? '#0D1F29' : '#ffffff');
+        StatusBar.setBackgroundColor(state.theme === 'LIGHT' ? '#111B21' : '#ffffff');
         StatusBar.setBarStyle(state.theme === 'LIGHT' ? 'light-content' : 'dark-content');
 
-        NavigationBar.setBackgroundColorAsync(state.theme === 'LIGHT' ? '#0D1F29' : '#FFFFFF')
+        NavigationBar.setBackgroundColorAsync(state.theme === 'LIGHT' ? '#111B21' : '#FFFFFF')
         NavigationBar.setButtonStyleAsync(state.theme === 'LIGHT' ? "light" : "dark")
         mergeToObjectSettings(state.theme === 'LIGHT' ? settingsType.setThemeDark : settingsType.setThemeLight)
     });
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     height: 40,
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 8,
+    paddingTop: 8,
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 15,
