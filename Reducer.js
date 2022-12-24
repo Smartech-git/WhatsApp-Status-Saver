@@ -6,7 +6,7 @@ export const themeHueLight = {
 }
 
 export const themeHueDark = {
-    primary: '#0D1F29',
+    primary: '#111B21',
     primary_dark: '#1A3848',
     secondary: '#F3F5F7',
     secondary_sub: '#000000'

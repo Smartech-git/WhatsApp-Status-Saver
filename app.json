@@ -4,7 +4,7 @@
     "owner": "Chukwu Smart",
     "slug": "Status-Saver",
     "version": "1.0.0",
-    "orientation": "default",
+     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "icon": "./assets/icon.png",
     "splash": {
