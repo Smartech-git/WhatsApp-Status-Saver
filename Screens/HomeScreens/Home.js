@@ -1,36 +1,38 @@
-import { View, TouchableOpacity, Animated} from 'react-native'
-import React, {useEffect, useLayoutEffect} from 'react'
-import TopTabBar from '../../Components/TopTabBar'
+import { View, TouchableOpacity, Animated } from 'react-native'
+import React, { useEffect, useLayoutEffect } from 'react'
 import { useStateValue } from '../../StateProvider'
-import Header from '../../Components/Header'
-import Home_Images from './Home_Images'
-import Home_Videos from './Home_Videos'
-import {getViewedStatusImages } from '../../Utilities/ViewedStatusManager';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { createStackNavigator } from '@react-navigation/stack';
+import BaseScreens from './BaseScreens';
+import Image_view from './Image_view';
+import Video_view from './Video_view';
+import ContentViewHeader from '../../Components/ContentViewHeader';
 
-const Tab = createMaterialTopTabNavigator();
+const Stack = createStackNavigator()
 
 export default function Home(props) {
   const [state, dispatch] = useStateValue();
 
   return (
-      <View style={{
-        flex: 1,
-      }}>
-        <Header/>
-        <Tab.Navigator
-          tabBar ={props => <TopTabBar {...props} />}
-          sceneContainerStyle = {{
-            backgroundColor: state.themeHue.primary,
+    <View style={{
+      flex: 1,
+      backgroundColor: state.themeHue.primary
+    }}>
+      <Stack.Navigator>
+        <Stack.Screen options={{
+          headerShown: false,
+        }} name="Base" component={BaseScreens} />
+        <Stack.Screen 
+          options={{
+            header: ({ navigation}) => {
+              return (
+               <ContentViewHeader screenType = "Images" navigation={navigation}/>
+              )
+            },
+            
           }}
-          screenOptions={{
-          
-          }}
-          style={{marginTop: 10}}
-        >
-          <Tab.Screen name="Images" component={Home_Images} />
-          <Tab.Screen name="Videos" component={Home_Videos} />
-        </Tab.Navigator> 
-      </View>
+        name="ImageView" component={Image_view} />
+        <Stack.Screen name="VideoView" component={Video_view}/>
+      </Stack.Navigator>
+    </View>
   )
 }

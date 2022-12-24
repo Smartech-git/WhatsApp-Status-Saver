@@ -66,13 +66,11 @@ export default function Home_Images() {
           <MasonryFlashList
             data={viewedImagesArr}
             renderItem={({item})=> <ImageThumbnail ratio={item.ratio}  imageSrc={item.URL}/>}
-            //keyExtractor = {(item)=> item.URL}
             extraData={viewedImagesArr.length}
             numColumns = {2}
-            estimatedItemSize={10}
+            estimatedItemSize={100}
             contentContainerStyle = {{
-              paddingBottom: 70,
-            
+              paddingBottom: 40,
             }}
             decelerationRate = 'normal'
             persistentScrollbar = {false}
