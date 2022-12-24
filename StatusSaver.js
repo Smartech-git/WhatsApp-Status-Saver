@@ -16,9 +16,34 @@ import { getObjectSettings, initialSettings, setObjectSettings, clearObjectSetti
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getHeaderTitle } from '@react-navigation/elements'
 import { getViewedStatusImages } from './Utilities/ViewedStatusManager';
+import { NavigationContainer} from '@react-navigation/native';
 
 
 const BottomTab = createBottomTabNavigator()
+
+const LightTheme = {
+  dark: false,
+  colors: {
+    primary: '#FFFFFF',
+    background: '#FFFFFF',
+    card: '#F3F5F7',
+    text: '#000000',
+    border: '#FFFFFF',
+    notification: '#00D426',
+  },
+};
+
+const DarkTheme = {
+  dark: true,
+  colors: {
+    primary: '#111B21',
+    background: '#111B21',
+    card: '#1A3848',
+    text: '#FFFFFF',
+    border: '#111B21',
+    notification: '#00D426',
+  },
+};
 
 export default function StatusSaver() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -99,32 +124,34 @@ export default function StatusSaver() {
         state.permissionState === false ? (
           <PermissionScreen/>
         ) : (
-          <BottomTab.Navigator
-            sceneContainerStyle = {{
-              backgroundColor: state.themeHue.primary,
-              borderBottomWidth: 0
-            }}
-            tabBar={props => <BottomNavTabBar {...props}/>}
-            screenOptions = {{
-              header: ({ navigation, route, options }) => {
-                const title = getHeaderTitle(options, route.name);
-                return <ScreenHeaders title={title}/>;
-              },
-            
-            }}
-          >
-            <BottomTab.Screen name = "Home" 
-              component={Home}
-              options= {{
-                headerShown: false,
-                title: 'Status',
+          <NavigationContainer theme={state.theme === 'LIGHT' ? LightTheme : DarkTheme}>
+            <BottomTab.Navigator
+              sceneContainerStyle = {{
+                backgroundColor: state.themeHue.primary,
+                borderBottomWidth: 0
               }}
-            />
-            <BottomTab.Screen name = "Gallary"
-             component={Gallary}
-            />
-            <BottomTab.Screen name = "Settings" component={Settings}/>
-          </BottomTab.Navigator>
+              tabBar={props => <BottomNavTabBar {...props}/>}
+              screenOptions = {{
+                header: ({ navigation, route, options }) => {
+                  const title = getHeaderTitle(options, route.name);
+                  return <ScreenHeaders title={title}/>;
+                },
+              
+              }}
+            >
+              <BottomTab.Screen name = "Home" 
+                component={Home}
+                options= {{
+                  headerShown: false,
+                  title: 'Status',
+                }}
+              />
+              <BottomTab.Screen name = "Gallary"
+              component={Gallary}
+              />
+              <BottomTab.Screen name = "Settings" component={Settings}/>
+            </BottomTab.Navigator>
+          </NavigationContainer>
         )
       }  
     </SafeAreaView>
