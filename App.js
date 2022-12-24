@@ -5,7 +5,6 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StateProvider } from './StateProvider';
 import reducer, { initialState} from './Reducer';
 import StatusSaver from './StatusSaver'
-import { NavigationContainer } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
  
@@ -15,7 +14,6 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   return (
-    <NavigationContainer>
       <StateProvider initialState={initialState} reducer={reducer}>
         <GestureHandlerRootView style={{
           flex: 1,
@@ -23,6 +21,5 @@ export default function App() {
           <StatusSaver/>
         </GestureHandlerRootView>
       </StateProvider> 
-    </NavigationContainer>    
   );
 }
