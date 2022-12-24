@@ -3,12 +3,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const settingsType = {
   name: 'Settings',
   setThemeLight : { theme: 'LIGHT' },
-  setThemeDark : { theme : 'DARK' }
+  setThemeDark : { theme : 'DARK' },
+  emojiId : "emojiId"
 }
 
 export const initialSettings  = {
   name:'Status Saver',
-  theme: 'LIGHT'
+  theme: 'LIGHT',
+  emojiId: 0
 }
 
 export const getObjectSettings = async () => {
@@ -35,9 +37,9 @@ export const mergeToObjectSettings = async (obj) => {
   try {
 
     await AsyncStorage.mergeItem(settingsType.name, JSON.stringify(obj))
-    const currentUser = await AsyncStorage.getItem(settingsType.name)
+    const settings = await AsyncStorage.getItem(settingsType.name)
 
-    console.log(currentUser)
+    console.log(settings)
   } catch(e) {
     
   } finally {
