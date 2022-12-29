@@ -1,7 +1,7 @@
 import { setShouldTabHideRef } from "../Components/BottomNavTabBar";
 let contentOffsetState = 0;
 
-export const handleOnScroll = (e, contentOffsetBottom, setOffsetTop, setOffsetBottom) => {
+export const handleVerticalScroll = (e, contentOffsetBottom, setOffsetTop, setOffsetBottom) => {
   let offsetTop = e.nativeEvent.contentOffset.y
   let offsetBottom = e.nativeEvent.contentSize.height - e.nativeEvent.layoutMeasurement.height;
 
@@ -24,10 +24,34 @@ export const handleOnScroll = (e, contentOffsetBottom, setOffsetTop, setOffsetBo
   }
 }
 
-export const panGestureConditional = (offsetTop, offsetBottom) => {
-  return offsetTop === 0 ? [-500, 500]
-        : offsetTop === offsetBottom ? [0, 30]
-        : [-500, 500]
+export const handleHorinzontalScroll = (e, contentOffsetRight, setOffsetLeft, setOffsetRight) => {
+  let offsetLeft= e.nativeEvent.contentOffset.x
+  let offsetRight = e.nativeEvent.contentSize.width - e.nativeEvent.layoutMeasurement.width;
+
+  if(offsetRight !== contentOffsetRight ){
+    setOffsetRight(offsetRight)
+  }
+
+  if(offsetLeft === 0) {
+    setOffsetLeft(0);
+  } else if (offsetLeft === offsetRight){
+    setOffsetLeft(offsetRight)
+  } else {
+    setOffsetLeft(undefined)
+  }
+}
+
+export const panGestureConditional = (direction, firstoffset, secondOffset) => {
+  if(direction === 'vertical'){
+    return firstoffset === 0 ? [-500, 500]
+            : firstoffset === secondOffset ? [0, 30]
+            : [-500, 500]
+  } else {
+    return firstoffset === 0 ? [-30, 0]
+            : firstoffset === secondOffset ? [0, 30]
+            : [-500, 500] 
+  }
+  
 }
 
 export const handleScrollEndDrag = (e) => {
