@@ -8,7 +8,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { panGestureConditional, handleVerticalScroll, handleScrollEndDrag} from '../../Utilities/GestureHandler';
 import { MasonryFlashList } from '@shopify/flash-list';
-
+import ListFooter from './ListFooter';
 
 export default function Home_Images() {
   const [state, dispatch] = useStateValue();
@@ -61,15 +61,15 @@ export default function Home_Images() {
   return (
     <View>   
       <GestureDetector gesture={panGestureEvent}>
-        <Animated.View style={[{width:'100%', height: "100%", paddingHorizontal: 5}, animatedStyle]}>
+        <Animated.View style={[{width:'100%', height: "100%", paddingHorizontal: 2}, animatedStyle]}>
           <MasonryFlashList
             data={viewedImagesArr}
-            renderItem={({item})=> <ImageThumbnail ratio={item.ratio}  imageSrc={item.URL}/>}
+            renderItem={({item, index})=> <ImageThumbnail ratio={item.ratio} index ={index} imageSrc={item.URL}/>}
             extraData={viewedImagesArr.length}
             numColumns = {2}
             estimatedItemSize={100}
             contentContainerStyle = {{
-              paddingBottom: 40,
+              paddingBottom: 50
             }}
             decelerationRate = 'normal'
             persistentScrollbar = {false}
@@ -78,6 +78,7 @@ export default function Home_Images() {
             onScroll={(e) => handleVerticalScroll(e, contentOffsetBottom, setContentOffsetTop, setContentOffsetBottom)}
             onScrollEndDrag={(e) => handleScrollEndDrag(e)}
             ListHeaderComponent={<ListHeader/>}
+            ListFooterComponent = {<ListFooter/>}
             refreshControl = {
               <RefreshControl
                 refreshing={refreshing}
