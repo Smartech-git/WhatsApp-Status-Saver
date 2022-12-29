@@ -6,9 +6,8 @@ import ImageThumbnail from '../../Components/ImageThumbnail';
 import ListHeader from '../../Components/ListHeader';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { panGestureConditional, handleOnScroll, handleScrollEndDrag} from '../../Utilities/GestureHandler';
+import { panGestureConditional, handleVerticalScroll, handleScrollEndDrag} from '../../Utilities/GestureHandler';
 import { MasonryFlashList } from '@shopify/flash-list';
-import MasonryList from '@react-native-seoul/masonry-list';
 
 
 export default function Home_Images() {
@@ -48,12 +47,12 @@ export default function Home_Images() {
   const panGestureEvent = Gesture.Pan()
     .maxPointers(1)
     .activeOffsetY(
-      panGestureConditional(contentOffsetTop ,contentOffsetBottom)
+      panGestureConditional( 'vertical', contentOffsetTop ,contentOffsetBottom)
     )
     .onStart(() => {
     })
     .onUpdate((e)=>{
-      startPosition.value =  e.translationY * 0.2
+      startPosition.value =  e.translationY * 0.5
     })
     .onEnd(() =>{
       startPosition.value = withSpring(0, {mass: 0.8})
@@ -76,7 +75,7 @@ export default function Home_Images() {
             persistentScrollbar = {false}
             overScrollMode = 'never'
             showsVerticalScrollIndicator = {false}
-            onScroll={(e) => handleOnScroll(e, contentOffsetBottom, setContentOffsetTop, setContentOffsetBottom)}
+            onScroll={(e) => handleVerticalScroll(e, contentOffsetBottom, setContentOffsetTop, setContentOffsetBottom)}
             onScrollEndDrag={(e) => handleScrollEndDrag(e)}
             ListHeaderComponent={<ListHeader/>}
             refreshControl = {
