@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Animated, Easing, Image, StyleSheet, StatusBar} from 'react-native'
+import { View, Text, TouchableOpacity, Animated, Easing, Image, StyleSheet, StatusBar, Dimensions} from 'react-native'
 import React, {useRef, useEffect} from 'react'
 import * as MediaLibrary from 'expo-media-library';
 import * as NavigationBar from 'expo-navigation-bar';
@@ -45,13 +45,13 @@ export default function PermissionScreen() {
   }
 
   return (
-    <View style={{alignItems: 'center', backgroundColor: state.themeHue.primary, flex: 1}}>
-      <View style={{ alignItems: 'center', marginTop: 140}}>
+    <View style={{alignItems: 'center', backgroundColor: state.themeHue.primary, flex: 1, justifyContent: 'space-evenly'}}>
+      <View style={{ alignItems: 'center',}}>
         <View style ={{...Styles.FolderGif, backgroundColor: state.themeHue.primary_dark}}>
             <Image style= {{ width: 100, height: 100 }} source={require('./assets/GIFs/Folder.gif')}/>
         </View>
 
-        <View style={{marginTop: 50, alignItems: 'center'}}>
+        <View style={{marginTop: 50, alignItems: 'center', width: '85%'}}>
           <Text style={{ fontSize: 26, fontWeight: 'bold', color: state.theme === 'LIGHT' ? '#000' : '#fff'}}>Permission Request</Text>
           <Text style={{...Styles.Info, color: state.theme === 'LIGHT' ? 'rgba(0,0,0,0.7)' : 'rgba(225,225,225,0.9)'}}> 
             <Text style={{color: '#00D426'}}>Status Saver</Text> needs access to your device storage. This is required for normal app operations and best performance.
@@ -59,7 +59,7 @@ export default function PermissionScreen() {
         </View>
       </View>
 
-      <TouchableOpacity onPress={handlePermissionRequest} activeOpacity={0.7} style={{ position: 'relative', marginTop: 100,}}>
+      <TouchableOpacity onPress={handlePermissionRequest} activeOpacity={0.7} style={{ position: 'relative',}}>
         <Animated.View style={{...Styles.button, opacity: animate,
           transform: [{translateY: animate.interpolate({
             inputRange: [0, 1],
@@ -92,7 +92,7 @@ const Styles = StyleSheet.create({
   },
 
   Info: {
-    width: 300, 
+    
     textAlign: 'center', 
     fontSize: 18, 
     fontWeight: '600',
