@@ -12,7 +12,7 @@ import * as NavigationBar from 'expo-navigation-bar';
 import * as MediaLibrary from 'expo-media-library';
 import PermissionScreen from './PermissionScreen';
 import * as Font from 'expo-font';
-import { getObjectSettings, initialSettings, setObjectSettings, clearObjectSettings } from './APIs';
+import { getObjectSettings, initialSettings, setObjectSettings} from './APIs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getHeaderTitle } from '@react-navigation/elements'
 import { getViewedStatusImages } from './Utilities/ViewedStatusManager';

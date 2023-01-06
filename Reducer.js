@@ -1,6 +1,6 @@
 export const themeHueLight = {
     primary: '#FFFFFF',
-    primary_dark: '#F3F5F7',
+    primary_dark: '#E9ECEF',
     secondary: '#1A3848',
     secondary_sub: '#D9D9D9',
 }
