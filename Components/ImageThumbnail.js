@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useStateValue } from '../StateProvider'
 import { setShouldTabHideRef } from './BottomNavTabBar'
 
-const win = Dimensions.get('window').width/2 -10
+const win = Dimensions.get('window').width/2 -9.5
 
 export default function ImageThumbnail({imageSrc, ratio, index}) {
   const [state, dispatch] = useStateValue()
@@ -50,7 +50,9 @@ export default function ImageThumbnail({imageSrc, ratio, index}) {
         width: win,
         height: win*ratio <= 150 ? 150 : win*ratio,
         borderColor: state.themeHue.primary_dark, 
-        ...Styles.ThumbnailStyle
+        ...Styles.ThumbnailStyle,
+        marginLeft: index % 2 == 0 ? 0 : 4,
+        marginRight: index % 2 == 0 ? 4 : 0
         }}
         >
         <ImageBackground source={{uri: imageSrc}} blurRadius={15} resizeMode ='cover' style={{width: '100%', height: '100%'}}>
@@ -103,7 +105,7 @@ const Styles = StyleSheet.create({
     paddingVertical: 4,
   },
   ThumbnailStyle: {
-    margin: 4,
+    marginVertical: 4,
     borderRadius: 16,
     borderWidth: 1,
     overflow: 'hidden',

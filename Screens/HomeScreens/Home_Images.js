@@ -1,7 +1,7 @@
 import { View, Text, RefreshControl} from 'react-native'
 import React, {useState, useCallback, useEffect}from 'react'
 import { useStateValue } from '../../StateProvider'
-import { viewedImagesArr, getViewedStatusImages } from '../../Utilities/ViewedStatusManager';
+import { viewedImagesArr, getViewedStatusImages} from '../../Utilities/ViewedStatusManager';
 import ImageThumbnail from '../../Components/ImageThumbnail';
 import ListHeader from '../../Components/ListHeader';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
@@ -12,14 +12,11 @@ import ListFooter from './ListFooter';
 
 export default function Home_Images() {
   const [state, dispatch] = useStateValue();
+  const [ready, setReady] = useState(false);
   const [contentOffsetTop, setContentOffsetTop] = useState(0)
   const [contentOffsetBottom, setContentOffsetBottom] = useState(0)
   const startPosition = useSharedValue(0)
   const [refreshing, setRefreshing] = useState(false)
-
-  useEffect(() =>{
-   getViewedStatusImages()
-  }, [])
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -55,21 +52,27 @@ export default function Home_Images() {
       startPosition.value =  e.translationY * 0.5
     })
     .onEnd(() =>{
-      startPosition.value = withSpring(0, {mass: 0.8})
+      startPosition.value = withSpring(0, {mass: 1})
     })
    
   return (
-    <View>   
+    <View style={{  overflow: 'hidden',
+       marginHorizontal: 6,
+       borderTopLeftRadius: 16,
+       borderTopRightRadius: 16
+    }}>
       <GestureDetector gesture={panGestureEvent}>
-        <Animated.View style={[{width:'100%', height: "100%", paddingHorizontal: 2}, animatedStyle]}>
+        <Animated.View style={[{width:'100%', height: "100%",}, animatedStyle]}>
+          {
+            viewedImagesArr.length > 0 &&
           <MasonryFlashList
             data={viewedImagesArr}
             renderItem={({item, index})=> <ImageThumbnail ratio={item.ratio} index ={index} imageSrc={item.URL}/>}
-            extraData={viewedImagesArr.length}
+            extraData={[viewedImagesArr.length, ready]}
             numColumns = {2}
             estimatedItemSize={100}
             contentContainerStyle = {{
-              paddingBottom: 50
+              paddingBottom: 50,
             }}
             decelerationRate = 'normal'
             persistentScrollbar = {false}
@@ -88,6 +91,7 @@ export default function Home_Images() {
               />
             }
           />
+        }
         </Animated.View>
       </GestureDetector>
     </View>
