@@ -1,15 +1,18 @@
 import { View, Text, Image, StyleSheet, Pressable, Dimensions, PixelRatio, ImageBackground} from 'react-native'
 import React, { useState, useEffect} from 'react'
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withSpring, withTiming} from 'react-native-reanimated'
+import { useNavigation } from '@react-navigation/native'
 import { useStateValue } from '../StateProvider'
+import { setShouldTabHideRef } from './BottomNavTabBar'
 
-const win = Dimensions.get('window').width/2 -8
+const win = Dimensions.get('window').width/2 -10
 
-export default function ImageThumbnail({imageSrc, ratio}) {
+export default function ImageThumbnail({imageSrc, ratio, index}) {
   const [state, dispatch] = useStateValue()
   const [pressed, setPressed] = useState(false)
-  const scaleValue = useSharedValue(0.5);
+  const scaleValue = useSharedValue(0.5)
   const savedTagValue = useSharedValue(8)
+  const navigation = useNavigation();
 
 
   const saveButtonAnimatedStyle = useAnimatedStyle(() => {
@@ -37,21 +40,23 @@ export default function ImageThumbnail({imageSrc, ratio}) {
     })
   }
 
+  const handleOnPress = () => {
+    navigation.navigate('ImageView', {index : index});
+    setShouldTabHideRef('true');
+  }
+
   return (
-      <View  style={{width: win,
-        margin: 4,
-        aspectRatio: 1/1.3, 
-        borderRadius: 16,
-        borderColor: state.themeHue.primary_dark,
-        borderWidth: 2,
-        overflow: 'hidden',
-        minHeight: 150
-      }}>
-        <ImageBackground source={{uri: imageSrc}} blurRadius={15} resizeMode ='cover' style={{flex:1}}>
+      <Pressable onPress={handleOnPress} style={{
+        width: win,
+        height: win*ratio <= 150 ? 150 : win*ratio,
+        borderColor: state.themeHue.primary_dark, 
+        ...Styles.ThumbnailStyle
+        }}
+        >
+        <ImageBackground source={{uri: imageSrc}} blurRadius={15} resizeMode ='cover' style={{width: '100%', height: '100%'}}>
           <Image style={{flex: 1, 
-            flexDirection: 'row',
             
-          }} source={{uri: imageSrc}} resizeMode= 'contain'/>
+          }} source={{uri: imageSrc}} resizeMode={win*ratio <= 150 ? 'contain': 'cover'}/>
         
           {
             pressed && (
@@ -73,7 +78,7 @@ export default function ImageThumbnail({imageSrc, ratio}) {
             </View>
           </Pressable>
         </ImageBackground>
-      </View>
+      </Pressable>
     )
 }
 
@@ -96,5 +101,11 @@ const Styles = StyleSheet.create({
     borderRadius: 50,
     paddingHorizontal: 14,
     paddingVertical: 4,
+  },
+  ThumbnailStyle: {
+    margin: 4,
+    borderRadius: 16,
+    borderWidth: 1,
+    overflow: 'hidden',
   }
 })

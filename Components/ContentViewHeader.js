@@ -16,7 +16,7 @@ export default function ContentViewHeader({screenType, navigation}) {
                 flexDirection: 'row',
                 alignItems: 'center'
             }}>
-                <TouchableOpacity onPress={handleGoback} style={{ ...styles.BackButton,
+                <TouchableOpacity activeOpacity={0.6} onPress={handleGoback} style={{ ...styles.BackButton,
                     backgroundColor: state.themeHue.primary_dark,
                 }}>
                     {state.theme === 'LIGHT' ?  <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/BackIcon_light.png')} />
@@ -26,7 +26,7 @@ export default function ContentViewHeader({screenType, navigation}) {
                    
                 
                 </TouchableOpacity>
-                <Text style={{fontSize: 16, fontWeight: '600', color: state.theme === 'LIGHT' ? '#000' : '#FFF'}}>Back</Text> 
+                <Text style={{fontSize: 17, fontWeight: '600', color: state.theme === 'LIGHT' ? '#000' : '#FFF'}}>Back</Text> 
             </View>
             
             <View style={{
