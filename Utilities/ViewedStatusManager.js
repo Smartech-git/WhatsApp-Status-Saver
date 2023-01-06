@@ -1,11 +1,10 @@
 import * as FileSystem from 'expo-file-system';
-import * as MediaLibrary from 'expo-media-library';
 import { Image } from 'react-native';
 
 
 const FILE_PATH = {
-    WhatsApp : "file:///storage/emulated/0/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/",
-    WhatsApp4B : ""
+    WhatsApp1: "file:///storage/emulated/0/WhatsApp/Media/.Statuses/",
+     WhatsApp2: "file:///storage/emulated/0/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/",
 }
 
 export const VideosArray = [
@@ -44,6 +43,7 @@ export const VideosArray = [
 
 export let viewedImagesArr = []
 
+
 export let viewedStatusImagesStats = {
     totalViewedImages : 0,
     dataSize: "0"
@@ -52,21 +52,33 @@ export let viewedStatusImagesStats = {
 const Dir  = FileSystem.documentDirectory;
 
 
-export const getViewedStatusImages = async () => {
-    //await FileSystem.makeDirectoryAsync(Dir + "helloworld/file", {intermediates: true})
-
-    const album = await FileSystem.readDirectoryAsync(FILE_PATH.WhatsApp);
+export const getViewedStatusImages = async () => { 
     
+    let filePathExist = false;
+    let validFilePath;
+    let repeatCount = 0;
+
+    while(filePathExist === false && repeatCount < Object.keys(FILE_PATH).length){
+        const info  = await FileSystem.getInfoAsync(Object.values(FILE_PATH)[repeatCount]);
+        if(info.exists === true){
+            validFilePath = Object.values(FILE_PATH)[repeatCount]
+        }
+        filePathExist = info.exists;
+        repeatCount ++;
+    }
+
+    const album = await FileSystem.readDirectoryAsync(validFilePath);
+
     for(let item of album) {
-        let metaData = await FileSystem.getInfoAsync(FILE_PATH.WhatsApp + item)
+        let metaData =  await FileSystem.getInfoAsync(validFilePath + item)
 
         if(metaData.uri.endsWith('jpg')){
 
-            if(checkForDuplicates(FILE_PATH.WhatsApp + item) === undefined){
+            if(checkForDuplicates(validFilePath + item) === undefined){
                 let h, w;
 
                 await Image.getSize(
-                    FILE_PATH.WhatsApp + item,
+                    validFilePath + item,
                     (width, height) =>{
                         w  = width;
                         h = height;
@@ -74,7 +86,7 @@ export const getViewedStatusImages = async () => {
                 )
                 viewedImagesArr.push(
                     {
-                        URL: FILE_PATH.WhatsApp + item,
+                        URL: validFilePath + item,
                         modificationTime : metaData.modificationTime,
                         DataSize : metaData.size,
                         height: h,
@@ -89,9 +101,8 @@ export const getViewedStatusImages = async () => {
     }
 
     viewedImagesArr.sort((a, b) => b.modificationTime - a.modificationTime);
+    getViewedStatusImagesStats();
 
-    getViewedStatusImagesStats()
-    
 }
 
 const getViewedStatusImagesStats = () => {
