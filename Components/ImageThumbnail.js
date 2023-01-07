@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useStateValue } from '../StateProvider'
 import { setShouldTabHideRef } from './BottomNavTabBar'
 
-const win = Dimensions.get('window').width/2 -9.5
+const win = Dimensions.get('window').width/2 -10
 
 export default function ImageThumbnail({imageSrc, ratio, index}) {
   const [state, dispatch] = useStateValue()
@@ -49,37 +49,77 @@ export default function ImageThumbnail({imageSrc, ratio, index}) {
       <Pressable onPress={handleOnPress} style={{
         width: win,
         height: win*ratio <= 150 ? 150 : win*ratio,
-        borderColor: state.themeHue.primary_dark, 
         ...Styles.ThumbnailStyle,
-        marginLeft: index % 2 == 0 ? 0 : 4,
-        marginRight: index % 2 == 0 ? 4 : 0
+        marginLeft: index % 2 == 0 ? 0 : 3,
+        marginRight: index % 2 == 0 ? 3 : 0
         }}
         >
-        <ImageBackground source={{uri: imageSrc}} blurRadius={15} resizeMode ='cover' style={{width: '100%', height: '100%'}}>
-          <Image style={{flex: 1, 
-            
-          }} source={{uri: imageSrc}} resizeMode={win*ratio <= 150 ? 'contain': 'cover'}/>
-        
-          {
-            pressed && (
-              <Animated.View style={[Styles.SavedTag, savedTagAnimatedStyle ]}>
-                <Text style={{
-                  fontSize: 13,
-                  fontWeight: '900',
-                }}>Saved</Text>
-              </Animated.View>
-            )
-          }
-        
-          <Pressable onPressIn={handleSave} >
-            <View style={[Styles.button, {backgroundColor: pressed ? '#00D426' : '#FFFFFF'}]}>
-              {
-              pressed ? <Animated.Image style={[{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
-                      : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/SaveIcon.png')} />
-              }    
+        {
+          win*ratio <= 150 ? (
+            <View style={{
+              borderColor: state.themeHue.primary_dark,
+              borderRadius: 16,
+              borderWidth: 1,
+              overflow: 'hidden'
+            }}>
+            <ImageBackground source={{uri: imageSrc}} blurRadius={15} resizeMode ='cover' style={{width: '100%', height: '100%',
+            }}>
+                <Image style={{flex: 1,
+                }} source={{uri: imageSrc}} resizeMode= 'contain'/>
+              
+                {
+                  pressed && (
+                    <Animated.View style={[Styles.SavedTag, savedTagAnimatedStyle ]}>
+                      <Text style={{
+                        fontSize: 13,
+                        fontWeight: '900',
+                      }}>Saved</Text>
+                    </Animated.View>
+                  )
+                }
+              
+                <Pressable onPressIn={handleSave} >
+                  <View style={[Styles.button, {backgroundColor: pressed ? '#00D426' : '#FFFFFF'}]}>
+                    {
+                    pressed ? <Animated.Image style={[{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
+                            : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/SaveIcon.png')} />
+                    }    
+                  </View>
+                </Pressable>
+            </ImageBackground>
             </View>
-          </Pressable>
-        </ImageBackground>
+          ) : (
+              <View style={{ width: '100%', height: '100%'}}>
+                <Image style={{flex: 1, 
+                  borderColor: state.themeHue.primary_dark,
+                  borderRadius: 16,
+                  borderWidth: 1,
+                  overflow: 'hidden'
+                }} source={{uri: imageSrc}} resizeMode= 'cover'/>
+              
+                {
+                  pressed && (
+                    <Animated.View style={[Styles.SavedTag, savedTagAnimatedStyle ]}>
+                      <Text style={{
+                        fontSize: 13,
+                        fontWeight: '900',
+                      }}>Saved</Text>
+                    </Animated.View>
+                  )
+                }
+              
+                <Pressable onPressIn={handleSave} >
+                  <View style={[Styles.button, {backgroundColor: pressed ? '#00D426' : '#FFFFFF'}]}>
+                    {
+                    pressed ? <Animated.Image style={[{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
+                            : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/SaveIcon.png')} />
+                    }    
+                  </View>
+                </Pressable>
+              </View>
+          )
+        }
+       
       </Pressable>
     )
 }
@@ -106,8 +146,8 @@ const Styles = StyleSheet.create({
   },
   ThumbnailStyle: {
     marginVertical: 4,
-    borderRadius: 16,
-    borderWidth: 1,
+    // borderRadius: 16,
+    //borderWidth: 1,
     overflow: 'hidden',
   }
 })
