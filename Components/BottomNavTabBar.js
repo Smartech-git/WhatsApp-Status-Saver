@@ -4,6 +4,7 @@ import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSpring, with
 import { useStateValue } from '../StateProvider';
 
 export let setShouldTabHideRef;  // imported in Utilities/GestureHandler.js
+                                 //imported in Components/ImageThumbnain.js
 
 export default function BottomNavTabBar({ state, descriptors, navigation }) {
   const [State, dipatch] = useStateValue()
