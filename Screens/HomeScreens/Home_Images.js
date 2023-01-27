@@ -57,19 +57,21 @@ export default function Home_Images() {
    
   return (
     <View style={{  overflow: 'hidden',
-       marginHorizontal: 6,
+       marginHorizontal: 6.4,
        borderRadius: 16
     }}>
       <GestureDetector gesture={panGestureEvent}>
-        <Animated.View style={[{width:'100%', height: "100%",}, animatedStyle]}>
+        <Animated.View style={[{width:'100%', height: "100%"}, animatedStyle]}>
           <MasonryFlashList
             data={viewedImagesArr}
             renderItem={({item, index})=> <ImageThumbnail ratio={item.ratio} index ={index} imageSrc={item.URL}/>}
             extraData={[viewedImagesArr.length, ready]}
+            keyExtractor={(item) => item.URL}
             numColumns = {2}
-            estimatedItemSize={100}
+            estimatedItemSize={150}
             contentContainerStyle = {{
               paddingBottom: 50,
+
             }}
             decelerationRate = 'normal'
             persistentScrollbar = {false}
