@@ -47,6 +47,7 @@ export default function ImageThumbnail({imageSrc, ratio, index}) {
 
   return (
       <Pressable onPress={handleOnPress} style={{
+        backgroundColor: state.themeHue.primary_dark,
         width: win,
         height: win*ratio <= 150 ? 150 : win*ratio,
         ...Styles.ThumbnailStyle,
@@ -146,8 +147,7 @@ const Styles = StyleSheet.create({
   },
   ThumbnailStyle: {
     marginVertical: 4,
-    // borderRadius: 16,
-    //borderWidth: 1,
+    borderRadius: 16,
     overflow: 'hidden',
   }
 })
