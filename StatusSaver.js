@@ -17,7 +17,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getHeaderTitle } from '@react-navigation/elements'
 import { getViewedStatusImages } from './Utilities/ViewedStatusManager';
 import { NavigationContainer} from '@react-navigation/native';
-
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 
 const BottomTab = createBottomTabNavigator()
 
@@ -48,6 +48,8 @@ const DarkTheme = {
 export default function StatusSaver() {
   const [appIsReady, setAppIsReady] = useState(false);
   const [state, dispatch] = useStateValue();
+
+  activateKeepAwake()
 
   const getObjectSettingsRef = async () => {
     let value = await getObjectSettings();
@@ -92,6 +94,7 @@ export default function StatusSaver() {
         console.warn(e);
       } finally {
         setAppIsReady(true);
+        deactivateKeepAwake()
       }
     }
 
