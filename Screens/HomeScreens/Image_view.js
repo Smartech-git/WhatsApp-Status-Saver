@@ -3,43 +3,13 @@ import React, {useState } from 'react'
 import { useStateValue } from '../../StateProvider'
 import { viewedImagesArr } from '../../Utilities/ViewedStatusManager';
 import ImageComponent from '../../Components/ImageComponent';
-import { handleHorinzontalScroll, panGestureConditional } from '../../Utilities/GestureHandler';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import PagerView from 'react-native-pager-view';
 
 const width = Dimensions.get('window').width-20
 const offset = Dimensions.get('window').width;
 
 export default function Image_view({route}) {
-    const [contentOffsetLeft, setContentOffsetLeft] = useState(0)
-    const [contentOffsetRight, setContentOffsetRight] = useState(0)
     const [state, dispatch] = useStateValue();
-    const startPosition = useSharedValue(0);
-    
-
-    const animatedStyle = useAnimatedStyle(() => {
-        return {
-          transform: [
-            {translateX: startPosition.value}
-          ]
-        }
-      })
-    
-    
-    const panGestureEvent = Gesture.Pan()
-    .maxPointers(1)
-    .activeOffsetX(
-    panGestureConditional('horizontal', contentOffsetLeft ,contentOffsetRight)
-    )
-    .onStart(() => {
-    })
-    .onUpdate((e)=>{
-    startPosition.value =  e.translationX* 0.5
-    })
-    .onEnd(() =>{
-    startPosition.value = withSpring(0, {mass: 1})
-    })
 
     return (
         <View style={{
@@ -54,7 +24,12 @@ export default function Image_view({route}) {
                     {
                         viewedImagesArr.map((item, index) => {
                             return (
-                                <ImageComponent imageSrc={item.URL} key={index} /> 
+                                <ImageComponent imageSrc={item.URL} key={index} imagePosition={
+                                    index === 0 ? "firstImg"
+                                                : index === viewedImagesArr.length -1 ? "lastImg"
+                                                : "default"
+                                    }
+                                /> 
                             )
                         
                         })
