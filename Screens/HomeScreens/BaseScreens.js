@@ -1,5 +1,5 @@
-import { View, TouchableOpacity, Animated} from 'react-native'
-import React, {useEffect, useLayoutEffect} from 'react'
+import { View} from 'react-native'
+import React from 'react'
 import TopTabBar from '../../Components/TopTabBar'
 import { useStateValue } from '../../StateProvider'
 import Header from '../../Components/Header'

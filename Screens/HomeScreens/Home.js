@@ -1,5 +1,5 @@
-import { View, TouchableOpacity, Animated } from 'react-native'
-import React, { useEffect, useLayoutEffect } from 'react'
+import { View } from 'react-native'
+import React from 'react'
 import { useStateValue } from '../../StateProvider'
 import { createStackNavigator } from '@react-navigation/stack';
 import BaseScreens from './BaseScreens';
@@ -30,7 +30,8 @@ export default function Home(props) {
             },
             
           }}
-        name="ImageView" component={Image_view} />
+          name="ImageView" component={Image_view} 
+        />
         <Stack.Screen name="VideoView" component={Video_view}/>
       </Stack.Navigator>
     </View>
