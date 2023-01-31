@@ -25,7 +25,7 @@ export default function TopTabBar({ state, descriptors, navigation, position }) 
       flexDirection: 'row',
       paddingHorizontal: 50,
       justifyContent: 'space-between',
-      paddingBottom: 6,
+      paddingBottom: 8,
       
     }}>
       {state.routes.map((route, index) => {
