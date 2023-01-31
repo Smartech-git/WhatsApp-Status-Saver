@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Image } from 'react-native'
 import React from 'react'
 import { useStateValue } from '../StateProvider'
 import { viewedStatusImagesStats } from '../Utilities/ViewedStatusManager'
+import { themeHueDark, themeHueLight } from '../Reducer'
 
 export default function ListHeader() {
   const [state, dispatch] = useStateValue()
@@ -9,14 +10,12 @@ export default function ListHeader() {
   let {totalViewedImages, dataSize} = viewedStatusImagesStats
   
   return (
-    <View style={{
-        paddingVertical: 10,
-        alignItems: 'center',
-        paddingHorizontal: 8
-    }}>
+    <View style={[Styles.ListHeader, {
+        backgroundColor: state.themeHue.primary_veryDark
+    }]}>
         <View style={[Styles.Stats]}>
             <View style={{flexDirection: 'row', alignItems:'center'}}>
-                <View style={[Styles.Icon, {backgroundColor: state.themeHue.primary_dark}]}>
+                <View style={[Styles.Icon, {backgroundColor: state.theme === 'LIGHT' ? themeHueLight.primary : state.themeHue.primary_dark}]}>
                     {
                         state.theme === 'LIGHT' ? <Image style={{width: 14, height: 14}} source={require('../assets/Icons/StatsIcon_light.png')}/>
                                                 : <Image style={{width: 14, height: 14}} source={require('../assets/Icons/StatsIcon.png')}/>
@@ -32,7 +31,7 @@ export default function ListHeader() {
             <View style ={{
                 paddingHorizontal: 10,
                 paddingVertical: 4,
-                backgroundColor: state.themeHue.primary_dark,
+                backgroundColor: state.theme === 'LIGHT' ? themeHueLight.primary : state.themeHue.primary_dark,
                 borderRadius: 50
             }}>
                 <Text style={{fontSize:13, fontWeight: '600', color: '#6525EC'}}>{totalViewedImages}/
@@ -45,6 +44,15 @@ export default function ListHeader() {
 }
 
 const Styles = StyleSheet.create({
+    ListHeader: {
+        paddingVertical: 6,
+        alignItems: 'center',
+        paddingHorizontal: 6,
+        borderRadius: 50,
+        marginBottom: 6,
+        marginTop: 10
+    },
+
     Stats: {
         width: '100%',
         flexDirection: 'row',
