@@ -1,10 +1,10 @@
 {
   "expo": {
     "name": "Status Saver",
-    "owner": "Chukwu Smart",
-    "slug": "Status-Saver",
+    "owner": "chukwusmart",
+    "slug": "status-saver",
     "version": "1.0.0",
-     "orientation": "portrait",
+    "orientation": "portrait",
     "userInterfaceStyle": "light",
     "icon": "./assets/icon.png",
     "splash": {
@@ -15,7 +15,6 @@
     "plugins": [
       [
         "expo-media-library",
-
         {
           "photosPermission": "Allow $(Status Saver) to access your photos.",
           "savePhotosPermission": "Allow $(Status Saver) to save photos.",
@@ -30,21 +29,40 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Allow $(Status Saver) to access your photos.",
+        "NSPhotoLibraryAddUsageDescription": "Allow $(Status Saver) to save photos."
+      }
     },
     "androidStatusBar": {
       "barStyle": "light-content",
       "backgroundColor": "#00D426"
     },
+    "androidNavigationBar": {
+      "backgroundColor": "#00D426",
+      "barStyle": "light-content"
+    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#00D426"
       },
-      "permissions": ["MANAGE_EXTERNAL_STORAGE"]
+      "permissions": [
+        "MANAGE_EXTERNAL_STORAGE",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.ACCESS_MEDIA_LOCATION"
+      ],
+      "package": "com.chukwusmart.statussaver"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "86b8b7d2-eccd-413e-bf5a-adb5a8d080fe"
+      }
     }
   }
 }
