@@ -63,6 +63,7 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
         bottom: 0,
         width:  '100%',
         alignItems: 'center',
+        zIndex: 2
       },
       animatedStyle
     ]}>
@@ -131,14 +132,28 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}>
-                  {label === "Status" && (isFocused ? <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(13), height: PixelRatio.getPixelSizeForLayoutSize(13)}} source={require('../assets/Icons/StatusIconActive.png')}/>
-                  : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(13), height: PixelRatio.getPixelSizeForLayoutSize(13)}} source={require('../assets/Icons/StatusIconInactive.png')} />)}
+                  {label === "Status" && (
+                    <View>
+                      <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(13), height: PixelRatio.getPixelSizeForLayoutSize(13), opacity: isFocused ? 1 : 0, position: 'absolute'}} source={require('../assets/Icons/StatusIconActive.png')}/>
+                      <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(13), height: PixelRatio.getPixelSizeForLayoutSize(13),  opacity: isFocused ? 0 : 1}} source={require('../assets/Icons/StatusIconInactive.png')} />
+                    </View>
+                  )}
 
-                  {label === "Gallary" && ( isFocused ? <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(14), height: PixelRatio.getPixelSizeForLayoutSize(14)}} source={require('../assets/Icons/GallaryIconActive.png')}/>
-                  :<Image style={{width: PixelRatio.getPixelSizeForLayoutSize(14), height: PixelRatio.getPixelSizeForLayoutSize(14)}} source={require('../assets/Icons/GallaryIconInactive.png')}/>)}
+                  {label === "Gallary" && (
+                    <View>
+                       <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(14), height: PixelRatio.getPixelSizeForLayoutSize(14), opacity: isFocused ? 1 : 0, position: 'absolute'}} source={require('../assets/Icons/GallaryIconActive.png')}/>
+                        <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(14), height: PixelRatio.getPixelSizeForLayoutSize(14), opacity: isFocused ? 0 : 1}} source={require('../assets/Icons/GallaryIconInactive.png')}/>
+                    </View>
+                 
+                  )}
 
-                  {label === "Settings" && ( isFocused ? <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(16), height:PixelRatio.getPixelSizeForLayoutSize(16)}} source={require('../assets/Icons/SettingsIconActive.png')}/>
-                  :<Image style={{width: PixelRatio.getPixelSizeForLayoutSize(16), height: PixelRatio.getPixelSizeForLayoutSize(16)}} source={require('../assets/Icons/SettingsIconInactive.png')}/>)}
+                  {label === "Settings" && (
+                    <View>
+                      <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(16), height:PixelRatio.getPixelSizeForLayoutSize(16), opacity: isFocused ? 1 : 0, position: 'absolute'}} source={require('../assets/Icons/SettingsIconActive.png')}/>
+                      <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(16), height: PixelRatio.getPixelSizeForLayoutSize(16), opacity: isFocused ? 0 : 1,}} source={require('../assets/Icons/SettingsIconInactive.png')}/>
+                    </View>
+                    
+                  )}
                 </View>  
 
                 <Text style={{ color: isFocused ? (State.theme === 'LIGHT' ? '#000': '#fff') : '#617986', fontSize: 12, marginTop: 4, fontWeight: '600'}}>

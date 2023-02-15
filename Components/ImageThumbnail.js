@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native'
 import { useStateValue } from '../StateProvider'
 import { setShouldTabHideRef } from './BottomNavTabBar'
 
-const win = Dimensions.get('window').width/2 -10
+const win = Dimensions.get('window').width/2 -10.2
 
 export default function ImageThumbnail({imageSrc, ratio, index}) {
   const [state, dispatch] = useStateValue()
@@ -54,7 +54,7 @@ export default function ImageThumbnail({imageSrc, ratio, index}) {
         marginLeft: index % 2 == 0 ? 0 : 3,
         marginRight: index % 2 == 0 ? 3 : 0
         }}
-        >
+      >
         {
           win*ratio <= 150 ? (
             <View style={{

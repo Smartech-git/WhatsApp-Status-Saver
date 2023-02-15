@@ -84,7 +84,7 @@ export const getViewedStatusImages = async () => {
                         h = height;
                     }
                 )
-                viewedImagesArr.push(
+                viewedImagesArr.push( 
                     {
                         URL: validFilePath + item,
                         modificationTime : metaData.modificationTime,
@@ -94,13 +94,12 @@ export const getViewedStatusImages = async () => {
                         ratio: (h/w).toFixed(2)
                     }
                 )
+                viewedImagesArr.sort((a, b) => b.modificationTime - a.modificationTime);
             }
         } else {
 
         }
     }
-
-    viewedImagesArr.sort((a, b) => b.modificationTime - a.modificationTime);
     getViewedStatusImagesStats();
 
 }

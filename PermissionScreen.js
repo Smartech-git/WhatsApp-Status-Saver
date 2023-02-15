@@ -1,10 +1,8 @@
 import { View, Text, TouchableOpacity, Animated, Easing, Image, StyleSheet, StatusBar, Dimensions} from 'react-native'
 import React, {useRef, useEffect} from 'react'
 import * as MediaLibrary from 'expo-media-library';
-import * as NavigationBar from 'expo-navigation-bar';
 import { useStateValue } from './StateProvider';
 import { actionTypes } from './Reducer';
-import { getViewedStatusImages } from './Utilities/ViewedStatusManager';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 
 export default function PermissionScreen() {
@@ -12,7 +10,6 @@ export default function PermissionScreen() {
   activateKeepAwake();
 
   const [state, dispatch] = useStateValue()
-
   let animate = useRef(new Animated.Value(0)). current
 
   useEffect(() => {
@@ -32,8 +29,6 @@ export default function PermissionScreen() {
     console.log(status);
 
     if(status.granted){
-      getViewedStatusImages()
-
       let action = {
        type : actionTypes.setPermissionState,
        permissionState: true

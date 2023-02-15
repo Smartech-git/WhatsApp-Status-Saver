@@ -81,8 +81,8 @@ export default function EmojiProfile() {
     }}>
         <Animated.Image style={[
             {
-                width: PixelRatio.getPixelSizeForLayoutSize(14),
-                height: PixelRatio.getPixelSizeForLayoutSize(14)
+                width: PixelRatio.getPixelSizeForLayoutSize(13),
+                height: PixelRatio.getPixelSizeForLayoutSize(13)
             },
             emojiAnimatedStyle
         ]} source={EmojiArr[emojiIdx].emoji}/>
