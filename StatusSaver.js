@@ -18,8 +18,11 @@ import { getHeaderTitle } from '@react-navigation/elements'
 import { getViewedStatusImages } from './Utilities/ViewedStatusManager';
 import { NavigationContainer} from '@react-navigation/native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
+import { viewedImagesArr } from './Utilities/ViewedStatusManager';
+import { set } from 'react-native-reanimated';
 
 const BottomTab = createBottomTabNavigator()
+
 
 const LightTheme = {
   dark: false,
@@ -88,8 +91,7 @@ export default function StatusSaver() {
           Font.loadAsync({'Lobster-Regular': require('./assets/Fonts/Lobster-Regular.ttf')}),
           getObjectSettingsRef(),
           getPermissionsAsync(),
-          getViewedStatusImages()
-        ]) 
+        ])
       } catch (e) { 
         console.warn(e);
       } finally {
@@ -120,12 +122,11 @@ export default function StatusSaver() {
 
   return (
     <SafeAreaView onLayout={onLayoutRootView} style={{
-        paddingTop: StatusBar.currentHeight,
         flex: 1,
     }}>
       {
         state.permissionState === false ? (
-          <PermissionScreen/>
+          <PermissionScreen/> 
         ) : (
           <NavigationContainer theme={state.theme === 'LIGHT' ? LightTheme : DarkTheme}>
             <BottomTab.Navigator
