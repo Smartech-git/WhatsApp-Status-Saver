@@ -6,8 +6,9 @@ import BaseScreens from './BaseScreens';
 import Image_view from './Image_view';
 import Video_view from './Video_view';
 import ContentViewHeader from '../../Components/ContentViewHeader';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-const Stack = createStackNavigator()
+const Tab = createMaterialTopTabNavigator();
 
 export default function Home(props) {
   const [state, dispatch] = useStateValue();
@@ -17,23 +18,29 @@ export default function Home(props) {
       flex: 1,
       backgroundColor: state.themeHue.primary
     }}>
-      <Stack.Navigator>
-        <Stack.Screen options={{
+      <Tab.Navigator 
+        tabBar ={props => <View></View>}
+        screenOptions={{
+          animationEnabled: false,
+          swipeEnabled: false
+        }}
+      >
+        <Tab.Screen options={{
           headerShown: false,
         }} name="Base" component={BaseScreens} />
-        <Stack.Screen 
+        <Tab.Screen 
           options={{
             header: ({ navigation}) => {
               return (
                <ContentViewHeader screenType = "Images" navigation={navigation}/>
               )
-            },
+            }
             
           }}
           name="ImageView" component={Image_view} 
         />
-        <Stack.Screen name="VideoView" component={Video_view}/>
-      </Stack.Navigator>
+        <Tab.Screen name="VideoView" component={Video_view}/>
+      </Tab.Navigator>
     </View>
   )
 }

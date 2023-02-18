@@ -20,10 +20,9 @@ export default function BaseScreens(props) {
           <Header/>
           <Tab.Navigator
             tabBar ={props => <TopTabBar {...props} />}
-            sceneContainerStyle = {{
-              
+            screenOptions={{
+              animationEnabled: true
             }}
-            style={{marginTop: 10}}
           >
             <Tab.Screen name="Images" component={Home_Images} />
             <Tab.Screen name="Videos" component={Home_Videos} />
