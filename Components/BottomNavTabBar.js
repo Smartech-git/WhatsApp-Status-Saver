@@ -127,10 +127,10 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
               >
                 <View style={{
                   borderRadius: 10,
-                  width: 32,
-                  height: 32,
+                  width: 34,
+                  height: 34,
                   alignItems: 'center',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
                 }}>
                   {label === "Status" && (
                     <View>

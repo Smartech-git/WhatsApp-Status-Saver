@@ -1,12 +1,14 @@
 import { View, Text, StyleSheet,Image, PixelRatio, TouchableOpacity} from 'react-native'
 import React from 'react'
 import { useStateValue } from '../StateProvider'
+import { useNavigation } from '@react-navigation/native'
 
-export default function ContentViewHeader({screenType, navigation}) {
+export default function ContentViewHeader({screenType}) {
     const [state, dispatch] = useStateValue();
+    const navigation = useNavigation();
 
     const handleGoback = () =>{
-        navigation.goBack()
+        navigation.goBack();
     }
     return (
         <View style={{...styles.Header,
@@ -49,12 +51,12 @@ export default function ContentViewHeader({screenType, navigation}) {
 const styles = StyleSheet.create({
     Header: {
         width: "100%",
-        height: 40,
         paddingHorizontal: 15,
-        marginTop: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginVertical: 10,
+        height: 40
     },
     BackButton: {
         width: 34,

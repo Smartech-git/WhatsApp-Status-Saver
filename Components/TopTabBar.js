@@ -25,7 +25,8 @@ export default function TopTabBar({ state, descriptors, navigation, position }) 
       flexDirection: 'row',
       paddingHorizontal: 50,
       justifyContent: 'space-between',
-      paddingBottom: 8,
+      marginVertical: 4,
+      paddingBottom: 4
       
     }}>
       {state.routes.map((route, index) => {
@@ -89,9 +90,9 @@ export default function TopTabBar({ state, descriptors, navigation, position }) 
               })}],
             }}>
               <Animated.View style={{ opacity,
-                backgroundColor: isFocused ? '#00D426' : status.themeHue.primary_dark,
+                backgroundColor: isFocused ? '#00D426' : status.themeHue.primary_verydark,
                 borderRadius: 50,
-                paddingHorizontal: 18,
+                paddingHorizontal: 22,
                 paddingVertical: 6
                 }}>
                 <View style={{

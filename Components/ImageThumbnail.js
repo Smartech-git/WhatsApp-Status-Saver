@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native'
 import { useStateValue } from '../StateProvider'
 import { setShouldTabHideRef } from './BottomNavTabBar'
 
-const win = Dimensions.get('window').width/2 -10.2
 
 export default function ImageThumbnail({imageSrc, ratio, index}) {
   const [state, dispatch] = useStateValue()
@@ -15,6 +14,8 @@ export default function ImageThumbnail({imageSrc, ratio, index}) {
   const navigation = useNavigation();
 
 
+  const win = Dimensions.get('window').width/2 -10.2
+  
   const saveButtonAnimatedStyle = useAnimatedStyle(() => {
     return {
       transform: [{
@@ -38,12 +39,13 @@ export default function ImageThumbnail({imageSrc, ratio, index}) {
       duration: 800,
       easing: Easing.elastic(3)
     })
-  }
+  } 
 
   const handleOnPress = () => {
     navigation.navigate('ImageView', {index : index});
     setShouldTabHideRef('true');
   }
+
 
   return (
       <Pressable onPress={handleOnPress} style={{
@@ -51,8 +53,8 @@ export default function ImageThumbnail({imageSrc, ratio, index}) {
         width: win,
         height: win*ratio <= 150 ? 150 : win*ratio,
         ...Styles.ThumbnailStyle,
-        marginLeft: index % 2 == 0 ? 0 : 3,
-        marginRight: index % 2 == 0 ? 3 : 0
+        marginLeft: index % 2 === 0 ? 0 : 3,
+        marginRight: index % 2 === 0 ? 3 : 0,
         }}
       >
         {

@@ -34,7 +34,7 @@ export default function ListHeader() {
                 backgroundColor: state.theme === 'LIGHT' ? themeHueLight.primary : state.themeHue.primary_dark,
                 borderRadius: 50
             }}>
-                <Text style={{fontSize:13, fontWeight: '600', color: '#6525EC'}}>{totalViewedImages}/
+                <Text style={{fontSize:13, fontWeight: '600', color: state.theme === 'LIGHT'? '#000' : '#FFF'}}>{totalViewedImages}/
                     {dataSize}
                 </Text>
             </View>
@@ -45,10 +45,10 @@ export default function ListHeader() {
 
 const Styles = StyleSheet.create({
     ListHeader: {
-        paddingVertical: 6,
+        paddingVertical: 4,
         alignItems: 'center',
-        paddingHorizontal: 6,
-        borderRadius: 50,
+        paddingHorizontal: 4,
+        borderRadius: 16,
         marginBottom: 6,
         marginTop: 10
     },

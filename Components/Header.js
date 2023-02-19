@@ -42,7 +42,7 @@ export default function Header(props) {
  
   return (
     <View style={styles.Header}>
-      <View style={{flexDirection: 'row'}}>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <EmojiProfile/> 
         <Text style={{fontFamily: state.fontFamily, color:  state.theme === 'LIGHT' ? '#000' : '#FFF', fontSize: 24,
           marginTop: 4,
@@ -101,10 +101,9 @@ function EmojiThemeIcon(props) {
 
 const styles = StyleSheet.create({
   Header: {
-    height: 40,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingTop: 8,
+    marginTop: 8,
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 15,
