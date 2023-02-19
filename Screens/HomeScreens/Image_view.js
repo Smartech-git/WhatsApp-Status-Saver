@@ -1,40 +1,71 @@
-import { View,  Dimensions} from 'react-native'
-import React, {useState } from 'react'
-import { useStateValue } from '../../StateProvider'
+import { View} from 'react-native'
+import React, {useEffect, useState, useRef} from 'react'
 import { viewedImagesArr } from '../../Utilities/ViewedStatusManager';
 import ImageComponent from '../../Components/ImageComponent';
 import PagerView from 'react-native-pager-view';
+import { useStateValue } from '../../StateProvider';
 
-const width = Dimensions.get('window').width-20
-const offset = Dimensions.get('window').width;
+export let PagerViewRef;
+export let contentIndexRef;
 
 export default function Image_view({route}) {
-    const [state, dispatch] = useStateValue();
+    let contentIndex = route.params.index
+   const [render, setRender] = useState(false);
+   const [state, dispatch] =  useStateValue();
+   const PagerRef = useRef()
 
+   useEffect(() => {
+        let ID;
+        ID = setTimeout(() => {
+            setRender(true)
+        }, 50)
+   }, [route.params.index])
+  
     return (
         <View style={{
-            flex: 1
+            flex: 1,
+            backgroundColor: state.themeHue.primary
+
         }}>
-            <View style={{marginVertical: 20, flex: 1}} >
-                <PagerView style={{flex: 1}} 
-                    initialPage={route.params.index}
-                    offscreenPageLimit ={3}
-                    overScrollMode='never'
-                >
-                    {
-                        viewedImagesArr.map((item, index) => {
-                            return (
-                                <ImageComponent imageSrc={item.URL} key={index} imagePosition={
-                                    index === 0 ? "firstImg"
-                                                : index === viewedImagesArr.length -1 ? "lastImg"
-                                                : "default"
-                                    }
-                                /> 
-                            )
-                        
-                        })
-                    }
-                </PagerView>
+            <View style={{ flex: 1}} >
+                {
+                    render && (
+                        <PagerView ref={PagerRef} style={{flex: 1, opacity: 1}} 
+                            initialPage={contentIndex}
+                            offscreenPageLimit ={3}
+                            overScrollMode='never'
+                        >
+                            
+                            {
+                                viewedImagesArr.map((item, index) => {
+                                    
+                                    return(
+                                        <ImageComponent imageSrc={item.URL} key={index} imagePosition={
+                                            index === 0 ? "firstImg"
+                                                        : index === viewedImagesArr.length -1 ? "lastImg"
+                                                        : "default"
+                                            }
+                                        />    
+                                    )
+                                })
+                            }
+                        </PagerView>  
+                    )
+                }
+                
+                {
+                    render === false && (
+                         <View style={{opacity: 1, zIndex: 2, height: '100%', width: '100%', position: 'absolute'}}>
+                            <ImageComponent imageSrc={viewedImagesArr[contentIndex].URL} key={contentIndex} imagePosition={
+                                contentIndex === 0 ? "firstImg"
+                                            : contentIndex === viewedImagesArr.length -1 ? "lastImg"
+                                            : "default"
+                                }
+                            />  
+                        </View>
+                    )
+                }  
+                 
             </View>
             <View style={{height: 100, width: '100%'}}>
 
