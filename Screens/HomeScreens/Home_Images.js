@@ -83,44 +83,43 @@ export default function Home_Images() {
   return (
     <View style={{ overflow: 'hidden',
        marginHorizontal: 6.4,
-       borderRadius: 16
+       borderRadius: 17,
     }}>
      
       <View style={{opacity: state.loadingState ? 1: 0, position: 'absolute', width: '100%'}}>
         <Loading/>
       </View>
-      <View style={{opacity: state.loadingState ? 0 : 1}}>
+      <View  style={{opacity: state.loadingState ? 0 : 1}}>
           <GestureDetector  gesture={panGestureEvent}>
-          <Animated.View style={[{width:'100%', height: "100%"}, animatedStyle]}>
-            <MasonryFlashList
-              data={viewedImagesArr}
-              renderItem={({item, index})=> <ImageThumbnail ratio={item.ratio} index ={index} imageSrc={item.URL}/>}
-              extraData={[viewedImagesArr.length, ready]}
-              keyExtractor={(item) => item.URL}
-              numColumns = {2}
-              estimatedItemSize={50}
-              contentContainerStyle = {{
+            <Animated.View style={[{width:'100%', height: "100%"}, animatedStyle]}>
+              <MasonryFlashList
+                data={viewedImagesArr}
+                renderItem={({item, index})=> <ImageThumbnail ratio={item.ratio} index ={index} imageSrc={item.URL}/>}
+                extraData={[viewedImagesArr.length]}
+                keyExtractor={(item) => item.URL}
+                numColumns = {2}
+                estimatedItemSize={50}
+                contentContainerStyle = {{
                 paddingBottom: 50,
-
-              }}
-              decelerationRate = 'normal'
-              persistentScrollbar = {false}
-              overScrollMode = 'never'
-              showsVerticalScrollIndicator = {false}
-              onScroll={(e) => handleVerticalScroll(e, contentOffsetBottom, setContentOffsetTop, setContentOffsetBottom)}
-              onScrollEndDrag={(e) => handleScrollEndDrag(e)}
-              ListHeaderComponent={<ListHeader/>}
-              ListFooterComponent = {<ListFooter/>}
-              refreshControl = {
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={onRefresh}
-                  colors={["#00D426"]}
-                  progressBackgroundColor = {'#fff'}
-                />
-              }
-            />
-          </Animated.View>
+                }}
+                decelerationRate = 'normal'
+                persistentScrollbar = {false}
+                overScrollMode = 'never'
+                showsVerticalScrollIndicator = {false}
+                onScroll={(e) => handleVerticalScroll(e, contentOffsetBottom, setContentOffsetTop, setContentOffsetBottom)}
+                onScrollEndDrag={(e) => handleScrollEndDrag(e)}
+                ListHeaderComponent={<ListHeader/>}
+                ListFooterComponent = {<ListFooter/>}
+                refreshControl = {
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    colors={["#00D426"]}
+                    progressBackgroundColor = {'#fff'}
+                  />
+                }
+              />
+            </Animated.View>
         </GestureDetector> 
       </View>
          
