@@ -1,13 +1,10 @@
 import { View, Text, StyleSheet, Image } from 'react-native'
 import React from 'react'
 import { useStateValue } from '../StateProvider'
-import { viewedStatusImagesStats } from '../Utilities/ViewedStatusManager'
 import { themeHueDark, themeHueLight } from '../Reducer'
 
-export default function ListHeader() {
+export default function ListHeader(props) {
   const [state, dispatch] = useStateValue()
-
-  let {totalViewedImages, dataSize} = viewedStatusImagesStats
   
   return (
     <View style={[Styles.ListHeader, {
@@ -24,8 +21,9 @@ export default function ListHeader() {
                 <Text style={{
                     color: state.theme === 'LIGHT'? '#000' : "#FFF",
                     fontSize: 14, 
-                    marginLeft: 5
-                }}>Total viewed images/data size </Text>
+                    marginLeft: 5,
+                    opacity: 1
+                }}>{props.text} </Text>
             </View>
 
             <View style ={{
@@ -34,8 +32,8 @@ export default function ListHeader() {
                 backgroundColor: state.theme === 'LIGHT' ? themeHueLight.primary : state.themeHue.primary_dark,
                 borderRadius: 50
             }}>
-                <Text style={{fontSize:13, fontWeight: '600', color: state.theme === 'LIGHT'? '#000' : '#FFF'}}>{totalViewedImages}/
-                    {dataSize}
+                <Text style={{fontSize:13, fontWeight: '600', color: state.theme === 'LIGHT'? '#000' : '#FFF'}}>{props.totalViewedContent}/
+                    {props.dataSize}
                 </Text>
             </View>
         </View>
