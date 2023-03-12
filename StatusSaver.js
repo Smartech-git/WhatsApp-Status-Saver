@@ -15,11 +15,10 @@ import * as Font from 'expo-font';
 import { getObjectSettings, initialSettings, setObjectSettings} from './APIs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getHeaderTitle } from '@react-navigation/elements'
-import { getViewedStatusImages } from './Utilities/ViewedStatusManager';
 import { NavigationContainer} from '@react-navigation/native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
-import { viewedImagesArr } from './Utilities/ViewedStatusManager';
-import { set } from 'react-native-reanimated';
+import * as FileSystem from 'expo-file-system';
+import { FILE_PATH } from './Utilities/ViewedStatusManager';
 
 const BottomTab = createBottomTabNavigator()
 
@@ -75,11 +74,28 @@ export default function StatusSaver() {
     let status = await MediaLibrary.getPermissionsAsync();
 
     if(status.granted === true){
-       let action = {
+
+       let permissionAction = {
         type : actionTypes.setPermissionState,
         permissionState: true
       }
-      dispatch(action)
+
+      let filePath;
+      await Promise.all(FILE_PATH.map(async (item) => {
+        const info  = await FileSystem.getInfoAsync(item);
+          if(info.exists === true){
+              filePath = item
+          }
+      }))
+
+    
+      let validFilePathAction = {
+        type : actionTypes.setValidFilePath,
+        validFilePath: filePath
+      }
+
+      dispatch(permissionAction)
+      dispatch(validFilePathAction)
     }
   }
 

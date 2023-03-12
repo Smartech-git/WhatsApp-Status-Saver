@@ -6,11 +6,7 @@ import { actionTypes } from './Reducer';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import * as FileSystem from 'expo-file-system';
 import { mergeToObjectSettings, settingsType } from './APIs';
-
-const FILE_PATH = {
-  WhatsApp1: "file:///storage/emulated/0/WhatsApp/Media/.Statuses/",
-  WhatsApp2: "file:///storage/emulated/0/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/",
-}
+import { FILE_PATH } from './Utilities/ViewedStatusManager';
 
 export default function PermissionScreen() {
 
@@ -36,26 +32,28 @@ export default function PermissionScreen() {
     console.log(status);
 
     if(status.granted){
-      let action = {
+      let permissionAction = {
        type : actionTypes.setPermissionState,
        permissionState: true
       }
 
-      let filePathExist = false;
       let filePath;
-      let repeatCount = 0;
-  
-      while(filePathExist === false && repeatCount < Object.keys(FILE_PATH).length){
-          const info  = await FileSystem.getInfoAsync(Object.values(FILE_PATH)[repeatCount]);
+      await Promise.all(FILE_PATH.map(async (item) => {
+        const info  = await FileSystem.getInfoAsync(item);
           if(info.exists === true){
-              filePath = Object.values(FILE_PATH)[repeatCount]
+              filePath = item
           }
-          filePathExist = info.exists;
-          repeatCount ++;
-      }
+      }))
+      
       mergeToObjectSettings({[settingsType.validFilePath]: filePath })
 
-     dispatch(action)
+      let validFilePathAction = {
+        type : actionTypes.setValidFilePath,
+        validFilePath: filePath
+      }
+
+      dispatch(validFilePathAction)
+     dispatch(permissionAction)
 
      deactivateKeepAwake()
     }
