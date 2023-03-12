@@ -19,13 +19,17 @@ export let initialState = {
     themeHue: themeHueLight,
     permissionState: false,
     fontFamily : 'Lobster-Regular',
-    loadingState: true
+    loadingStateImages: true,
+    loadingStateVideos: true,
+    validFilePath: '',
  }
  
  export const actionTypes = {
     setTheme: "SETTHEME",
     setPermissionState: 'SETPERMISSIONSTATE',
-    setLoadingState: "SETLOADING"
+    setLoadingStateImages: "SETLOADING_IMAGES",
+    setLoadingStateVideos: "SETLOADING_VIDEOS",
+    setValidFilePath: 'SETVALIDFILEPATH'
  }
  
  const reducer = (state, action) => {
@@ -35,19 +39,29 @@ export let initialState = {
             ...state,
             theme: action.theme,
             themeHue: action.theme === 'LIGHT' ? themeHueLight : themeHueDark
-            };
+            }
         case actionTypes.setPermissionState:
             return {
                 ...state,
                 permissionState: action.permissionState
             }
-        case actionTypes.setLoadingState:
+        case actionTypes.setLoadingStateImages:
             return {
                 ...state,
-                loadingState: action.loadingState
+                loadingStateImages: action.loadingStateImages
+            }
+        case actionTypes.setLoadingStateVideos:
+            return {
+                ...state,
+                loadingStateVideos: action.loadingStateVideos
+            }
+        case actionTypes.setValidFilePath:
+            return {
+                ...state,
+                validFilePath: action.validFilePath
             }
          default: 
-             return state;
+            return state;
      }
  };
  

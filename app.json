@@ -33,7 +33,8 @@
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Allow $(Status Saver) to access your photos.",
         "NSPhotoLibraryAddUsageDescription": "Allow $(Status Saver) to save photos."
-      }
+      },
+      "bundleIdentifier": "com.chukwusmart.statussaver"
     },
     "androidStatusBar": {
       "barStyle": "light-content",

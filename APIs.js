@@ -1,10 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const settingsType = {
-  name: 'Settings',
+  name: 'Status Saver',
   setThemeLight : { theme: 'LIGHT' },
   setThemeDark : { theme : 'DARK' },
-  emojiId : "emojiId"
+  emojiId : "emojiId",
+  validFilePath: "validFilePath"
 }
 
 export const initialSettings  = {

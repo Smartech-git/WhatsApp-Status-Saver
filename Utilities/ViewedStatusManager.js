@@ -1,9 +1,15 @@
 import * as FileSystem from 'expo-file-system';
 import { Image } from 'react-native';
-import { getObjectSettings } from '../APIs';
 
+export const FILE_PATH = [
+   "file:///storage/emulated/0/WhatsApp/Media/.Statuses/",
+   "file:///storage/emulated/0/Android/media/com.whatsapp/WhatsApp/Media/.Statuses/",
+]
+  
 export let viewedImagesArr = []
 export let viewedVideosArr = []
+let album = [];
+
 
 export let viewedStatusImagesStats = {
     totalViewedImages : 0,
@@ -15,17 +21,9 @@ export let viewedStatusVideosStats = {
     dataSize: "0"
 }
 
-let album = [];
-let validFilePath = false
 
 
-export const getViewedStatusVideos = async () => {
-
-    if(validFilePath === false){
-        let settings = await getObjectSettings()
-        validFilePath = settings.validFilePath
-    }
-
+export const getViewedStatusVideos = async (validFilePath) => {
 
     if(album.length === 0){
         album = await FileSystem.readDirectoryAsync(validFilePath);
@@ -57,54 +55,81 @@ export const getViewedStatusVideos = async () => {
 
 }
 
-export const getViewedStatusImages = async () => { 
-    if(validFilePath === false){
-        let settings = await getObjectSettings()
-        validFilePath = settings.validFilePath
-    }
+export const getViewedStatusImages = async (validFilePath) => { 
+
+   let imageContentArr = []
+   let videoContentArr = []
+
+   let  newAlbum = await FileSystem.readDirectoryAsync(validFilePath);
+   let optimizedAlbum = []
 
     if(album.length === 0){
-        album = await FileSystem.readDirectoryAsync(validFilePath);
+        album = newAlbum;
+        optimizedAlbum = newAlbum
+    }else {
+       let result =  newAlbum.filter((item) => {
+            if(album.includes(item) === false){
+                return item
+            }
+        })
+        optimizedAlbum = result;
+        album.unshift(...result)
     }
 
-    let x = 0;
-
-    for(let item of album) {
+    await Promise.all(optimizedAlbum.map(async (item) => {
 
         let metaData =  await FileSystem.getInfoAsync(validFilePath + item)
     
         if(metaData.uri.endsWith('jpg')){
 
-            if(checkForDuplicates(validFilePath + item, viewedImagesArr) === undefined){
-                let h, w;
+            let h, w;
 
-                await Image.getSize(
-                    validFilePath + item,
-                    (width, height) =>{
-                        w  = width;
-                        h = height;
-                    }
-                )
+            await Image.getSize(
+                validFilePath + item,
+                (width, height) =>{
+                    w  = width;
+                    h = height;
+                }
+            )
 
-                viewedImagesArr.push( 
-                    {
-                        URL: validFilePath + item,
-                        modificationTime : metaData.modificationTime,
-                        DataSize : metaData.size,
-                        height: h,
-                        width: w,
-                        ratio: (h/w).toFixed(2)
-                    }
-                )
-                viewedImagesArr.sort((a, b) => b.modificationTime - a.modificationTime);
-                getViewedStatusImagesStats(viewedImagesArr, "images");
-            }
+            imageContentArr.unshift( 
+                {
+                    URL: validFilePath + item,
+                    modificationTime : metaData.modificationTime,
+                    DataSize : metaData.size,
+                    height: h,
+                    width: w,
+                    ratio: (h/w).toFixed(2)
+                }
+            )
+            
+        } else if (metaData.uri.endsWith('mp4')){
+            videoContentArr.push( 
+                {
+                    URL: validFilePath + item,
+                    modificationTime : metaData.modificationTime,
+                    DataSize : metaData.size,
+                    // height: h,
+                    // width: w,
+                    // ratio: (h/w).toFixed(2)
+                }
+            )
         }
-    }
+    }))
+
+    imageContentArr.sort((a, b) => b.modificationTime - a.modificationTime);
+    viewedVideosArr.sort((a, b) => b.modificationTime - a.modificationTime);
+
+    viewedVideosArr.unshift(...videoContentArr)
+    viewedImagesArr.unshift(...imageContentArr)
+
+    getViewedStatusStats(viewedImagesArr, "images");
+    getViewedStatusStats(viewedVideosArr, "Videos");
 
 }
 
-const getViewedStatusImagesStats = (contentArr, statsObj) => {
+
+const getViewedStatusStats = (contentArr, statsObj) => {
 
     const units = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
@@ -138,13 +163,4 @@ const getViewedStatusImagesStats = (contentArr, statsObj) => {
     }
 
    
-}
-
-const checkForDuplicates = (item, contentArr) => {
-
-    for(let x of contentArr) {
-        if(item === x.URL){
-            return true
-        }
-    } 
 }
