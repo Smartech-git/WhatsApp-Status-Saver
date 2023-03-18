@@ -4,17 +4,24 @@ import Animated, { Easing, useAnimatedStyle, useSharedValue, withSpring, withTim
 import { useNavigation } from '@react-navigation/native'
 import { useStateValue } from '../StateProvider'
 import { setShouldTabHideRef } from './BottomNavTabBar'
+import FastImage from 'react-native-fast-image'
+import {InView } from 'react-native-intersection-observer'
 
 
 export default function ImageThumbnail({imageSrc, ratio, index}) {
   const [state, dispatch] = useStateValue()
   const [pressed, setPressed] = useState(false)
+  const [inView, setInView] = useState()
   const scaleValue = useSharedValue(0.5)
   const savedTagValue = useSharedValue(8)
   const navigation = useNavigation();
 
 
   const win = Dimensions.get('window').width/2 -10.2
+
+  const handleInView = (inView) => {
+    setInView(inView)
+  }
   
   const saveButtonAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -48,13 +55,16 @@ export default function ImageThumbnail({imageSrc, ratio, index}) {
 
 
   return (
+    <InView triggerOnce={true} onChange={(inView) => handleInView(inView)} style={{
+  
+    }}>
       <Pressable onPress={handleOnPress} style={{
-        backgroundColor: state.themeHue.primary_dark,
-        width: win,
-        height: win*ratio <= 150 ? 150 : win*ratio,
-        ...Styles.ThumbnailStyle,
-        marginLeft: index % 2 === 0 ? 0 : 3,
-        marginRight: index % 2 === 0 ? 3 : 0,
+          backgroundColor: state.themeHue.primary_dark,
+          width: win,
+          height: win*ratio <= 150 ? 150 : win*ratio,
+          ...Styles.ThumbnailStyle,
+          marginLeft: index % 2 === 0 ? 0 : 3,
+          marginRight: index % 2 === 0 ? 3 : 0,
         }}
       >
         {
@@ -62,13 +72,13 @@ export default function ImageThumbnail({imageSrc, ratio, index}) {
             <View style={{
               borderColor: state.themeHue.primary_dark,
               borderRadius: 16,
-              borderWidth: 1,
-              overflow: 'hidden'
+              borderWidth: 2,
+              overflow: 'hidden',
             }}>
             <ImageBackground source={{uri: imageSrc}} blurRadius={15} resizeMode ='cover' style={{width: '100%', height: '100%',
             }}>
                 <Image style={{flex: 1,
-                }} source={{uri: imageSrc}} resizeMode= 'contain'/>
+                }} source={{uri: inView ? imageSrc : undefined}} resizeMode= 'contain'/>
               
                 {
                   pressed && (
@@ -85,7 +95,7 @@ export default function ImageThumbnail({imageSrc, ratio, index}) {
                   <View style={[Styles.button, {backgroundColor: pressed ? '#00D426' : '#FFFFFF'}]}>
                     {
                     pressed ? <Animated.Image style={[{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
-                            : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/SaveIcon.png')} />
+                            : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/SaveIcon_light.png')}/>
                     }    
                   </View>
                 </Pressable>
@@ -96,9 +106,9 @@ export default function ImageThumbnail({imageSrc, ratio, index}) {
                 <Image style={{flex: 1, 
                   borderColor: state.themeHue.primary_dark,
                   borderRadius: 16,
-                  borderWidth: 1,
+                  borderWidth: 2,
                   overflow: 'hidden'
-                }} source={{uri: imageSrc}} resizeMode= 'cover'/>
+                }} source={{uri: inView ? imageSrc : undefined}} resizeMode= 'cover'/>
               
                 {
                   pressed && (
@@ -115,7 +125,7 @@ export default function ImageThumbnail({imageSrc, ratio, index}) {
                   <View style={[Styles.button, {backgroundColor: pressed ? '#00D426' : '#FFFFFF'}]}>
                     {
                     pressed ? <Animated.Image style={[{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
-                            : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/SaveIcon.png')} />
+                            : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/SaveIcon_light.png')} />
                     }    
                   </View>
                 </Pressable>
@@ -124,6 +134,7 @@ export default function ImageThumbnail({imageSrc, ratio, index}) {
         }
        
       </Pressable>
+    </InView>
     )
 }
 
