@@ -8,14 +8,13 @@ import FastImage from 'react-native-fast-image'
 import {InView } from 'react-native-intersection-observer'
 
 
-export default function ImageThumbnail({imageSrc, ratio, index}) {
+export default function ImageThumbnail({imageSrc, ratio, index, modificationTime}) {
   const [state, dispatch] = useStateValue()
   const [pressed, setPressed] = useState(false)
   const [inView, setInView] = useState()
   const scaleValue = useSharedValue(0.5)
   const savedTagValue = useSharedValue(8)
   const navigation = useNavigation();
-
 
   const win = Dimensions.get('window').width/2 -10.2
 
@@ -53,11 +52,30 @@ export default function ImageThumbnail({imageSrc, ratio, index}) {
     setShouldTabHideRef('true');
   }
 
+  const handleTime = () => {
+    const currentTime = new Date();
+    let timeDiff = Math.round(currentTime.getTime()/1000) - modificationTime;
+    
+  
+    const hr = Math.floor(timeDiff/3600);
+    const min = Math.floor(timeDiff%3600/60)
+
+    if(!hr && !min){
+      return 0 + 'm ago'
+    } else {
+      if(min === 0){
+        return hr + 'h ago'
+      } else if(hr === 0) {
+        return  min + 'm ago'  
+      } else {
+        return hr + 'h ' + min + 'm ago'
+      }
+    }
+   
+  }
 
   return (
-    <InView triggerOnce={true} onChange={(inView) => handleInView(inView)} style={{
-  
-    }}>
+    <InView triggerOnce={true} onChange={(inView) => handleInView(inView)}>
       <Pressable onPress={handleOnPress} style={{
           backgroundColor: state.themeHue.primary_dark,
           width: win,
@@ -134,6 +152,24 @@ export default function ImageThumbnail({imageSrc, ratio, index}) {
         }
        
       </Pressable>
+      <View style={{alignItems: "baseline",
+        marginBottom: 10,
+        marginTop: 2
+    }}>
+        <View style={{
+          backgroundColor: state.themeHue.primary_dark,
+          paddingHorizontal: 10,
+          paddingVertical: 5,
+          position: 'relative',
+          borderRadius: 50,
+        }}>
+          <Text style={{
+            color: state.theme === 'LIGHT' ? '#000' : '#fff',
+            fontSize: 12,
+            fontWeight: '600'
+          }}>{handleTime()}</Text>
+        </View>
+      </View>
     </InView>
     )
 }
