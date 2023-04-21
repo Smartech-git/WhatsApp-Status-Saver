@@ -1,5 +1,6 @@
 import * as FileSystem from 'expo-file-system';
 import { Image } from 'react-native';
+import * as VideoThumbnails from 'expo-video-thumbnails';
 
 export const FILE_PATH = [
    "file:///storage/emulated/0/WhatsApp/Media/.Statuses/",
@@ -8,8 +9,10 @@ export const FILE_PATH = [
   
 export let viewedImagesArr = []
 export let viewedVideosArr = []
-let album = [];
 
+
+let imageAlbum = [];
+let videoAlbum = [];
 
 export let viewedStatusImagesStats = {
     totalViewedImages : 0,
@@ -24,63 +27,80 @@ export let viewedStatusVideosStats = {
 
 
 export const getViewedStatusVideos = async (validFilePath) => {
-
-    if(album.length === 0){
-        album = await FileSystem.readDirectoryAsync(validFilePath);
-    }
-    console.log(validFilePath)
-
-    for(let item of album) {
-        let metaData =  await FileSystem.getInfoAsync(validFilePath + item)
-
-        if(metaData.uri.endsWith('mp4')){
-
-            if(checkForDuplicates(validFilePath + item, viewedVideosArr) === undefined){
-                
-                viewedVideosArr.push( 
-                    {
-                        URL: validFilePath + item,
-                        modificationTime : metaData.modificationTime,
-                        DataSize : metaData.size,
-                        // height: h,
-                        // width: w,
-                        // ratio: (h/w).toFixed(2)
-                    }
-                )
-                viewedVideosArr.sort((a, b) => b.modificationTime - a.modificationTime);
-                getViewedStatusImagesStats(viewedVideosArr, "Videos");
-            }
-        }
-    }
-
-}
-
-export const getViewedStatusImages = async (validFilePath) => { 
-
-   let imageContentArr = []
-   let videoContentArr = []
-
-   let  newAlbum = await FileSystem.readDirectoryAsync(validFilePath);
-   let optimizedAlbum = []
-
-    if(album.length === 0){
-        album = newAlbum;
+    let videoContentArr = [] 
+    let optimizedAlbum = []
+ 
+    let  newAlbum =  (await FileSystem.readDirectoryAsync(validFilePath)).filter(item => item.endsWith('mp4'));
+    if(videoAlbum.length === 0){
+        videoAlbum = newAlbum;
         optimizedAlbum = newAlbum
     }else {
        let result =  newAlbum.filter((item) => {
-            if(album.includes(item) === false){
+            if(videoAlbum.includes(item) === false){
                 return item
             }
         })
         optimizedAlbum = result;
-        album.unshift(...result)
+        videoAlbum.unshift(...result)
     }
 
     await Promise.all(optimizedAlbum.map(async (item) => {
 
         let metaData =  await FileSystem.getInfoAsync(validFilePath + item)
-    
-        if(metaData.uri.endsWith('jpg')){
+
+            let h, w;
+
+            let thumbnailProps = await VideoThumbnails.getThumbnailAsync(validFilePath + item, {time: 500, quality: 1})
+
+            h = thumbnailProps.height;
+            w = thumbnailProps.width;
+
+            videoContentArr.unshift( 
+                {
+                    URL: thumbnailProps.uri,
+                    modificationTime : metaData.modificationTime,
+                    DataSize : metaData.size,
+                    height: h,
+                    width: w,
+                    ratio: (h/w).toFixed(2)
+                }
+            )
+    }))
+
+    viewedVideosArr.sort((a, b) => b.modificationTime - a.modificationTime);
+    viewedVideosArr.unshift(...videoContentArr)
+    getViewedStatusStats(viewedVideosArr, "Videos");
+
+}
+
+
+
+
+
+
+
+export const getViewedStatusImages = async (validFilePath) => { 
+
+   let imageContentArr = []
+   let optimizedAlbum = []
+   let  newAlbum =  (await FileSystem.readDirectoryAsync(validFilePath)).filter(item => item.endsWith('jpg'));
+
+    if(imageAlbum.length === 0){
+        imageAlbum = newAlbum;
+        optimizedAlbum = newAlbum
+    }else {
+       let result =  newAlbum.filter((item) => {
+            if(imageAlbum.includes(item) === false){
+                return item
+            }
+        })
+        optimizedAlbum = result;
+        imageAlbum.unshift(...result)
+    }
+
+    await Promise.all(optimizedAlbum.map(async (item) => {
+
+        let metaData =  await FileSystem.getInfoAsync(validFilePath + item)
 
             let h, w;
 
@@ -102,31 +122,14 @@ export const getViewedStatusImages = async (validFilePath) => {
                     ratio: (h/w).toFixed(2)
                 }
             )
-            
-        } else if (metaData.uri.endsWith('mp4')){
-            videoContentArr.push( 
-                {
-                    URL: validFilePath + item,
-                    modificationTime : metaData.modificationTime,
-                    DataSize : metaData.size,
-                    // height: h,
-                    // width: w,
-                    // ratio: (h/w).toFixed(2)
-                }
-            )
-        }
     }))
 
     imageContentArr.sort((a, b) => b.modificationTime - a.modificationTime);
-    viewedVideosArr.sort((a, b) => b.modificationTime - a.modificationTime);
-
-    viewedVideosArr.unshift(...videoContentArr)
     viewedImagesArr.unshift(...imageContentArr)
+    getViewedStatusStats(viewedImagesArr, "images")
+    imageArr = viewedImagesArr.slice(0, 11)
 
-    getViewedStatusStats(viewedImagesArr, "images");
-    getViewedStatusStats(viewedVideosArr, "Videos");
-
-}
+} 
 
 
 const getViewedStatusStats = (contentArr, statsObj) => {

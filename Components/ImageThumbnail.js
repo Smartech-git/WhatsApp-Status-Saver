@@ -197,6 +197,6 @@ const Styles = StyleSheet.create({
   ThumbnailStyle: {
     marginVertical: 4,
     borderRadius: 16,
-    overflow: 'hidden',
+    overflow: 'hidden'
   }
 })

@@ -42,16 +42,12 @@ export default function Loading() {
   })
 
   useEffect(() => {
-    let ID = setInterval(() => {
       animateValue1.value = withSpring(100 + Math.floor(Math.random()*200))
       animateValue2.value = withSpring(100 + Math.floor(Math.random()*100))
       animateValue3.value = withSpring(100 + Math.floor(Math.random()*250)) 
       animateValue4.value = withSpring(100 + Math.floor(Math.random()*150)) 
       animateValue5.value = withSpring(100 + Math.floor(Math.random()*190))   
-    }, 1000)
-    return(() => {
-      clearInterval(ID)
-    })
+    
   }, [])
 
   return (

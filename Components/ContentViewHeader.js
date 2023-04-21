@@ -55,8 +55,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginVertical: 10,
-        height: 40
+        marginTop: 10,
+        marginBottom: 30
     },
     BackButton: {
         width: 34,

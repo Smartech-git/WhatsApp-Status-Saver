@@ -64,7 +64,7 @@ export default function TopTabBar({ state, descriptors, navigation, position }) 
         const inputRange = state.routes.map((_, i) => i);
         const opacity = position.interpolate({
           inputRange,
-          outputRange: inputRange.map(i => (i === index ? 1 : 0.8)),
+          outputRange: inputRange.map(i => (i === index ? 1 : 0.9)),
         });
 
         return (
@@ -80,16 +80,16 @@ export default function TopTabBar({ state, descriptors, navigation, position }) 
             }}
           >
             <Animated.View style={{
-               opacity: animate.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 1]
-               }),
-               transform: [{translateX: animate.interpolate({
-                inputRange: [0, 1],
-                outputRange: index === 0 ? [-20, 0] : [20, 0] 
-              })}],
+              //  opacity: animate.interpolate({
+              //   inputRange: [0, 1],
+              //   outputRange: [0, 1]
+              //  }),
+              //  transform: [{translateX: animate.interpolate({
+              //   inputRange: [0, 1],
+              //   outputRange: index === 0 ? [-20, 0] : [20, 0] 
+              // })}],
             }}>
-              <Animated.View style={{ opacity,
+              <Animated.View style={{opacity: 1,
                 backgroundColor: isFocused ? '#00D426' : status.themeHue.primary_verydark,
                 borderRadius: 50,
                 paddingHorizontal: 22,

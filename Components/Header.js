@@ -6,6 +6,8 @@ import * as NavigationBar from 'expo-navigation-bar';
 import { mergeToObjectSettings, settingsType } from '../APIs'
 import React, {useEffect} from 'react'
 import EmojiProfile from './EmojiProfile';
+import appNameLight from '../assets/Images/appName_light.png'
+import appNameDark from '../assets/Images/appName_dark.png'
 
 const themeEmojis = {
   light : require('../assets/Images/EmojiPack/Sun_Behind_Small_Cloud.png'),
@@ -15,12 +17,12 @@ const themeEmojis = {
 export default function Header(props) {
   const [state, dispatch] = useStateValue();
 
-  let swipe = new Animated.Value(state.theme === 'LIGHT' ? 0 : 35)
+  let swipe = new Animated.Value(state.theme === 'LIGHT' ? 0 : 37)
 
   const handlePressEvent = (e) => {
     Animated.timing(swipe,
       {
-        toValue: state.theme === 'LIGHT' ? 35 : 0,
+        toValue: state.theme === 'LIGHT' ? 37 : 0,
         duration: 170,
         useNativeDriver: true,
         easing: Easing.out(Easing.back(3))
@@ -44,10 +46,14 @@ export default function Header(props) {
     <View style={styles.Header}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <EmojiProfile/> 
-        <Text style={{fontFamily: state.fontFamily, color:  state.theme === 'LIGHT' ? '#000' : '#FFF', fontSize: 24,
+        <Text style={{fontFamily: state.fontFamily, color:  state.theme === 'LIGHT' ? '#000' : '#FFF', fontSize: 25,
           marginTop: 4,
           marginLeft: 5
         }}>Status Saver</Text>
+        {/* <View>
+            <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(14), height: PixelRatio.getPixelSizeForLayoutSize(14), opacity: isFocused ? 1 : 0, position: 'absolute'}} source={require('../assets/Icons/GallaryIconActive.png')}/>
+            <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(14), height: PixelRatio.getPixelSizeForLayoutSize(14), opacity: isFocused ? 0 : 1}} source={require('../assets/Icons/GallaryIconInactive.png')}/>
+        </View> */}
       </View>
 
       <Pressable onPress={handlePressEvent}  style={{...styles.themeButton, 
@@ -79,7 +85,7 @@ export default function Header(props) {
               outputRange: state.theme === 'DARK'? [0, 1] : [1, 0]
             })
           }}>
-            <EmojiThemeIcon size = {10} position={7} path = {themeEmojis.dark}/>
+            <EmojiThemeIcon size = {9} position={7} path = {themeEmojis.dark}/>
           </Animated.View>
           
         }
@@ -103,14 +109,13 @@ const styles = StyleSheet.create({
   Header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 8,
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 15,
   },
   themeButton: {
     width: 70,
-    height: 34, 
+    height: 30, 
     borderRadius: 50,
     borderWidth: 1,
     flexDirection: 'row',
@@ -118,8 +123,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6
   },
   themeButton_thumb:{
-    width: 22,
-    height: 22,
+    width: 20,
+    height: 20,
     borderRadius: 50,
     backgroundColor: '#00D426',
     borderColor: '#ffffff',

@@ -47,7 +47,7 @@ export default function VideoThumbnail({imageSrc, ratio, index, modificationTime
   } 
 
   const handleOnPress = () => {
-    // navigation.navigate('ImageView', {index : index});
+    navigation.navigate('VideoView', {index : index});
     setShouldTabHideRef('true');
   }
 
