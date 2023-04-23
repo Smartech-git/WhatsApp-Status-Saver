@@ -67,7 +67,7 @@ export const getViewedStatusVideos = async (validFilePath) => {
             )
     }))
 
-    viewedVideosArr.sort((a, b) => b.modificationTime - a.modificationTime);
+    videoContentArr.sort((a, b) => b.modificationTime - a.modificationTime);
     viewedVideosArr.unshift(...videoContentArr)
     getViewedStatusStats(viewedVideosArr, "Videos");
 
@@ -127,8 +127,6 @@ export const getViewedStatusImages = async (validFilePath) => {
     imageContentArr.sort((a, b) => b.modificationTime - a.modificationTime);
     viewedImagesArr.unshift(...imageContentArr)
     getViewedStatusStats(viewedImagesArr, "images")
-    imageArr = viewedImagesArr.slice(0, 11)
-
 } 
 
 
