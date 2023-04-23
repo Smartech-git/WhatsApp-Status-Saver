@@ -1,54 +1,35 @@
 import { View, RefreshControl} from 'react-native'
 import React, {useState, useCallback, useEffect}from 'react'
 import { useStateValue } from '../../StateProvider'
-import { viewedImagesArr, getViewedStatusImages} from '../../Utilities/ViewedStatusManager';
+import { viewedImagesArr, getViewedStatusImages, viewedStatusImagesStats} from '../../Utilities/ViewedStatusManager';
 import ImageThumbnail from '../../Components/ImageThumbnail';
 import ListHeader from '../../Components/ListHeader';
+import ListFooter from '../../Components/ListFooter';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { panGestureConditional, handleVerticalScroll, handleScrollEndDrag} from '../../Utilities/GestureHandler';
 import { MasonryFlashList } from '@shopify/flash-list';
-import ListFooter from './ListFooter';
 import { actionTypes } from '../../Reducer';
 import Loading from '../../Components/Loading';
+import { withIO } from 'react-native-intersection-observer'
+
+const IOMasonryFlashList = withIO(MasonryFlashList);
 
 export default function Home_Images() {
   const [state, dispatch] = useStateValue();
-  const [ready, setReady] = useState(false);
   const [contentOffsetTop, setContentOffsetTop] = useState(0)
   const [contentOffsetBottom, setContentOffsetBottom] = useState(0)
   const startPosition = useSharedValue(0)
   const [refreshing, setRefreshing] = useState(false)
+  let {totalViewedImages, dataSize} = viewedStatusImagesStats
 
-  useEffect(() => {
-    console.log(state.loadingState)
-  }, [state.loadingState])
-
-  useEffect(() => {
-    const getContent = async () => {
-
-      try {
-        await getViewedStatusImages()
-      } catch(e) {
-        console.log(e)
-      } finally {
-        let action = {
-          type : actionTypes.setLoadingState,
-          loadingState: false
-        }
-        dispatch(action);
-      } 
-
-    }
-    getContent()
-  }, [])
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     
     const refresh = async () => {  
       try {
-        await getViewedStatusImages()
+        await getViewedStatusImages(state.validFilePath)
       } catch(e) {
         console.log(e)
       } finally {
@@ -79,22 +60,22 @@ export default function Home_Images() {
     .onEnd(() =>{
       startPosition.value = withSpring(0, {mass: 1})
     })
-   
+    
   return (
     <View style={{ overflow: 'hidden',
        marginHorizontal: 6.4,
        borderRadius: 17,
     }}>
      
-      <View style={{opacity: state.loadingState ? 1: 0, position: 'absolute', width: '100%'}}>
+      <View style={{opacity: state.loadingStateImages ? 1: 0, position: 'absolute', width: '100%'}}>
         <Loading/>
       </View>
-      <View  style={{opacity: state.loadingState ? 0 : 1}}>
+      <View  style={{opacity: state.loadingStateImages ? 0 : 1}}>
           <GestureDetector  gesture={panGestureEvent}>
             <Animated.View style={[{width:'100%', height: "100%"}, animatedStyle]}>
-              <MasonryFlashList
+              <IOMasonryFlashList
                 data={viewedImagesArr}
-                renderItem={({item, index})=> <ImageThumbnail ratio={item.ratio} index ={index} imageSrc={item.URL}/>}
+                renderItem={({item, index})=> <ImageThumbnail modificationTime={item.modificationTime} ratio={item.ratio} index ={index} imageSrc={item.URL}/>}
                 extraData={[viewedImagesArr.length]}
                 keyExtractor={(item) => item.URL}
                 numColumns = {2}
@@ -108,7 +89,7 @@ export default function Home_Images() {
                 showsVerticalScrollIndicator = {false}
                 onScroll={(e) => handleVerticalScroll(e, contentOffsetBottom, setContentOffsetTop, setContentOffsetBottom)}
                 onScrollEndDrag={(e) => handleScrollEndDrag(e)}
-                ListHeaderComponent={<ListHeader/>}
+                ListHeaderComponent={<ListHeader totalViewedContent={totalViewedImages} dataSize={dataSize} text='Total viewed images/data size' />}
                 ListFooterComponent = {<ListFooter/>}
                 refreshControl = {
                   <RefreshControl

@@ -1,24 +1,19 @@
-import { View, FlatList, ScrollView, Dimensions} from 'react-native'
+import { View, FlatList, StatusBar, Dimensions} from 'react-native'
 import React, {useEffect, useState, useRef} from 'react'
 import { viewedImagesArr } from '../../Utilities/ViewedStatusManager';
 import ImageComponent from '../../Components/ImageComponent';
-import PagerView from 'react-native-pager-view';
 import { useStateValue } from '../../StateProvider';
+import ContentViewHeader from '../../Components/ContentViewHeader';
 import ContentViewFooter from '../../Components/ContentViewFooter';
 import { InView, withIO } from 'react-native-intersection-observer'
-import { FlashList } from '@shopify/flash-list';
 
 const IOPagerView = withIO(FlatList);
 const win = Dimensions.get('window').width
-
-export let PagerViewRef;
-export let contentIndexRef;
 
 export default function Image_view({route}) {
     let contentIndex = route.params.index
    const [render, setRender] = useState(true);
    const [state, dispatch] =  useStateValue();
-   const pagerRef = useRef()
 
    useEffect(() => {
         let ID;
@@ -32,9 +27,10 @@ export default function Image_view({route}) {
     return (
         <View style={{
             flex: 1,
-            backgroundColor: state.themeHue.primary
-
+            backgroundColor: state.themeHue.primary,
+            marginTop: StatusBar.currentHeight
         }}>
+            <ContentViewHeader screenType="images"/>
             <View style={{ flex: 1}} >
                 {
                     render && (
@@ -43,7 +39,7 @@ export default function Image_view({route}) {
                             horizontal = {true}
                             initialScrollIndex = {contentIndex}
                             pagingEnabled = {true}
-                            estimatedItemSize={Dimensions}
+                            estimatedItemSize={win}
                             decelerationRate = 'normal'
                             persistentScrollbar = {false}
                             showsHorizontalScrollIndicator = {false}

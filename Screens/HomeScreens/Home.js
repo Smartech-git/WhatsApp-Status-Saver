@@ -1,12 +1,11 @@
 import { View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useStateValue } from '../../StateProvider'
-import { createStackNavigator } from '@react-navigation/stack';
 import BaseScreens from './BaseScreens';
 import Image_view from './Image_view';
 import Video_view from './Video_view';
 import ContentViewHeader from '../../Components/ContentViewHeader';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 const Stack = createNativeStackNavigator();
 
@@ -18,7 +17,7 @@ export default function Home(props) {
       flex: 1,
       backgroundColor: state.themeHue.primary
     }}>
-      <Stack.Navigator 
+      <Stack.Navigator
         screenOptions={{
         }}
       >
@@ -29,14 +28,14 @@ export default function Home(props) {
          />
         <Stack.Screen name="ImageView" component={Image_view}
           options={{
-            header: ({route}) => {
-              return(
-                <ContentViewHeader screenType="images"/>
-              )
-            }
+            headerShown: false
           }}
          />
-        <Stack.Screen name="VideoView" component={Video_view}/>
+        <Stack.Screen name="VideoView" component={Video_view}
+          options={{
+            headerShown: false
+          }}
+        />
       </Stack.Navigator>
     </View>
   )
