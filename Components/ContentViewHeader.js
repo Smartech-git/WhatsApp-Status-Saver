@@ -34,7 +34,7 @@ export default function ContentViewHeader({screenType}) {
             <View style={{
                 borderRadius: 50,
                 paddingHorizontal: 18,
-                height: 36,
+                height: 38 ,
                 justifyContent: 'center',
                 backgroundColor:  state.theme === 'LIGHT'? '#000':'#FFF',
             }}>
@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
         marginBottom: 30
     },
     BackButton: {
-        width: 34,
-        height: 34,
+        width: 38,
+        height: 38,
         borderRadius: 50,
         alignItems: 'center',
         justifyContent: 'center',

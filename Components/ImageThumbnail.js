@@ -157,7 +157,7 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
         marginTop: 2
     }}>
         <View style={{
-          backgroundColor: state.themeHue.primary_dark,
+          backgroundColor: state.theme === 'DARK' ? "#FFFFFF10" : state.themeHue.primary_dark,
           paddingHorizontal: 10,
           paddingVertical: 5,
           position: 'relative',
