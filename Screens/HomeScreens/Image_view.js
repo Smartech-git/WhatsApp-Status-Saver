@@ -4,7 +4,7 @@ import { viewedImagesArr } from '../../Utilities/ViewedStatusManager';
 import ImageComponent from '../../Components/ImageComponent';
 import { useStateValue } from '../../StateProvider';
 import ContentViewHeader from '../../Components/ContentViewHeader';
-import ContentViewFooter from '../../Components/ContentViewFooter';
+import ContentViewOptionsImage from '../../Components/ContentViewOptionsImage';
 import { InView, withIO } from 'react-native-intersection-observer'
 
 const IOPagerView = withIO(FlatList);
@@ -15,6 +15,7 @@ export default function Image_view({route}) {
    const [render, setRender] = useState(true);
    const [state, dispatch] =  useStateValue();
 
+
    useEffect(() => {
         let ID;
         ID = setTimeout(() => {
@@ -23,14 +24,13 @@ export default function Image_view({route}) {
    }, [route.params.index])
 
   
-  
     return (
         <View style={{
             flex: 1,
             backgroundColor: state.themeHue.primary,
             marginTop: StatusBar.currentHeight
         }}>
-            <ContentViewHeader screenType="images"/>
+            <ContentViewHeader special={false} screenType="Images"/>
             <View style={{ flex: 1}} >
                 {
                     render && (
@@ -73,7 +73,7 @@ export default function Image_view({route}) {
                  
             </View>
             <View style={{ width: '100%', marginVertical: 30}}>
-                <ContentViewFooter/>
+                <ContentViewOptionsImage/>
             </View>
         </View>
     )
