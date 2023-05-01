@@ -58,6 +58,7 @@ export const getViewedStatusVideos = async (validFilePath) => {
             videoContentArr.unshift( 
                 {
                     URL: thumbnailProps.uri,
+                    videoURL: validFilePath + item,
                     modificationTime : metaData.modificationTime,
                     DataSize : metaData.size,
                     height: h,
@@ -72,9 +73,6 @@ export const getViewedStatusVideos = async (validFilePath) => {
     getViewedStatusStats(viewedVideosArr, "Videos");
 
 }
-
-
-
 
 
 

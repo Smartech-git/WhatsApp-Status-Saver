@@ -31,13 +31,15 @@ export const panGestureConditional = (direction, firstoffset, secondOffset, imag
     return firstoffset === 0 ? [-500, 500]
             : firstoffset === secondOffset ? [0, 30]
             : [-500, 500]
-  } else {
-
-    return imagePosition === 'firstImg' ? [-500, 0]
+  }else if(direction === "unit-Vertical"){
+    return imagePosition === 'firstImg' ? [-30, 0]
+          : imagePosition === 'lastImg' ? [0, 30]
+          : [-500, 500]
+  }else if(direction === "unit-Horizontal") {
+      return imagePosition === 'firstImg' ? [-500, 0]
           : imagePosition === 'lastImg' ? [0, 500]
           : [-500, 500]
-      
-  }
+    }
   
 }
 
