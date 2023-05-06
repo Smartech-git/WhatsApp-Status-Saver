@@ -3,9 +3,10 @@ import React, { useState, useEffect} from 'react'
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withSpring, withTiming} from 'react-native-reanimated'
 import { useNavigation } from '@react-navigation/native'
 import { useStateValue } from '../StateProvider'
-import { setShouldTabHideRef } from './BottomNavTabBar'
-import FastImage from 'react-native-fast-image'
 import {InView } from 'react-native-intersection-observer'
+import { handlTimeStamp } from '../Utilities/TimeStamp'
+import {setShouldTabHideRef} from '../Utilities/GestureHandler'
+
 
 
 export default function ImageThumbnail({imageSrc, ratio, index, modificationTime}) {
@@ -52,28 +53,6 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
     setShouldTabHideRef('true');
   }
 
-  const handleTime = () => {
-    const currentTime = new Date();
-    let timeDiff = Math.round(currentTime.getTime()/1000) - modificationTime;
-    
-  
-    const hr = Math.floor(timeDiff/3600);
-    const min = Math.floor(timeDiff%3600/60)
-
-    if(!hr && !min){
-      return 0 + 'm ago'
-    } else {
-      if(min === 0){
-        return hr + 'h ago'
-      } else if(hr === 0) {
-        return  min + 'm ago'  
-      } else {
-        return hr + 'h ' + min + 'm ago'
-      }
-    }
-   
-  }
-
   return (
     <InView triggerOnce={true} onChange={(inView) => handleInView(inView)}>
       <Pressable onPress={handleOnPress} style={{
@@ -113,7 +92,7 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
                   <View style={[Styles.button, {backgroundColor: pressed ? '#00D426' : '#FFFFFF'}]}>
                     {
                     pressed ? <Animated.Image style={[{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
-                            : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/SaveIcon_light.png')}/>
+                            : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(10), height: PixelRatio.getPixelSizeForLayoutSize(10)}} source={require('../assets/Icons/SaveIcon_light.png')}/>
                     }    
                   </View>
                 </Pressable>
@@ -143,7 +122,7 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
                   <View style={[Styles.button, {backgroundColor: pressed ? '#00D426' : '#FFFFFF'}]}>
                     {
                     pressed ? <Animated.Image style={[{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
-                            : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/SaveIcon_light.png')} />
+                            : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(10), height: PixelRatio.getPixelSizeForLayoutSize(10)}} source={require('../assets/Icons/SaveIcon_light.png')} />
                     }    
                   </View>
                 </Pressable>
@@ -167,7 +146,7 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
             color: state.theme === 'LIGHT' ? '#000' : '#fff',
             fontSize: 12,
             fontWeight: '600'
-          }}>{handleTime()}</Text>
+          }}>{handlTimeStamp(modificationTime)}</Text>
         </View>
       </View>
     </InView>
