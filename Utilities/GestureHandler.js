@@ -1,5 +1,9 @@
-import { setShouldTabHideRef } from "../Components/BottomNavTabBar";
 let contentOffsetState = 0;
+export let setShouldTabHideRef
+
+export const hangdleBottomHide = (callBack) => {
+  setShouldTabHideRef = callBack
+}
 
 export const handleVerticalScroll = (e, contentOffsetBottom, setOffsetTop, setOffsetBottom) => {
   let offsetTop = e.nativeEvent.contentOffset.y
