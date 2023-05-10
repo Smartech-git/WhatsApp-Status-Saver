@@ -3,7 +3,7 @@ import React from 'react'
 import { useStateValue } from '../StateProvider'
 import { useNavigation } from '@react-navigation/native'
 
-export default function ContentViewHeader({screenType}) {
+export default function ContentViewHeader({screenType, special}) {
     const [state, dispatch] = useStateValue();
     const navigation = useNavigation();
 
@@ -12,23 +12,26 @@ export default function ContentViewHeader({screenType}) {
     }
     return (
         <View style={{...styles.Header,
-            backgroundColor: state.themeHue.primary,
         }}>
             <View style={{
                 flexDirection: 'row',
                 alignItems: 'center'
             }}>
                 <TouchableOpacity activeOpacity={0.6} onPress={handleGoback} style={{ ...styles.BackButton,
-                    backgroundColor: state.themeHue.primary_dark,
+                    backgroundColor: special ? undefined : state.themeHue.primary_dark,
                 }}>
-                    {state.theme === 'LIGHT' ?  <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/BackIcon_light.png')} />
-                                             :  <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/BackIcon.png')} />
-
+                    {
+                        special ? (
+                            <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}} source={require('../assets/Icons/BackIcon.png')} />
+                        ) : (
+                            state.theme === 'LIGHT' ?  <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(10), height: PixelRatio.getPixelSizeForLayoutSize(10)}} source={require('../assets/Icons/BackIcon_light.png')} />
+                                                :  <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(10), height: PixelRatio.getPixelSizeForLayoutSize(10)}} source={require('../assets/Icons/BackIcon.png')} />
+                        )
                     }
                    
                 
                 </TouchableOpacity>
-                <Text style={{fontSize: 17, fontWeight: '600', color: state.theme === 'LIGHT' ? '#000' : '#FFF'}}>Back</Text> 
+                <Text style={{fontSize: 18, fontWeight: '600', color:special ? '#FFF' : state.theme === 'LIGHT' ? '#000' : '#FFF'}}>Back</Text> 
             </View>
             
             <View style={{
@@ -36,10 +39,10 @@ export default function ContentViewHeader({screenType}) {
                 paddingHorizontal: 18,
                 height: 38 ,
                 justifyContent: 'center',
-                backgroundColor:  state.theme === 'LIGHT'? '#000':'#FFF',
+                backgroundColor: special ? '#FFF' : state.theme ===  'LIGHT'? '#000':'#FFF',
             }}>
                 <View>
-                   <Text style={{fontSize: 16, fontWeight: '600', color: state.theme === 'LIGHT' ? '#fff' : '#000'}}>{screenType}</Text>  
+                   <Text style={{fontSize: 16, fontWeight: '600', color: special ? '#000' : state.theme === 'LIGHT' ? '#fff' : '#000'}}>{screenType}</Text>  
                 </View>    
             </View>
 

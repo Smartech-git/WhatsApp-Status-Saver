@@ -3,7 +3,6 @@ import React, {useState} from 'react'
 import { panGestureConditional } from '../Utilities/GestureHandler';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
-import FastImage from 'react-native-fast-image'
 import { InView } from 'react-native-intersection-observer';
 import { useStateValue } from '../StateProvider';
 
@@ -27,7 +26,7 @@ export default function ImageComponent({imageSrc, imagePosition, special, index}
     const panGestureEvent = Gesture.Pan()
     .maxPointers(1)
     .activeOffsetX(
-    panGestureConditional('horizontal', '', '', imagePosition)
+    panGestureConditional('unit-Horizontal', '', '', imagePosition)
     )
     .onUpdate((e)=>{
     startPosition.value =  e.translationX* 0.5
@@ -38,11 +37,10 @@ export default function ImageComponent({imageSrc, imagePosition, special, index}
 
     const handleInView = (inView) => {
       setInView(inView)
-      console.log(inView)
     }
 
   return (
-    <InView  onChange={(inView) => handleInView(inView)}>
+    <InView triggerOnce={false}  onChange={(inView) => handleInView(inView)}>
     <GestureDetector gesture={panGestureEvent}>
         <Animated.View style={[, animatedStyle]}>
           <View style={{

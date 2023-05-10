@@ -2,7 +2,6 @@ import { View, Text, StyleSheet, TouchableOpacity, PixelRatio, Image, Pressable 
 import React, {useState} from 'react';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withSpring, withTiming} from 'react-native-reanimated'
 import { useStateValue } from '../StateProvider';
-import { ZoomIn } from 'react-native-reanimated';
 
 export default function ContentViewOptionsVideo() {
   const [state, dispatch] = useStateValue()
@@ -33,12 +32,12 @@ export default function ContentViewOptionsVideo() {
                 <Pressable onPress={handleSave} >
                   <View style={[Styles.Botton, {backgroundColor: pressed ? '#00D426' : '#FFFFFF00'}]}>
                     {
-                    pressed ? <Animated.Image style={[{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
-                            : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(10), height: PixelRatio.getPixelSizeForLayoutSize(10)}} source={require('../assets/Icons/SaveIcon.png')}/>
+                    pressed ? <Animated.Image style={[{width: PixelRatio.getPixelSizeForLayoutSize(14), height: PixelRatio.getPixelSizeForLayoutSize(14 )}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
+                            : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(15), height: PixelRatio.getPixelSizeForLayoutSize(15)}} source={require('../assets/Icons/SaveIcon.png')}/>
                     }    
                   </View>
                 </Pressable>
-                <Text style={{fontSize: 14, fontWeight: '700', color: state.theme === 'LIGHT' ? '#000' : '#FFF'}}>{pressed ? "Saved": "Save"}</Text> 
+                <Text style={{fontSize: 14, fontWeight: '700', color:  '#FFF'}}>{pressed ? "Saved": "Save"}</Text> 
             </View>
 
             <View style={{
@@ -51,7 +50,7 @@ export default function ContentViewOptionsVideo() {
                     <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}} source={require('../assets/Icons/ShareIcon.png')} />
                    
                 </TouchableOpacity>
-                <Text style={{fontSize: 14, fontWeight: '700', color: state.theme === 'LIGHT' ? '#000' : '#FFF'}}>Share</Text> 
+                <Text style={{fontSize: 14, fontWeight: '700', color: '#FFF'}}>Share</Text> 
             </View>
     </View>
   )
@@ -59,11 +58,11 @@ export default function ContentViewOptionsVideo() {
 
 const Styles = StyleSheet.create({
     Content: {
-        height: 160,
+        height: 140,
         justifyContent: 'space-between',
         position: 'absolute',
         zIndex: 3,
-        bottom: 100,
+        bottom: "18%",
         right: 15,
         alignItems: 'center',
     },

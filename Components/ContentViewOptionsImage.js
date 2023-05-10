@@ -13,13 +13,13 @@ export default function ContentViewOptionsImage() {
                 <TouchableOpacity activeOpacity={0.6} style={{ ...Styles.Botton,
                     backgroundColor: state.themeHue.primary_dark,
                 }}>
-                    {state.theme === 'LIGHT' ?  <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/SaveIcon_light.png')} />
-                                             :  <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/SaveIcon.png')} />
+                    {state.theme === 'LIGHT' ?  <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}} source={require('../assets/Icons/SaveIcon_light.png')} />
+                                             :  <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}} source={require('../assets/Icons/SaveIcon.png')} />
 
                     }
                    
                 </TouchableOpacity>
-                <Text style={{fontSize: 14, fontWeight: '600', color: state.theme === 'LIGHT' ? '#000' : '#FFF'}}>Save</Text> 
+                <Text style={{fontSize: 14, fontWeight: '900', color: state.theme === 'LIGHT' ? '#000' : '#FFF'}}>Save</Text> 
             </View>
 
             <View style={{
@@ -34,7 +34,7 @@ export default function ContentViewOptionsImage() {
                     }
                    
                 </TouchableOpacity>
-                <Text style={{fontSize: 14, fontWeight: '600', color: state.theme === 'LIGHT' ? '#000' : '#FFF'}}>Share</Text> 
+                <Text style={{fontSize: 14, fontWeight: '900', color: state.theme === 'LIGHT' ? '#000' : '#FFF'}}>Share</Text> 
             </View>
     </View>
   )

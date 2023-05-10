@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, PixelRatio} from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming} from 'react-native-reanimated';
 import { useStateValue } from '../StateProvider';
+import { hangdleBottomHide} from '../Utilities/GestureHandler';
 
-export let setShouldTabHideRef;  // imported in Utilities/GestureHandler.js
+//export let setShouldTabHideRef;  // imported in Utilities/GestureHandler.js
                                  //imported in Components/ImageThumbnain.js
 
 export default function BottomNavTabBar({ state, descriptors, navigation }) {
@@ -28,7 +29,8 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
   }
 
   useEffect(() => {
-    setShouldTabHideRef = setShouldTabHide
+    // setShouldTabHideRef = setShouldTabHide
+    hangdleBottomHide(setShouldTabHide)
     translation.value = withDelay(900, withSpring(-20, {mass: 0.8}))
     opacity.value = withDelay(900, withTiming(1, {
       duration: 300,

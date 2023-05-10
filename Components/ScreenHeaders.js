@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, StatusBar} from 'react-native'
 import React from 'react'
 import { useStateValue } from '../StateProvider'
 
@@ -9,6 +9,7 @@ export default function ScreenHeaders(props) {
     <View style={{
         width: '100%',
         height: 50,
+        marginTop: StatusBar.currentHeight
     }}>
         <View style={{
             height: 40,

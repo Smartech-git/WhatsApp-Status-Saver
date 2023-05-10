@@ -1,7 +1,7 @@
-import {Pressable, Image, PixelRatio} from 'react-native'
+import {Pressable,  PixelRatio} from 'react-native'
 import React, {useEffect, useState} from 'react'
 import { useStateValue } from '../StateProvider'
-import Animated, { Easing, useAnimatedStyle, useSharedValue, withDecay, withDelay, withSpring, withTiming } from 'react-native-reanimated'
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated'
 import { getObjectSettings, settingsType, mergeToObjectSettings} from '../APIs'
 
 const EmojiArr = [
