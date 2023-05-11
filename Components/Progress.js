@@ -1,11 +1,34 @@
 import { View, Text, StyleSheet} from 'react-native'
 import React, {useRef, useEffect, useState, useLayoutEffect, useCallback} from 'react'
 import Slider from '@react-native-community/slider';
-import Animated, {useSharedValue} from 'react-native-reanimated';
+import Animated, {useSharedValue, useAnimatedStyle, withTiming, Easing} from 'react-native-reanimated';
 
-export default function Progress({position, duration}) {
+export default function Progress({shouldHideCtrls, position, duration}) {
     const vidTime = useRef("00:00")
-    const value = useSharedValue(0)
+    const height = useSharedValue(24)
+
+
+    const heightStyle = useAnimatedStyle(()=>{
+        return {
+            height: height.value
+        }
+    })
+
+    // useEffect(() => {
+    //     if(shouldHideCtrls){
+    //         height.value =  withTiming(0, {
+    //         duration: 800,
+    //         easing: Easing.elastic(3)
+    //         })
+    //     } else {
+    //         height.value =  withTiming(24, {
+    //             duration: 800,
+    //             easing: Easing.elastic(3)
+    //         })
+    //     }
+        
+    // }, [shouldHideCtrls]);
+
 
     const millisToVidTime = useCallback((ms) => {
         if(!ms){
@@ -19,7 +42,7 @@ export default function Progress({position, duration}) {
     }, [])
 
   return (
-    <Animated.View style={Styles.SliderContainer}>
+    <Animated.View style={[Styles.SliderContainer, heightStyle]}>
         <View style={{ alignItems:'center', position: 'relative', right: -2}}>
             <Text style={Styles.SliderText}>{millisToVidTime(position)}</Text> 
         </View>
@@ -48,12 +71,10 @@ export default function Progress({position, duration}) {
 const Styles = StyleSheet.create({
     SliderContainer: {
         width: '100%',
-        marginVertical: 5,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor:'red',
-        height: 2,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        height: 0
     },
     SliderText : {
         color: "#FFF",

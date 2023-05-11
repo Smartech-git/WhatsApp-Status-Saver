@@ -21,7 +21,6 @@ export const getObjectSettings = async () => {
     } catch(e) {
       // read error
     }
-    console.log('Done getting.')
   }
 
 export const setObjectSettings = async (value) => {
@@ -31,7 +30,6 @@ export const setObjectSettings = async (value) => {
     } catch(e) {
         // save error
     }
-    console.log('Done setting.')
 }
 
 export const mergeToObjectSettings = async (obj) => {
@@ -39,12 +37,9 @@ export const mergeToObjectSettings = async (obj) => {
 
     await AsyncStorage.mergeItem(settingsType.name, JSON.stringify(obj))
     const settings = await AsyncStorage.getItem(settingsType.name)
-
-    console.log(settings)
   } catch(e) {
     
   } finally {
-    console.log('done merging')
   }
 }
 
@@ -54,8 +49,6 @@ export const clearObjectSettings = async () => {
   } catch(e) {
     // clear error
   }
-
-  console.log('Clean up done')
 }
 
 export const getAllObjectKeys = async () => {

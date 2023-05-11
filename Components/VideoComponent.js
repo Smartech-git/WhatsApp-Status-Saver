@@ -8,7 +8,6 @@ import { useIsFocused } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { Easing, FadeIn, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated'
 import Progress from './Progress';
-import VideoPlayer from 'expo-video-player'
 
 const winH = Dimensions.get('window').height + StatusBar.currentHeight
 const winW = Dimensions.get("window"). width
@@ -194,24 +193,6 @@ export const VideoComponent = React.forwardRef(({index, videoSrc, height, width,
                     shouldPlay= {false}
                     progressUpdateIntervalMillis={500}
                 />
-
-                // <VideoPlayer
-                //     style={{
-                //         width: winW,
-                //         flex: 1,
-                //         height: height >= resizeCondtion ? winH : winW*(height/width),
-                //     }}
-                //     videoProps={{
-                //         ref: video,
-                //         shouldPlay: false,
-                //         resizeMode: height >= resizeCondtion ? ResizeMode.COVER : ResizeMode.CONTAIN,
-                //         source: {
-                //         uri: videoSrc,
-                //         },
-                //         isLooping: true
-                //     }}
-                //     playbackCallback={status => setStatus(() => status)}
-                // />
                 )
             }
             {
@@ -227,7 +208,7 @@ export const VideoComponent = React.forwardRef(({index, videoSrc, height, width,
                         <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/viewedIcon.png')} />
                         <Text style={{color: '#FFF', marginLeft: 6, fontWeight: '600'}}>{handlTimeStamp(modificationTime)}</Text>
                     </View>
-                    <Progress position={status.positionMillis} duration={status.durationMillis}/>
+                    <Progress shouldHideCtrls={shouldHideCtrls} position={status.positionMillis} duration={status.durationMillis}/>
                     <View style={Styles.AdsContent}>
 
                     </View>
@@ -248,7 +229,7 @@ export const VideoComponent = React.forwardRef(({index, videoSrc, height, width,
                 </Animated.View>
             )}
            
-            <LinearGradient colors={['transparent', '#00000060', ]} style={{
+            <LinearGradient colors={['transparent', '#00000060', '#000000']} style={{
                 width: '100%',
                 height: "50%",
                 position: 'absolute',
@@ -287,6 +268,7 @@ const Styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems:'center',
         paddingHorizontal: 10,
+        marginBottom: 5
     },
     BottomContents: {
         position: 'absolute',
@@ -302,7 +284,8 @@ const Styles = StyleSheet.create({
         width: '100%',
         height: 60,
         backgroundColor: '#FFFFFF20',
-        borderRadius: 12
+        borderRadius: 12,
+        marginTop: 5
     },
     
     loadingView: {

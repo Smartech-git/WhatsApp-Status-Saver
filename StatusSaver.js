@@ -122,8 +122,10 @@ export default function StatusSaver() {
   
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
+  
       StatusBar.setBackgroundColor(state.themeHue.primary);
       StatusBar.setBarStyle(state.theme === 'LIGHT' ? 'dark-content' : 'light-content');
+      StatusBar.setTranslucent(true)
 
       NavigationBar.setBackgroundColorAsync(state.themeHue.primary)
       NavigationBar.setButtonStyleAsync(state.theme === 'LIGHT' ? "dark" : "light")
@@ -144,7 +146,8 @@ export default function StatusSaver() {
         state.permissionState === false ? (
           <PermissionScreen/> 
         ) : (
-          <NavigationContainer theme={state.theme === 'LIGHT' ? LightTheme : DarkTheme}>
+          <NavigationContainer 
+           theme={state.theme === 'LIGHT' ? LightTheme : DarkTheme}>
             <BottomTab.Navigator
               sceneContainerStyle = {{
                 backgroundColor: state.themeHue.primary,
@@ -173,7 +176,7 @@ export default function StatusSaver() {
             </BottomTab.Navigator>
           </NavigationContainer>
         )
-      }  
+      }
     </SafeAreaView>
   )
 }
