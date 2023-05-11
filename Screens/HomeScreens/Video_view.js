@@ -1,36 +1,52 @@
-import { View, FlatList, ScrollView, Dimensions, StatusBar, ScrollViewComponent} from 'react-native'
+import { View, FlatList, Dimensions, StatusBar, ScrollView} from 'react-native'
 import React, {useEffect, useState, useRef} from 'react'
 import {viewedVideosArr } from '../../Utilities/ViewedStatusManager';
-import VideoComponent from '../../Components/VideoComponent';
+import {VideoComponent} from '../../Components/VideoComponent';
 import { useStateValue } from '../../StateProvider';
 import ContentViewHeader from '../../Components/ContentViewHeader';
 import { LinearGradient } from 'expo-linear-gradient'
-import { InView, withIO, IOScrollView } from 'react-native-intersection-observer'
-import { useIsFocused } from '@react-navigation/native';
-import ContentViewOptionsVideo from '../../Components/ContentViewOptionsVideo.js';
+import { withIO } from 'react-native-intersection-observer'
+import { FlashList } from '@shopify/flash-list';
 
-const IOPagerView = withIO(FlatList);
+
+const IOPagerView = withIO(FlashList);
 const winH = Dimensions.get('window').height + StatusBar.currentHeight
 
 
 export default function Video_view({route}) {
+  const [visible, setIsVisible] = useState(false)
+  const [sliderVisible, setSliderVisible] = useState(true)
   let contentIndex = route.params.index
-  const [render, setRender] = useState(true);
-  const [state, dispatch] =  useStateValue();
+  
+  const visibilityConfig = useRef({
+    itemVisiblePercentThreshold: 100,
+  })
+  const mediaRefs = useRef([])
 
-  useEffect(() => {
-       let ID;
-       ID = setTimeout(() => {
-           setRender(true)
-       }, 50)
-  }, [route.params.index])
+  const handleOnviewableItemsChanged = useRef(({changed}) => {
+    changed.forEach(element => {
+      const cell = mediaRefs.current[element.key]
+      if(cell){
+        if(element.isViewable){
+          cell.play()
+          setIsVisible(true)
+        }else{
+          cell.stop()
+          setIsVisible(false)
+        }
+      }
+    });
+    
+  })
+
 
   return (
     <View style={{
       flex: 1,
+      backgroundColor: '#000'
   }}>
       <LinearGradient
-         colors={['#00000070', 'transparent']}
+       colors={['#00000050', 'transparent']}
        style={{
         position: 'absolute',
         zIndex: 3,
@@ -40,66 +56,25 @@ export default function Video_view({route}) {
         <ContentViewHeader special={true} screenType="Videos"/>
       </LinearGradient>
       <View style={{ flex: 1}} >
-          {
-              render && (
-                  <IOPagerView
-                      overScrollMode='never'
-                      horizontal = {false}
-                      initialScrollIndex = {contentIndex}
-                      pagingEnabled = {true}
-                      estimatedItemSize={winH}
-                      decelerationRate = 'normal'
-                      persistentScrollbar = {false}
-                      showsHorizontalScrollIndicator = {false}
-                      getItemLayout={(data, index) => (
-                          {length: winH, offset: winH * index, index}
-                        )}
-                      data={viewedVideosArr}
-                      renderItem={({item, index})=> <VideoComponent height={item.height} width={item.width} index ={index} special={index == contentIndex ? true: undefined} videoSrc={item.videoURL} imagePosition={
-                          index === 0 ? "firstImg"
-                                      : index === viewedVideosArr.length -1 ? "lastImg"
-                                      : "default"
-                              }/>}
-                      extraData={[viewedVideosArr.length]}
-                      keyExtractor={(item) => item.URL}
-                  />
-                  // <IOPagerView
-                  //     overScrollMode='never'
-                  //     horizontal = {false}
-                  //     //initialScrollIndex = {contentIndex}
-                  //     pagingEnabled = {true}
-                  //     decelerationRate = 'normal'
-                  //     persistentScrollbar = {false}
-                  //     showsHorizontalScrollIndicator = {false}
-                  // >
-                  //   {
-                  //     viewedVideosArr.map((item, index) => {
-                  //       return(
-                  //         <VideoComponent key={index} index={index} special={index == contentIndex ? true: undefined} videoSrc={item.videoURL} imagePosition={
-                  //                   index === 0 ? "firstImg"
-                  //                               : index === viewedVideosArr.length -1 ? "lastImg"
-                  //                               : "default"
-                  //                       }/>
-                  //       )
-                  //     })
-                  //   }
-                  // </IOPagerView>
-              )
-          }
-          
-          {/* { 
-            render === false && (
-                  <View style={{opacity: 1, zIndex: 2, height: '100%', width: '100%', position: 'absolute'}}>
-                    <VideoComponent special={true} videoSrc={viewedVideosArr[contentIndex].videoURL} key={contentIndex} videoPosition={
-                        contentIndex === 0 ? "firstImg"
-                                    : contentIndex === viewedVideosArr.length -1 ? "lastImg"
-                                    : "default"
-                        }
-                    />  
-                </View>
-              )
-          }   */}
-        
+        <IOPagerView
+          overScrollMode='never'
+          horizontal = {false}
+          initialScrollIndex = {contentIndex}
+          pagingEnabled = {true}
+          estimatedItemSize={winH}
+          decelerationRate = 'normal'
+          persistentScrollbar = {false}
+          showsHorizontalScrollIndicator = {false}
+          getItemLayout={(data, index) => (
+              {length: winH, offset: winH * index, index}
+            )}
+          data={viewedVideosArr}
+          renderItem={({item, index})=> <VideoComponent visible={visible} ref={videoRefs => (mediaRefs.current[index] = videoRefs)} modificationTime={item.modificationTime} height={item.height} width={item.width} contentIndex={contentIndex} index ={index} videoSrc={item.videoURL} />}
+          extraData={[viewedVideosArr.length]}
+          viewabilityConfig={visibilityConfig.current}
+          onViewableItemsChanged ={handleOnviewableItemsChanged.current}
+          // removeClippedSubviews={true} 
+        />      
       </View>
     </View>
   )

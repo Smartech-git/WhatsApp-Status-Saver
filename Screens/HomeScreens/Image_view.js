@@ -14,15 +14,6 @@ export default function Image_view({route}) {
     let contentIndex = route.params.index
    const [render, setRender] = useState(true);
    const [state, dispatch] =  useStateValue();
-
-
-   useEffect(() => {
-        let ID;
-        ID = setTimeout(() => {
-            setRender(true)
-        }, 50)
-   }, [route.params.index])
-
   
     return (
         <View style={{
@@ -32,45 +23,27 @@ export default function Image_view({route}) {
         }}>
             <ContentViewHeader special={false} screenType="Images"/>
             <View style={{ flex: 1}} >
-                {
-                    render && (
-                        <IOPagerView
-                            overScrollMode='never'
-                            horizontal = {true}
-                            initialScrollIndex = {contentIndex}
-                            pagingEnabled = {true}
-                            estimatedItemSize={win}
-                            decelerationRate = 'normal'
-                            persistentScrollbar = {false}
-                            showsHorizontalScrollIndicator = {false}
-                            getItemLayout={(data, index) => (
-                                {length: win, offset: win * index, index}
-                              )}
-                            data={viewedImagesArr}
-                            renderItem={({item, index})=> <ImageComponent index ={index} special={index == contentIndex ? true: undefined} imageSrc={item.URL} imagePosition={
-                                index === 0 ? "firstImg"
-                                            : index === viewedImagesArr.length -1 ? "lastImg"
-                                            : "default"
-                                    }/>}
-                            extraData={[viewedImagesArr.length]}
-                            keyExtractor={(item) => item.URL}
-                        />
-                    )
-                }
-                
-                {
-                    render === false && ( 
-                         <View style={{opacity: 1, zIndex: 2, height: '100%', width: '100%', position: 'absolute'}}>
-                            <ImageComponent special={true} imageSrc={viewedImagesArr[contentIndex].URL} key={contentIndex} imagePosition={
-                                contentIndex === 0 ? "firstImg"
-                                            : contentIndex === viewedImagesArr.length -1 ? "lastImg"
-                                            : "default"
-                                }
-                            />  
-                        </View>
-                     )
-                }  
-                 
+                <IOPagerView
+                    overScrollMode='never'
+                    horizontal = {true}
+                    initialScrollIndex = {contentIndex}
+                    pagingEnabled = {true}
+                    estimatedItemSize={win}
+                    decelerationRate = 'fast'
+                    persistentScrollbar = {false}
+                    showsHorizontalScrollIndicator = {false}
+                    getItemLayout={(data, index) => (
+                        {length: win, offset: win * index, index}
+                        )}
+                    data={viewedImagesArr}
+                    renderItem={({item, index})=> <ImageComponent index ={index} special={index == contentIndex ? true: undefined} imageSrc={item.URL} imagePosition={
+                        index === 0 ? "firstImg"
+                                    : index === viewedImagesArr.length -1 ? "lastImg"
+                                    : "default"
+                            }/>}
+                    extraData={[viewedImagesArr.length]}
+                    keyExtractor={(item) => item.URL}
+                />  
             </View>
             <View style={{ width: '100%', marginVertical: 30}}>
                 <ContentViewOptionsImage/>

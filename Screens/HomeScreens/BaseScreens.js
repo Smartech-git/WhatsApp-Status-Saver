@@ -20,15 +20,13 @@ export default function BaseScreens(props) {
 
 
     useEffect(() => {
-      console.log(routeState)
-
       const fullScreen = async () => {
         if(routeState === 'VideoView'){
-          StatusBar.setBackgroundColor("#20111111");
+          StatusBar.setBackgroundColor("#00000050");
           StatusBar.setBarStyle('light-content');
 
           NavigationBar.setButtonStyleAsync("light")
-          NavigationBar.setBackgroundColorAsync("#111111")
+          NavigationBar.setBackgroundColorAsync("#000000")
           // NavigationBar.setBehaviorAsync('overlay-swipe')
           //NavigationBar.setVisibilityAsync("hidden");
         }
@@ -37,7 +35,6 @@ export default function BaseScreens(props) {
       fullScreen()
 
       return(() => {
-        console.log("returned")
         StatusBar.setBackgroundColor(state.themeHue.primary);
         StatusBar.setBarStyle(state.theme === 'LIGHT' ? 'dark-content' : 'light-content');
 
@@ -58,7 +55,6 @@ export default function BaseScreens(props) {
           type : actionTypes.setLoadingStateImages,
           loadingStateImages: false
         }
-
         dispatch(action);
       } 
 

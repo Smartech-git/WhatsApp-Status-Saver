@@ -1,10 +1,9 @@
-import { View } from 'react-native'
+import { View, StatusBar } from 'react-native'
 import React, { useEffect } from 'react'
 import { useStateValue } from '../../StateProvider'
 import BaseScreens from './BaseScreens';
 import Image_view from './Image_view';
 import Video_view from './Video_view';
-import ContentViewHeader from '../../Components/ContentViewHeader';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 const Stack = createNativeStackNavigator();
@@ -15,7 +14,7 @@ export default function Home(props) {
   return (
     <View style={{
       flex: 1,
-      backgroundColor: state.themeHue.primary
+      backgroundColor: state.themeHue.primary,
     }}>
       <Stack.Navigator
         screenOptions={{
