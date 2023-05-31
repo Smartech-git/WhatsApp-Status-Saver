@@ -1,13 +1,15 @@
 import { View, Text, Dimensions, StatusBar, StyleSheet, Image, PixelRatio, Pressable} from 'react-native'
-import React, {useState, useRef, useEffect, useMemo, useImperativeHandle, useLayoutEffect} from 'react'
+import React, {useState, useRef, useEffect, useImperativeHandle} from 'react'
 import { ResizeMode, Video } from 'expo-av';
 import { InView } from 'react-native-intersection-observer';
 import ContentViewOptionsVideo from './ContentViewOptionsVideo';
 import { handlTimeStamp } from '../Utilities/TimeStamp';
 import { useIsFocused } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
-import Animated, { Easing, FadeIn, useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated'
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import Progress from './Progress';
+import { actionTypes } from '../Reducer';
+import { useStateValue } from '../StateProvider';
 
 const winH = Dimensions.get('window').height + StatusBar.currentHeight
 const winW = Dimensions.get("window"). width
@@ -16,6 +18,7 @@ const resizeCondtion = 0.90 * winH
 export const VideoComponent = React.forwardRef(({index, videoSrc, height, width, modificationTime, contentIndex, visible}, ref) => {
     const video = useRef(null);
     const [status, setStatus] = useState({});
+    const [state, dispatch] = useStateValue()
     const [inView, setInView] = useState()
     const [render, setRender] = useState(false)
     const [shouldHideCtrls, setShouldHideCtrls] = useState(true)
@@ -35,6 +38,19 @@ export const VideoComponent = React.forwardRef(({index, videoSrc, height, width,
         } else(
             stop()
         )
+    }, [status.isLoaded])
+
+    useEffect(() =>{
+        if(!state.loadingStateVideosReel){
+            return
+        }
+        if(status.isLoaded){
+            let action = {
+                type : actionTypes.setLoadingStateVideosReels,
+                loadingStateVideosReel: false
+              }
+              dispatch(action);
+        }
     }, [status.isLoaded])
 
     useEffect(() => {
@@ -96,16 +112,6 @@ export const VideoComponent = React.forwardRef(({index, videoSrc, height, width,
 
     const handleControlDisplay = () =>{
        setShouldHideCtrls(prev => !prev)
-    }
-
-    const handleSLiderValue = () => {
-        if(status.positionMillis){
-             let value = status.positionMillis / status.durationMillis
-            return value
-        } else {
-            return 0
-        }
-       
     }
 
     const play = async() => {
@@ -175,7 +181,7 @@ export const VideoComponent = React.forwardRef(({index, videoSrc, height, width,
     <Pressable style={{height: winH, width: '100%'}} onPress={handleControlDisplay}>
         <InView triggerOnce={true} style={Styles.Content}  onChange={(inView) => handleInView(inView)}>
            {
-            (render && inView) && (
+            (inView) && (
                 <Video
                     ref={video}
                     style={{
@@ -193,14 +199,6 @@ export const VideoComponent = React.forwardRef(({index, videoSrc, height, width,
                     shouldPlay= {false}
                     progressUpdateIntervalMillis={500}
                 />
-                )
-            }
-            {
-                !status.isLoaded && (
-                    <View style={Styles.loadingView}>
-                        <Image style= {{ width: 60, height: 60 }} source={require('../assets/GIFs/Loading.gif')}/>
-                        <Text style={{color: '#FFF', fontSize: 16, textAlign: 'center', width: '80%', marginTop: 20}}>Making the layout best for you..</Text>
-                    </View>
                 )
             }
             <View style={Styles.BottomContents}>
@@ -229,7 +227,7 @@ export const VideoComponent = React.forwardRef(({index, videoSrc, height, width,
                 </Animated.View>
             )}
            
-            <LinearGradient colors={['transparent', '#00000060', '#000000']} style={{
+            <LinearGradient colors={['transparent', '#00000080', '#000000']} style={{
                 width: '100%',
                 height: "50%",
                 position: 'absolute',
@@ -287,16 +285,5 @@ const Styles = StyleSheet.create({
         borderRadius: 12,
         marginTop: 5
     },
-    
-    loadingView: {
-        width: 200,
-        height: 200,
-        backgroundColor: '#111B21',
-        position: 'absolute',
-        zIndex: 3,
-        borderRadius: 20,
-        justifyContent:'center',
-        alignItems:'center'
-    }
     
 })

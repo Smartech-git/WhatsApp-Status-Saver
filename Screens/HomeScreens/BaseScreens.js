@@ -22,7 +22,7 @@ export default function BaseScreens(props) {
     useEffect(() => {
       const fullScreen = async () => {
         if(routeState === 'VideoView'){
-          StatusBar.setBackgroundColor("#00000050");
+          StatusBar.setBackgroundColor("#00000080");
           StatusBar.setBarStyle('light-content');
 
           NavigationBar.setButtonStyleAsync("light")

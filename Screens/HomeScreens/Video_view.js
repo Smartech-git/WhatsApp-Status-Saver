@@ -1,4 +1,4 @@
-import { View, FlatList, Dimensions, StatusBar, ScrollView} from 'react-native'
+import { View, Dimensions, StatusBar, StyleSheet, Image, Text} from 'react-native'
 import React, {useEffect, useState, useRef} from 'react'
 import {viewedVideosArr } from '../../Utilities/ViewedStatusManager';
 import {VideoComponent} from '../../Components/VideoComponent';
@@ -7,6 +7,7 @@ import ContentViewHeader from '../../Components/ContentViewHeader';
 import { LinearGradient } from 'expo-linear-gradient'
 import { withIO } from 'react-native-intersection-observer'
 import { FlashList } from '@shopify/flash-list';
+import { setShouldTabHideRef } from '../../Utilities/GestureHandler';
 
 
 const IOPagerView = withIO(FlashList);
@@ -16,6 +17,7 @@ const winH = Dimensions.get('window').height + StatusBar.currentHeight
 export default function Video_view({route}) {
   const [visible, setIsVisible] = useState(false)
   const [sliderVisible, setSliderVisible] = useState(true)
+  const [state, dispatch] = useStateValue()
   let contentIndex = route.params.index
   
   const visibilityConfig = useRef({
@@ -38,6 +40,11 @@ export default function Video_view({route}) {
     });
     
   })
+  useEffect(() => {
+    return(()=>{
+      setShouldTabHideRef('false')
+    })
+  }, [])
 
 
   return (
@@ -46,7 +53,7 @@ export default function Video_view({route}) {
       backgroundColor: '#000'
   }}>
       <LinearGradient
-       colors={['#00000050', 'transparent']}
+       colors={['#00000080', 'transparent']}
        style={{
         position: 'absolute',
         zIndex: 3,
@@ -55,7 +62,20 @@ export default function Video_view({route}) {
       }}>
         <ContentViewHeader special={true} screenType="Videos"/>
       </LinearGradient>
-      <View style={{ flex: 1}} >
+        <View style={{...styles.loadingView, opacity: state.loadingStateVideosReel ? 1: 0,}}>
+          <View style={{
+            width: 200,
+            height: 200,
+            backgroundColor: '#111B21',
+            borderRadius: 20,
+            justifyContent:'center',
+            alignItems:'center',
+          }}>
+            <Image style= {{ width: 60, height: 60 }} source={require('../../assets/GIFs/Loading.gif')}/>
+            <Text style={{color: '#FFF', fontSize: 16, textAlign: 'center', width: '80%', marginTop: 20}}>Making the layout best for you..</Text>
+          </View>
+        </View>
+      <View style={{ flex: 1, opacity: state.loadingStateVideosReel ? 0: 1}} >
         <IOPagerView
           overScrollMode='never'
           horizontal = {false}
@@ -79,3 +99,13 @@ export default function Video_view({route}) {
     </View>
   )
 }
+
+const styles =  StyleSheet.create({
+  loadingView: {
+    width: "100%",
+    height: "100%",
+    position: 'absolute',
+    justifyContent:'center',
+    alignItems:'center',
+}
+})
