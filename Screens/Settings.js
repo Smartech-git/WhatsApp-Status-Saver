@@ -1,79 +1,115 @@
-import { View, Text, StyleSheet, ScrollView, Image, PixelRatio, TouchableOpacity, Animated, Pressable, Easing, StatusBar } from 'react-native'
-import React, {useState, useLayoutEffect, useEffect} from 'react'
+import { View, Text, StyleSheet, ScrollView, Image, PixelRatio, TouchableOpacity, Pressable, StatusBar, Appearance, useAnimatedValue } from 'react-native'
+import React, {useState, useLayoutEffect, useEffect } from 'react'
 import { useStateValue } from '../StateProvider'
 import { actionTypes, themeHueDark, themeHueLight} from '../Reducer'
 import RadioButton from '../Components/RadioButton'
 import { mergeToObjectSettings } from '../APIs'
-import {Appearance} from 'react-native';
 import * as NavigationBar from 'expo-navigation-bar';
+import Animated, { useSharedValue, useAnimatedStyle, Easing, withTiming, interpolate, Extrapolation, withSpring, withSequence } from 'react-native-reanimated'
 
-const colorScheme = Appearance.getColorScheme();
 
 export default function Settings() {
   const [state, dispatch] = useStateValue()
-  const [autoSave, setAutoSave] = useState(undefined)
-  const [themeMode, setThemeMode]= useState(undefined)
-  let swipe = new Animated.Value(state.autoSave === false ? 0 : 23)
+  const swipe = useSharedValue(state.autoSave === false ? 0 : 23)
+  const dropDown = useSharedValue({height: 2, opacity: 0})
+  const checkMark = useSharedValue(0)
 
 
- 
+ useEffect(() => {
+  console.log(state)
+ }, [state])
+
+ const autoSaveAnimatedStyle = useAnimatedStyle(() => {
+  return {
+    transform: [{
+      translateX: swipe.value
+    }]
+  }
+ })
+
+ const dropDownAnimation = useAnimatedStyle(() => {
+  const height = withSpring(dropDown.value.height, {mass: 0.2, damping: 20})
+  const opacity = withSpring(dropDown.value.opacity, {mass: 0.2})
+  return {
+    height: height,
+    opacity: opacity
+  }
+ })
+
+ const customThemeCheckMarkAnimation = useAnimatedStyle(() => { 
+  return {
+    transform: [{
+      scale: checkMark.value
+    }]
+  }
+ })
+
+ useEffect(() => {
+    checkMark.value = withSequence(withTiming(0, {duration: 100}), withSpring(1))
+ }, [state.theme])
+
+
   const handleAutoSave = () => {
-    Animated.timing(swipe,
-      {
-        toValue: state.autoSave === false ? 23 : 0,
-        duration: 170,
-        useNativeDriver: true,
-        easing: Easing.out(Easing.back(3))
+    swipe.value = withTiming(state.autoSave === false ? 23: 0, {
+      duration: 170,
+      easing: Easing.in(Easing.ease)
+   })
+
+    const action = {
+      type: actionTypes.setAutoSave,
+      autoSave: !state.autoSave
       }
-    )
-    .start(() => {
-        const action = {
-        type: actionTypes.setAutoSave,
-        autoSave: !state.autoSave
-        }
-        dispatch(action);
-        mergeToObjectSettings({autoSave: !state.autoSave})
-
-         //   StatusBar.setBackgroundColor(state.theme === 'LIGHT' ? '#111B21' : '#ffffff');
-        //   StatusBar.setBarStyle(state.theme === 'LIGHT' ? 'light-content' : 'dark-content');
-
-        //   NavigationBar.setBackgroundColorAsync(state.theme === 'LIGHT' ? '#111B21' : '#FFFFFF')
-        //   NavigationBar.setButtonStyleAsync(state.theme === 'LIGHT' ? "light" : "dark")
-        //   mergeToObjectSettings(state.theme === 'LIGHT' ? settingsType.setThemeDark : settingsType.setThemeLight)
-
-      })    
+      dispatch(action);
+      mergeToObjectSettings({autoSave: !state.autoSave})
   }
 
-  const handleThemeMode_Custom = () => {
-    if(state.themeModeCustom){
+  const handleThemeMode_Custom = (prop) => {
+    if(state.theme === prop){
       return
     }
-    const action = {
-      type: actionTypes.setThemeModeCustom,
-      themeModeCustom: true
+    let multipleAction = {
+      type: actionTypes.setMutipleStates,
+      multipleStates: {
+        theme: prop,
+        themeModeCustom: true,
+        themeHue: prop === 'LIGHT' ? themeHueLight : themeHueDark
       }
-    dispatch(action);
+    }
+    
+    StatusBar.setBackgroundColor(state.theme === 'DARK' ? '#FFFFFF' : '#111B21');
+    StatusBar.setBarStyle(state.theme === 'DARK' ? 'dark-content' : 'light-content');
+
+    NavigationBar.setBackgroundColorAsync(state.theme === 'DARK' ? '#FFFFFF' : '#111B21')
+    NavigationBar.setButtonStyleAsync(state.theme === 'DARK' ? "dark" : "light")
+
+    dispatch(multipleAction)
+    
     mergeToObjectSettings({themeModeCustom: true})
+  }
+
+  const handleDropDowntoSetTheme =  () => {
+    dropDown.value = {height: dropDown.value.height === 2 ? 80 : 2, opacity:dropDown.value.opacity ===0? 1: 0} 
   }
 
   const handleThemeMode_useDeviceSettings = () => {
     if(!state.themeModeCustom){
       return
     }
+
     let multipleAction = {
       type: actionTypes.setMutipleStates,
       multipleStates: {
-        theme: colorScheme.toUpperCase(),
+        theme: state.deviceColorScheme,
         themeModeCustom: false,
-        themeHue: state.theme === 'LIGHT' ? themeHueDark : themeHueLight
+        themeHue: state.deviceColorScheme === 'LIGHT' ? themeHueLight : themeHueDark
       }
     }
     
-    StatusBar.setBackgroundColor(state.theme === 'LIGHT' ? '#111B21' : '#ffffff');
-    StatusBar.setBarStyle(state.theme === 'LIGHT' ? 'light-content' : 'dark-content');
+    StatusBar.setBackgroundColor(state.deviceColorScheme === 'LIGHT' ? '#FFFFFF' : '#111B21');
+    StatusBar.setBarStyle(state.deviceColorScheme === 'LIGHT' ? 'dark-content' : 'light-content');
 
-    NavigationBar.setBackgroundColorAsync(state.theme === 'LIGHT' ? '#111B21' : '#FFFFFF')
-    NavigationBar.setButtonStyleAsync(state.theme === 'LIGHT' ? "light" : "dark")
+    NavigationBar.setBackgroundColorAsync(state.deviceColorScheme === 'LIGHT' ? '#FFFFFF' : '#111B21')
+    NavigationBar.setButtonStyleAsync(state.deviceColorScheme === 'LIGHT' ? "dark" : "light")
 
     dispatch(multipleAction)
     mergeToObjectSettings({themeModeCustom: false})
@@ -163,41 +199,53 @@ export default function Settings() {
           </View>
         </View>
 
-        <Pressable onPressIn={handleAutoSave}  style={{...Styles.themeButton, 
+        <View style={{...Styles.autoSaveButton, 
           backgroundColor: state.themeHue.primary_dark,
-          borderColor: state.themeHue.secondary_sub,
+          borderColor: state.themeHue.borderColor,
         }}>
-          <View style={{}}>
-            <Animated.View style={{position: 'relative', transform: [{ translateX: swipe}]}}>
-                <View style={[Styles.themeButton_thumb,{
+          {/* <Pressable hitSlop={20} android_ripple={{color: 'red', radius: 15, borderless: true }}  onPress={handleAutoSave} > */}
+            <Animated.View style={[{position: 'relative',zIndex: 2}, autoSaveAnimatedStyle]}>
+                <Pressable hitSlop={20}  onPress={handleAutoSave} style={[Styles.autoSaveButton_thumb,{
                     backgroundColor: (state.autoSave === true) ? '#00D426'
                                     : state.theme === 'LIGHT' ? '#1A3848' : '#E9ECEF',
                    }]}/>
             </Animated.View>
-          </View>
-          { state.autoSave  ?
-            <Animated.View style={{position: 'absolute',
-              opacity:  swipe.interpolate({
-                inputRange: [0,1],
-                outputRange: state.autoSave ? [0, 1] : [1, 0]}),
-              left: 7
-            }}>
+          {/* </Pressable> */}
+            <Animated.View style={[{position: 'absolute', left: 7,},
+              useAnimatedStyle(() => {
+                const opacity = interpolate(swipe.value,  [0,1],  [0, 1], {
+                  extrapolateRight: Extrapolation.CLAMP,
+                  extrapolateLeft: Extrapolation.CLAMP
+                })
+                return {
+                  opacity: opacity
+                }
+               })
+           ]}>
               <Text style={{fontSize: 10, fontWeight: '600',
-               color: state.theme === 'LIGHT' ? '#1A3848' : '#E9ECEF'
+               color: state.theme === 'LIGHT' ? '#1A3848' : '#E9ECEF',
+               
               }}>ON</Text>
             </Animated.View>
-          :
-          <Animated.View style={{position: 'absolute',
-          opacity: swipe.interpolate({
-            inputRange: [0,1],
-            outputRange: !state.autoSave ? [1, 0] : [0, 1]}),
-            right: 6
-          }}>
-            <Text style={{fontSize: 10, fontWeight: '600', color: state.theme === 'LIGHT' ? '#1A3848' : '#E9ECEF'}}>OFF</Text>
+          
+          <Animated.View style={[{position: 'absolute', right: 6},
+             useAnimatedStyle(() => {
+              const opacity = interpolate(swipe.value,  [0,1], [1, 0], {
+                extrapolateRight: Extrapolation.CLAMP,
+                extrapolateLeft: Extrapolation.CLAMP
+              })
+              return {
+                opacity: opacity
+              }
+             })
+          ]}>
+            <Text style={{fontSize: 10, fontWeight: '600',
+             color: state.theme === 'LIGHT' ? '#1A3848' : '#E9ECEF'
+             }}>OFF</Text>
           </Animated.View>
           
-        } 
-        </Pressable>
+         
+        </View>
       </View>
 
 
@@ -236,10 +284,9 @@ export default function Settings() {
               color: state.theme === 'LIGHT' ? '#000' : '#FFF',
               fontWeight: '600',
               fontSize: 16,
-            }}>Theme</Text>
+            }}>Theme mode</Text>
             <View style={{
               flex: 1,
-              height: 20,
               flexDirection: 'row',
             }}>
               <View style={{flexDirection: 'row', alignItems: 'center', marginRight: 32}}>
@@ -249,9 +296,9 @@ export default function Settings() {
                   fontWeight: '600',
                   marginRight: 10
                 }}>use device settings</Text>
-                <TouchableOpacity activeOpacity={0.4}  onPress={handleThemeMode_useDeviceSettings}>
+                <Pressable hitSlop={20} android_ripple={{color: state.themeHue.primary_dark, radius: 15, borderless: true }}  onPress={handleThemeMode_useDeviceSettings}>
                   <RadioButton color= { !state.themeModeCustom ? '#00D426': state.themeHue.primary_dark} size={18}/>
-                </TouchableOpacity>  
+                </Pressable>  
               </View>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Text style={{
@@ -260,12 +307,122 @@ export default function Settings() {
                     fontWeight: '600',
                     marginRight: 10
                   }}>Custom</Text>
-                  <TouchableOpacity activeOpacity={0.4}  onPress={handleThemeMode_Custom }>
-                    <RadioButton color={state.themeModeCustom? '#00D426': state.themeHue.primary_dark} size={18} />
-                  </TouchableOpacity> 
+                  <Pressable hitSlop={20} onPressIn={handleDropDowntoSetTheme} android_ripple={{color: state.themeHue.primary_dark, radius: 15, borderless: true }}>
+                    <Animated.View
+                      style={[
+                        useAnimatedStyle(() =>{
+                          const rotate = interpolate(dropDown.value.height, [0,1], dropDown.value.height === 2 ? [180, 0] : [0, -180], {
+                            extrapolateRight: Extrapolation.CLAMP,
+                            extrapolateLeft: Extrapolation.CLAMP
+                          })
+                          return {
+                           transform: [{
+                            rotate: `${rotate}deg`
+                           }]
+                          }
+                        })
+                      ]}
+                    >
+                      {state.theme == 'LIGHT' ? (
+                        <Image style={{
+                          width: PixelRatio.getPixelSizeForLayoutSize(18), 
+                          height: PixelRatio.getPixelSizeForLayoutSize(18),
+        
+                        }} source={require('../assets/Icons/DropDownIcon_light.png')}/>
+                      ) : (
+                        <Image style={{
+                          width: PixelRatio.getPixelSizeForLayoutSize(18), 
+                          height: PixelRatio.getPixelSizeForLayoutSize(18),
+        
+                        }} source={require('../assets/Icons/DropDownIcon.png')}/>
+                      )}
+                    </Animated.View>
+                  </Pressable> 
               </View>
             </View>
+            <Animated.View style={[{
+              backgroundColor: `${state.themeHue.secondary}15`,
+              ...Styles.themeCustomSelectDropdown
+            }, dropDownAnimation]}>
+              <Pressable onPress={() => handleThemeMode_Custom("LIGHT")} style={{flexDirection: 'row', alignItems: "baseline"}}>
+                <Image style={{
+                        width: PixelRatio.getPixelSizeForLayoutSize(24), 
+                        height: PixelRatio.getPixelSizeForLayoutSize(24),
+                        borderRadius: 6,
+                        borderWidth: 2,
+                        borderColor: state.theme === "LIGHT" ? state.themeHue.secondary : undefined
+                }} source={require('../assets/Images/ThemeLight.png')}/>
+                {
+                  state.theme === 'LIGHT' && (
+                     <Animated.View style={[{
+                      backgroundColor: state.themeHue.secondary,
+                      borderRadius: 50,
+                      padding: 2,
+                      borderWidth: 2,
+                      borderColor: state.themeHue.primary,
+                      position: 'absolute',
+                      left: 40,
+                      top: -8,
+                    }, customThemeCheckMarkAnimation]}>
+                        <Image style={{
+                              width: PixelRatio.getPixelSizeForLayoutSize(5), 
+                              height: PixelRatio.getPixelSizeForLayoutSize(5),
+                      }} source={require('../assets/Icons/SavedIcon.png')}/>
+                    </Animated.View>
+                  )
+                }
+                <Text style={{
+                  color: state.theme === 'LIGHT' ? '#00000095' : '#FFFFFF95',
+                  fontSize: 16,
+                  fontWeight: '600',
+                  marginLeft: 15
+                }}>Light</Text>
+              </Pressable>
+              <Pressable onPress={() => handleThemeMode_Custom("DARK")} style={{flexDirection: 'row', alignItems: 'baseline'}}>
+                <Image style={{
+                        width: PixelRatio.getPixelSizeForLayoutSize(24), 
+                        height: PixelRatio.getPixelSizeForLayoutSize(24),
+                        borderRadius:6,
+                        borderWidth: 2,
+                        borderColor: state.theme === "DARK" ? state.themeHue.secondary : undefined
+                }} source={require('../assets/Images/ThemeDark.png')}/>
+                {
+                  state.theme === 'DARK' && (
+                     <Animated.View style={[{
+                      backgroundColor: state.themeHue.secondary,
+                      borderRadius: 50,
+                      padding: 2,
+                      borderWidth: 2,
+                      borderColor: state.theme.primary,
+                      position: 'absolute',
+                      left: 40,
+                      top: -8,
+                    }, customThemeCheckMarkAnimation]}>
+                        <Image style={{
+                              width: PixelRatio.getPixelSizeForLayoutSize(5), 
+                              height: PixelRatio.getPixelSizeForLayoutSize(5),
+                      }} source={require('../assets/Icons/SavedIcon.png')}/>
+                    </Animated.View>
+                  )
+                }
+               
+                <Text
+                  style={{
+                    color: state.theme === 'LIGHT' ? '#00000095' : '#FFFFFF95',
+                    fontSize: 16,
+                    fontWeight: '600',
+                    marginLeft: 15,
+                  }}
+                >Dark</Text>
+              </Pressable>  
+            </Animated.View>
           </View>
+      </View>
+
+
+      {/* About -------------------------------------------------------------------------------------- */}
+      <View style={Styles.aboutView}>
+        <Text>About</Text>
       </View>
     </ScrollView>
   )
@@ -290,15 +447,14 @@ const Styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'space-between'
   },
-  
+
   themeSelectView : {
     flex: 1,
     marginHorizontal: 15,
-    borderRadius: 12,
     flexDirection: 'row',
     marginTop: 20,
   },
-  themeButton: {
+  autoSaveButton: {
     width: 50,
     height: 26, 
     borderRadius: 50,
@@ -307,9 +463,24 @@ const Styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 6,
   },
-  themeButton_thumb:{
+  autoSaveButton_thumb:{
     width: 14,
     height: 14,
     borderRadius: 50,
+  },
+
+  themeCustomSelectDropdown: {
+    flex: 1,
+    flexDirection: 'row',
+    borderRadius: 12,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    overflow: 'hidden'
+  },
+
+  aboutView: {
+    marginTop: 20
   }
+  
 })
