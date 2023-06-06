@@ -1,4 +1,4 @@
-import { View, StatusBar, SafeAreaView} from 'react-native'
+import { View, StatusBar, SafeAreaView,Appearance} from 'react-native'
 import React, { useCallback, useState, useEffect}  from 'react'
 import Home from './Screens/HomeScreens/Home'
 import Gallary from './Screens/Gallary';
@@ -6,13 +6,13 @@ import Settings from './Screens/Settings'
 import ScreenHeaders from './Components/ScreenHeaders';
 import BottomNavTabBar from './Components/BottomNavTabBar'
 import * as SplashScreen from 'expo-splash-screen';
-import { actionTypes } from './Reducer';
+import { actionTypes, themeHueDark, themeHueLight } from './Reducer';
 import { useStateValue } from './StateProvider';
 import * as NavigationBar from 'expo-navigation-bar';
 import * as MediaLibrary from 'expo-media-library';
 import PermissionScreen from './PermissionScreen';
 import * as Font from 'expo-font';
-import { getObjectSettings, initialSettings, setObjectSettings} from './APIs';
+import { getObjectSettings, initialSettings, setObjectSettings, clearObjectSettings} from './APIs';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { getHeaderTitle } from '@react-navigation/elements'
 import { NavigationContainer} from '@react-navigation/native';
@@ -21,7 +21,7 @@ import * as FileSystem from 'expo-file-system';
 import { FILE_PATH } from './Utilities/ViewedStatusManager';
 
 const BottomTab = createBottomTabNavigator()
-
+const colorScheme = Appearance.getColorScheme().toUpperCase();
 
 const LightTheme = {
   dark: false,
@@ -53,19 +53,34 @@ export default function StatusSaver() {
 
   activateKeepAwake()
 
+  useEffect(() => {
+    console.log(state)
+  }, [state])
+
   const getObjectSettingsRef = async () => {
     let value = await getObjectSettings();
-
     if( value === null) {
       setObjectSettings(initialSettings);
 
     } else {
         let settings = await getObjectSettings();
-        let action = {
-            type : actionTypes.setTheme,
-            theme: settings.theme
+
+        let themeMode
+        if(settings.themeModeCustom === false){ themeMode = colorScheme} 
+        else { themeMode = settings.theme }
+        
+        let multipleAction = {
+          type: actionTypes.setMutipleStates,
+          multipleStates: {
+            theme: themeMode,
+            autoSave: settings.autoSave,
+            themeModeCustom: settings.themeModeCustom,
+            themeHue: themeMode === 'LIGHT' ? themeHueLight : themeHueDark,
+            deviceColorScheme: colorScheme
+          }
         }
-        dispatch(action);
+
+        dispatch(multipleAction)
     }
   }
 
