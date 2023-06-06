@@ -5,13 +5,17 @@ export const settingsType = {
   setThemeLight : { theme: 'LIGHT' },
   setThemeDark : { theme : 'DARK' },
   emojiId : "emojiId",
-  validFilePath: "validFilePath"
+  validFilePath: "validFilePath",
+  autoSave: 'autoSave',
+  themeModeCustom: 'themeModeCustom'
 }
 
 export const initialSettings  = {
   name:'Status Saver',
   theme: 'LIGHT',
-  emojiId: 0
+  emojiId: 0,
+  autoSave: true,
+  themeModeCustom: true
 }
 
 export const getObjectSettings = async () => {
@@ -24,19 +28,23 @@ export const getObjectSettings = async () => {
   }
 
 export const setObjectSettings = async (value) => {
+
     try {
         const jsonValue = JSON.stringify(value)
         await AsyncStorage.setItem(settingsType.name, jsonValue)
     } catch(e) {
         // save error
     }
+    finally {
+    
+    }
 }
 
 export const mergeToObjectSettings = async (obj) => {
   try {
-
     await AsyncStorage.mergeItem(settingsType.name, JSON.stringify(obj))
     const settings = await AsyncStorage.getItem(settingsType.name)
+    console.log(settings)
   } catch(e) {
     
   } finally {

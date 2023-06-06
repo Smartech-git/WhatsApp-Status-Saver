@@ -18,7 +18,7 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
   
   if(opac === 1){display.value= 'flex'}
 
-    translation.value = withSpring(trans, {mass: 0.8})
+    translation.value = withSpring(trans, {mass: 1.5 })
       opacity.value = withTiming(opac , {
         duration: 200,
       }, () => {
@@ -76,8 +76,8 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
             justifyContent: 'space-around',
             alignItems: 'center',
             backgroundColor: State.themeHue.primary_dark,
-            borderColor: State.themeHue.secondary_sub,
-            borderWidth: 1,
+            borderColor: State.themeHue.borderColor,
+            borderWidth: 2,
             borderRadius: 50,
             paddingHorizontal: 10
         }}>

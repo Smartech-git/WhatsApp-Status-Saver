@@ -9,15 +9,15 @@ export default function ScreenHeaders(props) {
     <View style={{
         width: '100%',
         height: 50,
-        marginTop: StatusBar.currentHeight
+        marginTop: StatusBar.currentHeight,
+        justifyContent:'center'
     }}>
         <View style={{
             height: 40,
             paddingHorizontal: 20,
-            marginLeft: 30,
-            marginTop: 10,
             position: 'absolute',
             borderRadius: 50,
+            marginLeft: 15,
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: state.theme === 'LIGHT'? '#000' : '#fff',

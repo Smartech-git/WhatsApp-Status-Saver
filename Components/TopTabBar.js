@@ -90,16 +90,16 @@ export default function TopTabBar({ state, descriptors, navigation, position }) 
               // })}],
             }}>
               <Animated.View style={{opacity: 1,
-                backgroundColor: isFocused ? (state.theme === 'LIGHT' ? '#000' : '#FFF') : status.themeHue.primary,
+                backgroundColor: isFocused ? (status.theme === 'LIGHT' ? '#000' : '#FFF') : status.themeHue.primary,
                 borderRadius: 50,
                 paddingHorizontal: 22,
                 paddingVertical: 6,
                 borderWidth: 1,
-                borderColor: isFocused ? (state.theme === 'LIGHT' ? '#000' : '#FFF') : status.themeHue.primary_dark
+                borderColor: isFocused ? (status.theme === 'LIGHT' ? '#000' : '#FFF') : status.themeHue.primary_dark
                 }}>
                 <View style={{
                 }}>
-                  <Text style={{ fontSize: 16, fontWeight: '600', color: isFocused ? (state.theme === 'LIGHT' ? '#FFF' : '#000')  : (state.theme === 'LIGHT' ? '#000' : '#FFF') }}>
+                  <Text style={{ fontSize: 16, fontWeight: '600', color: isFocused ? (status.theme === 'LIGHT' ? '#FFF' : '#000')  : (status.theme === 'LIGHT' ? '#000' : '#FFF') }}>
                     {label}
                   </Text>
                 </View>

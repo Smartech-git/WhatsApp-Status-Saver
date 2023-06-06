@@ -1,12 +1,9 @@
 export const millisToVidTime = (duration) => {
-    let milliseconds = Math.floor((duration % 1000) / 100),
-        seconds = Math.floor((duration / 1000) % 60),
-        minutes = Math.floor((duration / (1000 * 60)) % 60),
-        hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+    let sec = Math.floor((duration / 1000) % 60)
+    let min = Math.floor(duration / (1000*60))
   
-    hours = (hours < 10) ? "0" + hours : hours;
-    minutes = (minutes < 10) ? "0" + minutes : minutes;
-    seconds = (seconds < 10) ? "0" + seconds : seconds;
+    let minutes = (min < 10) ? '0' + min : min;
+    let seconds = (sec < 10) ? '0' + sec : sec;
   
     return  minutes + ":" + seconds ;
   }

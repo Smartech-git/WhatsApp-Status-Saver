@@ -10,7 +10,7 @@ export default function RadioButton(props) {
         backgroundColor: state.themeHue.primary_dark,
         borderRadius: 50,
         borderWidth: 1,
-        borderColor: state.themeHue.secondary_sub,
+        borderColor: state.themeHue.borderColor,
         width: props.size,
         height: props.size,
         padding: 2
