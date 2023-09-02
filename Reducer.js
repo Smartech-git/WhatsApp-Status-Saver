@@ -1,5 +1,5 @@
 export const themeHueLight = {
-    primary: '#FFFFFF',
+    primary: '#FAFAFA',
     primary_dark: '#E9ECEF',
     primary_veryDark: '#F2F2F2',
     borderColor: '#D9D9D9',

@@ -29,6 +29,12 @@ export default function BaseScreens(props) {
           NavigationBar.setBackgroundColorAsync("#000000")
           // NavigationBar.setBehaviorAsync('overlay-swipe')
           //NavigationBar.setVisibilityAsync("hidden");
+        } else {
+          StatusBar.setBackgroundColor(state.themeHue.primary);
+          StatusBar.setBarStyle(state.theme === 'LIGHT' ? 'dark-content' : 'light-content');
+      
+          NavigationBar.setBackgroundColorAsync(state.themeHue.primary)
+          NavigationBar.setButtonStyleAsync(state.theme === 'LIGHT' ? "dark" : "light")
         }
       }
       
@@ -111,7 +117,8 @@ export default function BaseScreens(props) {
     return (
         <View style={{
           flex: 1,
-          marginTop: StatusBar.currentHeight
+          marginTop: StatusBar.currentHeight,
+          backgroundColor: state.themeHue.primary
         }}>
           <Header/>
           <Tab.Navigator

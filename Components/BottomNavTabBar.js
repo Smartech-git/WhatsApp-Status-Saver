@@ -1,85 +1,35 @@
-import { useEffect, useState } from 'react';
+import react, {useState, useEffect} from 'react';
 import { View, Text, TouchableOpacity, Image, PixelRatio} from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withDelay, withSpring, withTiming} from 'react-native-reanimated';
 import { useStateValue } from '../StateProvider';
-import { hangdleBottomHide} from '../Utilities/GestureHandler';
+import { hangdleBottomHide } from '../Utilities/GestureHandler';
 
-//export let setShouldTabHideRef;  // imported in Utilities/GestureHandler.js
-                                 //imported in Components/ImageThumbnain.js
 
 export default function BottomNavTabBar({ state, descriptors, navigation }) {
   const [State, dipatch] = useStateValue()
-  const [shouldTabHide, setShouldTabHide] = useState('')
-  const translation = useSharedValue(0)
-  const opacity = useSharedValue(0)
-  const display = useSharedValue('flex')
-
- const shouldTabHide_Animation = (trans, opac) => {
-  
-  if(opac === 1){display.value= 'flex'}
-
-    translation.value = withSpring(trans, {mass: 1.5 })
-      opacity.value = withTiming(opac , {
-        duration: 200,
-      }, () => {
-        if(opac === 0){
-          display.value = 'none'
-        }
-      })
-  }
+  const [displayNav, setDisplayNav] = useState(true)
 
   useEffect(() => {
-    // setShouldTabHideRef = setShouldTabHide
-    hangdleBottomHide(setShouldTabHide)
-    translation.value = withDelay(900, withSpring(-20, {mass: 0.8}))
-    opacity.value = withDelay(900, withTiming(1, {
-      duration: 300,
-    }))
+    hangdleBottomHide(setDisplayNav)
   }, [])
 
-  useEffect(() => {
-    if(shouldTabHide === 'true') {
-     shouldTabHide_Animation(0, 0,)
-    } else if( shouldTabHide === 'false') {
-     shouldTabHide_Animation(-20, 1, )
-    }   
-  }, [shouldTabHide])
-
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateY: translation.value
-        }
-      ],
-      opacity: opacity.value,
-      display: display.value
-    }
-  })
-
   return (
-      <Animated.View style={[
+      <View style={
         {
-        position: 'absolute',
-        bottom: 0,
-        width:  '100%',
-        alignItems: 'center',
-        zIndex: 2
-      },
-      animatedStyle
-    ]}>
+          width:  '100%',
+          alignItems: 'center',
+          display: displayNav ? 'flex' : 'none'
+       }
+      }>
         <View style={{
             height: 70,
-            width: '75%',
+            width: '100%',
             flexDirection: 'row',
             justifyContent: 'space-around',
             alignItems: 'center',
-            backgroundColor: State.themeHue.primary_dark,
-            borderColor: State.themeHue.borderColor,
-            borderWidth: 2,
-            borderRadius: 50,
-            paddingHorizontal: 10
+            backgroundColor: State.themeHue.primary,
+            paddingHorizontal: 14,
+            borderTopWidth: 1,
+            borderColor: State.themeHue.primary_dark
         }}>
           {state.routes.map((route, index) => {
             const { options } = descriptors[route.key];
@@ -166,6 +116,6 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
             );
           })}
         </View>
-      </Animated.View>
+      </View>
   );
 }

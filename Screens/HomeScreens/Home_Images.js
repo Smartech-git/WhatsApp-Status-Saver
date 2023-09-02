@@ -64,7 +64,9 @@ export default function Home_Images() {
   return (
     <View style={{ overflow: 'hidden',
        marginHorizontal: 6.4,
-       borderRadius: 17,
+       borderTopLeftRadius: 17,
+       borderTopRightRadius: 17,
+       backgroundColor: state.themeHue.primary,
     }}>
      
       <View style={{opacity: state.loadingStateImages ? 1: 0, position: 'absolute', width: '100%'}}>
@@ -75,9 +77,9 @@ export default function Home_Images() {
             <Animated.View style={[{width:'100%', height: "100%"}, animatedStyle]}>
               <IOMasonryFlashList
                 data={viewedImagesArr}
-                renderItem={({item, index})=> <ImageThumbnail modificationTime={item.modificationTime} ratio={item.ratio} index ={index} imageSrc={item.URL}/>}
+                renderItem={({item, index})=> <ImageThumbnail key={item.filename} filename={item.filename} modificationTime={item.modificationTime} ratio={item.ratio} index ={index} imageSrc={item.URL}/>}
                 extraData={[viewedImagesArr.length]}
-                keyExtractor={(item) => item.URL}
+                keyExtractor={(item) => item.filename}
                 numColumns = {2}
                 estimatedItemSize={50}
                 contentContainerStyle = {{

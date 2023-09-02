@@ -7,7 +7,7 @@ import ContentViewHeader from '../../Components/ContentViewHeader';
 import { LinearGradient } from 'expo-linear-gradient'
 import { withIO } from 'react-native-intersection-observer'
 import { FlashList } from '@shopify/flash-list';
-import { setShouldTabHideRef } from '../../Utilities/GestureHandler';
+import { setDisplayNavRef } from '../../Utilities/GestureHandler';
 
 
 const IOPagerView = withIO(FlashList);
@@ -42,7 +42,7 @@ export default function Video_view({route}) {
   })
   useEffect(() => {
     return(()=>{
-      setShouldTabHideRef('false')
+      setDisplayNavRef(true)
     })
   }, [])
 

@@ -7,18 +7,16 @@ export default function Header(props) {
   const [state, dispatch] = useStateValue();
   
   return (
-    <View>
+    <View style={{backgroundColor: state.themeHue.primary}}>
       <View style={styles.Header}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <View style={[styles.AppLogo, {backgroundColor: state.themeHue.primary_dark}]}>
           <Image style={{
-                width: PixelRatio.getPixelSizeForLayoutSize(13),
-                height: PixelRatio.getPixelSizeForLayoutSize(13),
+                width: PixelRatio.getPixelSizeForLayoutSize(15),
+                height: PixelRatio.getPixelSizeForLayoutSize(15),
             }} source={require('../assets/Images/Logo.png')}/>
-          </View>
-          <Text style={{ color:  state.theme === 'LIGHT' ? '#000' : '#FFF', fontSize: 23,
-            marginTop: 4,
-            marginLeft: 5,
+          <Text style={{ color:  state.theme === 'LIGHT' ? '#000' : '#FFF', fontSize: 24,
+            marginTop: 2,
+            marginLeft: 8,
             fontWeight: '700',
             letterSpacing: -0.5
           }}>Status Saver</Text>
@@ -38,13 +36,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 15,
     marginVertical: 10
-  },
-  AppLogo:{
-    width: 34,
-    height: 34,
-    backgroundColor: 'red',
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent:'center'
   }
 })

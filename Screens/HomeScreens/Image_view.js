@@ -6,6 +6,8 @@ import { useStateValue } from '../../StateProvider';
 import ContentViewHeader from '../../Components/ContentViewHeader';
 import ContentViewOptionsImage from '../../Components/ContentViewOptionsImage';
 import { InView, withIO } from 'react-native-intersection-observer'
+import { setDisplayNavRef, setShouldTabHideRef } from '../../Utilities/GestureHandler';
+import * as NavigationBar from 'expo-navigation-bar';
 
 const IOPagerView = withIO(FlatList);
 const win = Dimensions.get('window').width
@@ -14,6 +16,12 @@ export default function Image_view({route}) {
     let contentIndex = route.params.index
    const [render, setRender] = useState(true);
    const [state, dispatch] =  useStateValue();
+
+   useEffect(() =>{
+    return(()=>{
+        setDisplayNavRef(true)
+    })
+  }, [])
   
     return (
         <View style={{

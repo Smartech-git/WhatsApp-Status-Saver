@@ -1,8 +1,8 @@
 let contentOffsetState = 0;
-export let setShouldTabHideRef
+export let setDisplayNavRef
 
 export const hangdleBottomHide = (callBack) => {
-  setShouldTabHideRef = callBack
+  setDisplayNavRef = callBack
 }
 
 export const handleVerticalScroll = (e, contentOffsetBottom, setOffsetTop, setOffsetBottom) => {
@@ -19,12 +19,6 @@ export const handleVerticalScroll = (e, contentOffsetBottom, setOffsetTop, setOf
     setOffsetTop(offsetBottom)
   } else {
     setOffsetTop(undefined)
-  }
-
-  if(offsetTop > (contentOffsetState)){
-    setShouldTabHideRef('true')
-  } else {
-    setShouldTabHideRef('false')
   }
 }
 

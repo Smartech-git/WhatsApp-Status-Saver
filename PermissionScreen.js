@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Animated, Easing, Image, StyleSheet, StatusBar, Dimensions} from 'react-native'
+import { View, Text, TouchableOpacity, Animated, Easing, Image, StyleSheet, Permission, PermissionsAndroid} from 'react-native'
 import React, {useRef, useEffect} from 'react'
 import * as MediaLibrary from 'expo-media-library';
 import { useStateValue } from './StateProvider';
@@ -28,10 +28,11 @@ export default function PermissionScreen() {
   }, [])
  
   const handlePermissionRequest = async () => {
-    const status = await MediaLibrary.requestPermissionsAsync();
-    console.log(status);
+    const granted = await PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE]);
 
-    if(status.granted){
+    console.log()
+
+    if(granted['android.permission.READ_EXTERNAL_STORAGE'] === PermissionsAndroid.RESULTS.GRANTED){
       let permissionAction = {
        type : actionTypes.setPermissionState,
        permissionState: true

@@ -5,11 +5,11 @@ import { useNavigation } from '@react-navigation/native'
 import { useStateValue } from '../StateProvider'
 import {InView } from 'react-native-intersection-observer'
 import { handlTimeStamp } from '../Utilities/TimeStamp'
-import {setShouldTabHideRef} from '../Utilities/GestureHandler'
+import {setDisplayNavRef} from '../Utilities/GestureHandler'
+import { saveContent, checkSavedContent } from '../Utilities/contentManger'
 
 
-
-export default function ImageThumbnail({imageSrc, ratio, index, modificationTime}) {
+export default function ImageThumbnail({imageSrc, ratio, index, modificationTime, filename}) {
   const [state, dispatch] = useStateValue()
   const [pressed, setPressed] = useState(false)
   const [inView, setInView] = useState()
@@ -22,6 +22,24 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
   const handleInView = (inView) => {
     setInView(inView)
   }
+
+  useEffect(() =>{
+    const prepare = async () =>{
+      let saved = await checkSavedContent(filename)
+      if(saved){
+        savedTagValue.value = withSpring(0)
+        scaleValue.value = withTiming(1, {
+          duration: 800,
+          easing: Easing.elastic(3)
+        })
+        setPressed(true)
+      }else {
+        setPressed(false)
+      }
+    }
+
+    prepare()
+  }, [])
   
   const saveButtonAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -40,17 +58,24 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
   })
 
   const handleSave = () => {
+
+    if(pressed){
+      return
+    }
     setPressed(true)
     savedTagValue.value = withSpring(0)
     scaleValue.value = withTiming(1, {
       duration: 800,
       easing: Easing.elastic(3)
     })
+    saveContent(imageSrc)
+
+    
   } 
 
   const handleOnPress = () => {
     navigation.navigate('ImageView', {index : index});
-    setShouldTabHideRef('true');
+    setDisplayNavRef(false);
   }
 
   return (
@@ -141,11 +166,17 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
           paddingVertical: 5,
           position: 'relative',
           borderRadius: 50,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginLeft: 2 
         }}>
+          <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/viewedIcon.png')} />
           <Text style={{
             color: state.theme === 'LIGHT' ? '#000' : '#fff',
             fontSize: 12,
-            fontWeight: '600'
+            fontWeight: '600',
+            marginLeft: 5,
           }}>{handlTimeStamp(modificationTime)}</Text>
         </View>
       </View>

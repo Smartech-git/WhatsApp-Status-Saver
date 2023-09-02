@@ -16,7 +16,7 @@ export default function Settings() {
 
 
  useEffect(() => {
-  console.log(state)
+  //console.log(state)
  }, [state])
 
  const autoSaveAnimatedStyle = useAnimatedStyle(() => {
@@ -76,10 +76,10 @@ export default function Settings() {
       }
     }
     
-    StatusBar.setBackgroundColor(state.theme === 'DARK' ? '#FFFFFF' : '#111B21');
+    StatusBar.setBackgroundColor(state.theme === 'DARK' ? '#FAFAFA' : '#111B21');
     StatusBar.setBarStyle(state.theme === 'DARK' ? 'dark-content' : 'light-content');
 
-    NavigationBar.setBackgroundColorAsync(state.theme === 'DARK' ? '#FFFFFF' : '#111B21')
+    NavigationBar.setBackgroundColorAsync(state.theme === 'DARK' ? '#FAFAFA' : '#111B21')
     NavigationBar.setButtonStyleAsync(state.theme === 'DARK' ? "dark" : "light")
 
     dispatch(multipleAction)
@@ -105,10 +105,10 @@ export default function Settings() {
       }
     }
     
-    StatusBar.setBackgroundColor(state.deviceColorScheme === 'LIGHT' ? '#FFFFFF' : '#111B21');
+    StatusBar.setBackgroundColor(state.deviceColorScheme === 'LIGHT' ? '#FAFAFA' : '#111B21');
     StatusBar.setBarStyle(state.deviceColorScheme === 'LIGHT' ? 'dark-content' : 'light-content');
 
-    NavigationBar.setBackgroundColorAsync(state.deviceColorScheme === 'LIGHT' ? '#FFFFFF' : '#111B21')
+    NavigationBar.setBackgroundColorAsync(state.deviceColorScheme === 'LIGHT' ? '#FAFAFA' : '#111B21')
     NavigationBar.setButtonStyleAsync(state.deviceColorScheme === 'LIGHT' ? "dark" : "light")
 
     dispatch(multipleAction)
@@ -341,7 +341,7 @@ export default function Settings() {
               </View>
             </View>
             <Animated.View style={[{
-              backgroundColor: `${state.themeHue.secondary}15`,
+              backgroundColor: state.themeHue.primary_dark,
               ...Styles.themeCustomSelectDropdown
             }, dropDownAnimation]}>
               <Pressable onPress={() => handleThemeMode_Custom("LIGHT")} style={{flexDirection: 'row', alignItems: "baseline"}}>

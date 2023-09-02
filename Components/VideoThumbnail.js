@@ -3,12 +3,12 @@ import React, { useState} from 'react'
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withSpring, withTiming} from 'react-native-reanimated'
 import { useNavigation } from '@react-navigation/native'
 import { useStateValue } from '../StateProvider'
-import {setShouldTabHideRef} from '../Utilities/GestureHandler'
+import {setDisplayNavRef, setShouldTabHideRef} from '../Utilities/GestureHandler'
 import {InView } from 'react-native-intersection-observer'
 import { handlTimeStamp } from '../Utilities/TimeStamp'
 
 
-export default function VideoThumbnail({imageSrc, ratio, index, modificationTime}) {
+export default function VideoThumbnail({imageSrc, ratio, index, modificationTime, filename}) {
   const [state, dispatch] = useStateValue()
   const [pressed, setPressed] = useState(false)
   const [inView, setInView] = useState()
@@ -49,7 +49,7 @@ export default function VideoThumbnail({imageSrc, ratio, index, modificationTime
 
   const handleOnPress = () => {
     navigation.navigate('VideoView', {index : index});
-    setShouldTabHideRef('true');
+    setDisplayNavRef(false);
   }
 
   return (

@@ -63,7 +63,8 @@ export const getViewedStatusVideos = async (validFilePath) => {
                     DataSize : metaData.size,
                     height: h,
                     width: w,
-                    ratio: (h/w).toFixed(2)
+                    ratio: (h/w).toFixed(2),
+                    filename : item
                 }
             )
     }))
@@ -117,7 +118,8 @@ export const getViewedStatusImages = async (validFilePath) => {
                     DataSize : metaData.size,
                     height: h,
                     width: w,
-                    ratio: (h/w).toFixed(2)
+                    ratio: (h/w).toFixed(2),
+                    filename: item
                 }
             )
     }))
@@ -125,6 +127,7 @@ export const getViewedStatusImages = async (validFilePath) => {
     imageContentArr.sort((a, b) => b.modificationTime - a.modificationTime);
     viewedImagesArr.unshift(...imageContentArr)
     getViewedStatusStats(viewedImagesArr, "images")
+    //console.log(viewedImagesArr)
 } 
 
 

@@ -1,4 +1,4 @@
-import { View, StatusBar, SafeAreaView,Appearance} from 'react-native'
+import { View, StatusBar, SafeAreaView, Appearance, PermissionsAndroid} from 'react-native'
 import React, { useCallback, useState, useEffect}  from 'react'
 import Home from './Screens/HomeScreens/Home'
 import Gallary from './Screens/Gallary';
@@ -20,14 +20,15 @@ import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import * as FileSystem from 'expo-file-system';
 import { FILE_PATH } from './Utilities/ViewedStatusManager';
 
+
 const BottomTab = createBottomTabNavigator()
 const colorScheme = Appearance.getColorScheme().toUpperCase();
 
 const LightTheme = {
   dark: false,
   colors: {
-    primary: '#FFFFFF',
-    background: '#FFFFFF',
+    primary: '#FAFAFA',
+    background: '#FAFAFA',
     card: '#F3F5F7',
     text: '#000000',
     border: '#FFFFFF',
@@ -54,7 +55,7 @@ export default function StatusSaver() {
   activateKeepAwake()
 
   useEffect(() => {
-    console.log(state)
+    //console.log(state)
   }, [state])
 
   const getObjectSettingsRef = async () => {
@@ -86,10 +87,9 @@ export default function StatusSaver() {
 
   const getPermissionsAsync = async () => {
     
-    let status = await MediaLibrary.getPermissionsAsync();
+    let status = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
 
-    if(status.granted === true){
-
+    if(status === true){
        let permissionAction = {
         type : actionTypes.setPermissionState,
         permissionState: true
@@ -102,7 +102,6 @@ export default function StatusSaver() {
               filePath = item
           }
       }))
-
     
       let validFilePathAction = {
         type : actionTypes.setValidFilePath,
@@ -156,6 +155,7 @@ export default function StatusSaver() {
   return (
     <SafeAreaView onLayout={onLayoutRootView} style={{
         flex: 1,
+        backgroundColor: state.themeHue.primary
     }}>
       {
         state.permissionState === false ? (

@@ -68,7 +68,8 @@ export default function Home_Videos(props) {
     <View style = {{
       overflow: 'hidden',
       marginHorizontal: 6.4,
-      borderRadius: 17,
+      borderTopLeftRadius: 17,
+      borderTopRightRadius: 17,
     }}>
 
       <View style={{opacity: state.loadingStateVideos ? 1: 0, position: 'absolute', width: '100%'}}>
@@ -79,9 +80,9 @@ export default function Home_Videos(props) {
             <Animated.View style={[{width:'100%', height: "100%"}, animatedStyle]}>
               <IOMasonryFlashList
                 data={viewedVideosArr}
-                renderItem={({item, index})=> <VideoThumbnail modificationTime={item.modificationTime} ratio={item.ratio} index ={index} imageSrc={item.URL}/>}
+                renderItem={({item, index})=> <VideoThumbnail key={item.filename} filename={item.filename} modificationTime={item.modificationTime} ratio={item.ratio} index ={index} imageSrc={item.URL}/>}
                 extraData={[viewedVideosArr.length]}
-                keyExtractor={(item) => item.URL }
+                keyExtractor={(item) => item.filename}
                 numColumns = {2}
                 estimatedItemSize={50}
                 contentContainerStyle = {{
