@@ -7,15 +7,17 @@ import {InView } from 'react-native-intersection-observer'
 import { handlTimeStamp } from '../Utilities/TimeStamp'
 import {setDisplayNavRef} from '../Utilities/GestureHandler'
 import { saveContent, checkSavedContent } from '../Utilities/contentManger'
+import { useIsFocused } from '@react-navigation/native';
 
 
 export default function ImageThumbnail({imageSrc, ratio, index, modificationTime, filename}) {
   const [state, dispatch] = useStateValue()
-  const [pressed, setPressed] = useState(false)
+  const [contentSaved, setContentSaved] = useState(false)
   const [inView, setInView] = useState()
   const scaleValue = useSharedValue(0.5)
   const savedTagValue = useSharedValue(8)
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   const win = Dimensions.get('window').width/2 -10.2
 
@@ -24,22 +26,20 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
   }
 
   useEffect(() =>{
+   
     const prepare = async () =>{
       let saved = await checkSavedContent(filename)
       if(saved){
-        savedTagValue.value = withSpring(0)
-        scaleValue.value = withTiming(1, {
-          duration: 800,
-          easing: Easing.elastic(3)
-        })
-        setPressed(true)
+        savedTagValue.value = 0
+        scaleValue.value =  1
+        setContentSaved(true)
       }else {
-        setPressed(false)
+        setContentSaved(false)
       }
     }
 
     prepare()
-  }, [])
+  }, [isFocused])
   
   const saveButtonAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -51,18 +51,17 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
 
   const savedTagAnimatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [{
+      transform: [{ 
         translateY: savedTagValue.value
       }]
     }
   })
 
   const handleSave = () => {
-
-    if(pressed){
+    if(contentSaved){
       return
     }
-    setPressed(true)
+    setContentSaved(true)
     savedTagValue.value = withSpring(0)
     scaleValue.value = withTiming(1, {
       duration: 800,
@@ -70,7 +69,6 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
     })
     saveContent(imageSrc)
 
-    
   } 
 
   const handleOnPress = () => {
@@ -79,7 +77,7 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
   }
 
   return (
-    <InView triggerOnce={true} onChange={(inView) => handleInView(inView)}>
+    <InView  triggerOnce={true} onChange={(inView) => handleInView(inView)}>
       <Pressable onPress={handleOnPress} style={{
           backgroundColor: state.themeHue.primary_dark,
           width: win,
@@ -103,7 +101,7 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
                 }} source={{uri: inView ? imageSrc : undefined}} resizeMode= 'contain'/>
               
                 {
-                  pressed && (
+                  contentSaved && (
                     <Animated.View style={[Styles.SavedTag, savedTagAnimatedStyle ]}>
                       <Text style={{
                         fontSize: 13,
@@ -114,9 +112,9 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
                 }
               
                 <Pressable onPressIn={handleSave} >
-                  <View style={[Styles.button, {backgroundColor: pressed ? '#00D426' : '#FFFFFF'}]}>
+                  <View style={[Styles.button, {backgroundColor: contentSaved ? '#00D426' : '#FFFFFF'}]}>
                     {
-                    pressed ? <Animated.Image style={[{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
+                    contentSaved ? <Animated.Image style={[{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
                             : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(10), height: PixelRatio.getPixelSizeForLayoutSize(10)}} source={require('../assets/Icons/SaveIcon_light.png')}/>
                     }    
                   </View>
@@ -133,7 +131,7 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
                 }} source={{uri: inView ? imageSrc : undefined}} resizeMode= 'cover'/>
               
                 {
-                  pressed && (
+                  contentSaved && (
                     <Animated.View style={[Styles.SavedTag, savedTagAnimatedStyle ]}>
                       <Text style={{
                         fontSize: 13,
@@ -144,9 +142,9 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
                 }
               
                 <Pressable onPressIn={handleSave} >
-                  <View style={[Styles.button, {backgroundColor: pressed ? '#00D426' : '#FFFFFF'}]}>
+                  <View style={[Styles.button, {backgroundColor: contentSaved ? '#00D426' : '#FFFFFF'}]}>
                     {
-                    pressed ? <Animated.Image style={[{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
+                    contentSaved ? <Animated.Image style={[{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
                             : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(10), height: PixelRatio.getPixelSizeForLayoutSize(10)}} source={require('../assets/Icons/SaveIcon_light.png')} />
                     }    
                   </View>
@@ -171,7 +169,10 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
           alignItems: 'center',
           marginLeft: 2 
         }}>
-          <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/viewedIcon.png')} />
+          {
+            state.theme === 'LIGHT' ? <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/viewedIcon_light.png')} />
+                                    : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/viewedIcon.png')} />
+          }
           <Text style={{
             color: state.theme === 'LIGHT' ? '#000' : '#fff',
             fontSize: 12,

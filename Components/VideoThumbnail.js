@@ -1,20 +1,35 @@
 import { View, Text, Image, StyleSheet, Pressable, Dimensions, PixelRatio, ImageBackground} from 'react-native'
-import React, { useState} from 'react'
+import React, { useState, useEffect} from 'react'
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withSpring, withTiming} from 'react-native-reanimated'
 import { useNavigation } from '@react-navigation/native'
 import { useStateValue } from '../StateProvider'
 import {setDisplayNavRef, setShouldTabHideRef} from '../Utilities/GestureHandler'
 import {InView } from 'react-native-intersection-observer'
 import { handlTimeStamp } from '../Utilities/TimeStamp'
+import { saveContent, checkSavedContent } from '../Utilities/contentManger'
 
-
-export default function VideoThumbnail({imageSrc, ratio, index, modificationTime, filename}) {
+export default function VideoThumbnail({imageSrc, ratio, index, modificationTime, filename, videoURL}) {
   const [state, dispatch] = useStateValue()
-  const [pressed, setPressed] = useState(false)
+  const [contentSaved, setContentSaved] = useState(false)
   const [inView, setInView] = useState()
   const scaleValue = useSharedValue(0.5)
   const savedTagValue = useSharedValue(8)
   const navigation = useNavigation();
+
+  useEffect(() =>{
+    const prepare = async () =>{
+      let saved = await checkSavedContent(filename)
+      if(saved){
+        savedTagValue.value = 0
+        scaleValue.value = 1
+        setContentSaved(true)
+      }else {
+        setContentSaved(false)
+      }
+    }
+
+    prepare()
+  }, [])
 
   const win = Dimensions.get('window').width/2 -10.2
 
@@ -39,12 +54,16 @@ export default function VideoThumbnail({imageSrc, ratio, index, modificationTime
   })
 
   const handleSave = () => {
-    setPressed(true)
+    if(contentSaved){
+      return
+    }
+    setContentSaved(true)
     savedTagValue.value = withSpring(0)
     scaleValue.value = withTiming(1, {
       duration: 800,
       easing: Easing.elastic(3)
     })
+    saveContent(videoURL)
   } 
 
   const handleOnPress = () => {
@@ -77,7 +96,7 @@ export default function VideoThumbnail({imageSrc, ratio, index, modificationTime
                 }} source={{uri: inView ? imageSrc : undefined}} resizeMode= 'contain'/>
               
                 {
-                  pressed && (
+                  contentSaved && (
                     <Animated.View style={[Styles.SavedTag, savedTagAnimatedStyle ]}>
                       <Text style={{
                         fontSize: 13,
@@ -88,9 +107,9 @@ export default function VideoThumbnail({imageSrc, ratio, index, modificationTime
                 }
               
                 <Pressable onPressIn={handleSave} >
-                  <View style={[Styles.button, {backgroundColor: pressed ? '#00D426' : '#FFFFFF'}]}>
+                  <View style={[Styles.button, {backgroundColor: contentSaved ? '#00D426' : '#FFFFFF'}]}>
                     {
-                    pressed ? <Animated.Image style={[{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
+                    contentSaved ? <Animated.Image style={[{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
                             : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(10), height: PixelRatio.getPixelSizeForLayoutSize(10)}} source={require('../assets/Icons/SaveIcon_light.png')}/>
                     }    
                   </View>
@@ -110,7 +129,7 @@ export default function VideoThumbnail({imageSrc, ratio, index, modificationTime
                 }} source={{uri: inView ? imageSrc : undefined}} resizeMode= 'cover'/>
               
                 {
-                  pressed && (
+                  contentSaved && (
                     <Animated.View style={[Styles.SavedTag, savedTagAnimatedStyle ]}>
                       <Text style={{
                         fontSize: 13,
@@ -121,9 +140,9 @@ export default function VideoThumbnail({imageSrc, ratio, index, modificationTime
                 }
               
                 <Pressable onPressIn={handleSave} >
-                  <View style={[Styles.button, {backgroundColor: pressed ? '#00D426' : '#FFFFFF'}]}>
+                  <View style={[Styles.button, {backgroundColor: contentSaved ? '#00D426' : '#FFFFFF'}]}>
                     {
-                    pressed ? <Animated.Image style={[{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
+                    contentSaved ? <Animated.Image style={[{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}, saveButtonAnimatedStyle]} source={require('../assets/Icons/SavedIcon.png')} />
                             : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(10), height: PixelRatio.getPixelSizeForLayoutSize(10)}} source={require('../assets/Icons/SaveIcon_light.png')} />
                     }    
                   </View>
@@ -146,11 +165,20 @@ export default function VideoThumbnail({imageSrc, ratio, index, modificationTime
           paddingVertical: 5,
           position: 'relative',
           borderRadius: 50,
-        }}>
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginLeft: 2
+        }}>{
+          state.theme === 'LIGHT' ? <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/viewedIcon_light.png')} />
+                                  : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(8), height: PixelRatio.getPixelSizeForLayoutSize(8)}} source={require('../assets/Icons/viewedIcon.png')} />
+        }
+
           <Text style={{
             color: state.theme === 'LIGHT' ? '#000' : '#fff',
             fontSize: 12,
-            fontWeight: '600'
+            fontWeight: '600',
+            marginLeft: 5
           }}>{handlTimeStamp(modificationTime)}</Text>
         </View>
       </View>

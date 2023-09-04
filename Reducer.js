@@ -25,7 +25,8 @@ export let initialState = {
     validFilePath: '',
     autoSave: false,
     themeModeCustom: true,
-    deviceColorScheme: undefined
+    deviceColorScheme: undefined,
+    contentSavedTrig: false
  }
  
  export const actionTypes = {
@@ -38,7 +39,8 @@ export let initialState = {
     setAutoSave: 'SETAUTOSAVE',
     setThemeModeCustom : 'SETTHEMEMODECUSTOM',
     setDeviceColorScheme:  'SETDEVICECOLORSCHEME',
-    setLoadingStateVideosReels: 'SETLOADINGSTATEVIDEOSREELS'
+    setLoadingStateVideosReels: 'SETLOADINGSTATEVIDEOSREELS',
+    setContentSavedTrig: 'SETCONTENTSAVED'
  }
  
  const reducer = (state, action) => {
@@ -89,6 +91,11 @@ export let initialState = {
             return {
                 ...state,
                 loadingStateVideosReel : action.loadingStateVideosReel
+            }
+        case actionTypes.setContentSavedTrig:
+            return {
+                ...state,
+                contentSavedTrig : action.contentSavedTrig
             }
          default: 
             return state;

@@ -21,13 +21,13 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
        }
       }>
         <View style={{
-            height: 70,
             width: '100%',
             flexDirection: 'row',
             justifyContent: 'space-around',
             alignItems: 'center',
             backgroundColor: State.themeHue.primary,
             paddingHorizontal: 14,
+            paddingVertical: 8,
             borderTopWidth: 1,
             borderColor: State.themeHue.primary_dark
         }}>
@@ -77,17 +77,11 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
                   width: 60
                 }}
               >
-                <View style={{
-                  borderRadius: 10,
-                  width: 34,
-                  height: 34,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                  {label === "Status" && (
+                <View>
+                  {label === "Home" && (
                     <View>
-                      <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(13), height: PixelRatio.getPixelSizeForLayoutSize(13), opacity: isFocused ? 1 : 0, position: 'absolute'}} source={require('../assets/Icons/StatusIconActive.png')}/>
-                      <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(13), height: PixelRatio.getPixelSizeForLayoutSize(13),  opacity: isFocused ? 0 : 1}} source={require('../assets/Icons/StatusIconInactive.png')} />
+                      <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(13), height: PixelRatio.getPixelSizeForLayoutSize(13), opacity: isFocused ? 1 : 0, position: 'absolute'}} source={require('../assets/Icons/HomeActive.png')}/>
+                      <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(13), height: PixelRatio.getPixelSizeForLayoutSize(13),  opacity: isFocused ? 0 : 1}} source={require('../assets/Icons/HomeInactive.png')} />
                     </View>
                   )}
 
@@ -101,14 +95,14 @@ export default function BottomNavTabBar({ state, descriptors, navigation }) {
 
                   {label === "Settings" && (
                     <View>
-                      <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(16), height:PixelRatio.getPixelSizeForLayoutSize(16), opacity: isFocused ? 1 : 0, position: 'absolute'}} source={require('../assets/Icons/SettingsIconActive.png')}/>
-                      <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(16), height: PixelRatio.getPixelSizeForLayoutSize(16), opacity: isFocused ? 0 : 1,}} source={require('../assets/Icons/SettingsIconInactive.png')}/>
+                      <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(14), height:PixelRatio.getPixelSizeForLayoutSize(14), opacity: isFocused ? 1 : 0, position: 'absolute'}} source={require('../assets/Icons/SettingsIconActive.png')}/>
+                      <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(14), height: PixelRatio.getPixelSizeForLayoutSize(14), opacity: isFocused ? 0 : 1,}} source={require('../assets/Icons/SettingsIconInactive.png')}/>
                     </View>
                     
                   )}
                 </View>  
 
-                <Text style={{ color: isFocused ? (State.theme === 'LIGHT' ? '#000': '#fff') : '#617986', fontSize: 12, marginTop: 4, fontWeight: '600'}}>
+                <Text style={{ color: isFocused ? (State.theme === 'LIGHT' ? '#000': '#fff') : '#617986', fontSize: 12, marginTop: 2, fontWeight: '600'}}>
                   {label}
                 </Text>
                 

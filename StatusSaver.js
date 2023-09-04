@@ -181,7 +181,7 @@ export default function StatusSaver() {
                 component={Home}
                 options= {{
                   headerShown: false,
-                  title: 'Status',
+                  title: 'Home',
                 }}
               />
               <BottomTab.Screen name = "Gallary"

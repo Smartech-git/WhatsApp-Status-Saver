@@ -13,9 +13,10 @@ import { actionTypes } from '../../Reducer';
 import Loading from '../../Components/Loading';
 import { withIO } from 'react-native-intersection-observer'
 
+
 const IOMasonryFlashList = withIO(MasonryFlashList);
 
-export default function Home_Images() {
+export default function Home_Images({route, navigation}) {
   const [state, dispatch] = useStateValue();
   const [contentOffsetTop, setContentOffsetTop] = useState(0)
   const [contentOffsetBottom, setContentOffsetBottom] = useState(0)
@@ -23,7 +24,7 @@ export default function Home_Images() {
   const [refreshing, setRefreshing] = useState(false)
   let {totalViewedImages, dataSize} = viewedStatusImagesStats
 
-
+  
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     

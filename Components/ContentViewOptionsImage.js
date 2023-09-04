@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, PixelRatio, Image } from 'react-native'
+import { View,  } from 'react-native'
 import React from 'react';
 import { useStateValue } from '../StateProvider';
 

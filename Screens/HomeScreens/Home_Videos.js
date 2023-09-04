@@ -80,7 +80,7 @@ export default function Home_Videos(props) {
             <Animated.View style={[{width:'100%', height: "100%"}, animatedStyle]}>
               <IOMasonryFlashList
                 data={viewedVideosArr}
-                renderItem={({item, index})=> <VideoThumbnail key={item.filename} filename={item.filename} modificationTime={item.modificationTime} ratio={item.ratio} index ={index} imageSrc={item.URL}/>}
+                renderItem={({item, index})=> <VideoThumbnail videoURL = {item.videoURL} key={item.filename} filename={item.filename} modificationTime={item.modificationTime} ratio={item.ratio} index ={index} imageSrc={item.URL}/>}
                 extraData={[viewedVideosArr.length]}
                 keyExtractor={(item) => item.filename}
                 numColumns = {2}

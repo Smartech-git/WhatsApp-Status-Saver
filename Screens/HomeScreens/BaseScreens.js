@@ -13,11 +13,11 @@ import { useNavigationState } from '@react-navigation/native';
 
 const Tab = createMaterialTopTabNavigator();
 
-export default function BaseScreens(props) {
+export default function BaseScreens({ route, navigation }) {
     const [state, dispatch] = useStateValue();
-
+   
+ 
     const routeState = useNavigationState((state) => state.routes[1]?.name)
-
 
     useEffect(() => {
       const fullScreen = async () => {
@@ -129,7 +129,7 @@ export default function BaseScreens(props) {
               tabBarBounces: false 
             }}
           >
-            <Tab.Screen name="Images" component={Home_Images} />
+            <Tab.Screen name="Images" component={Home_Images}  initialParams={{route: routeState}}/>
             <Tab.Screen name="Videos" component={Home_Videos} />
           </Tab.Navigator> 
         </View>

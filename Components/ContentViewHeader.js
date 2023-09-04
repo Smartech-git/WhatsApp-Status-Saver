@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet,Image, PixelRatio, TouchableOpacity} from 'react-native'
+import { View, Text, StyleSheet,Image, PixelRatio, Pressable} from 'react-native'
 import React from 'react'
 import { useStateValue } from '../StateProvider'
 import { useNavigation } from '@react-navigation/native'
@@ -17,7 +17,7 @@ export default function ContentViewHeader({screenType, special}) {
                 flexDirection: 'row',
                 alignItems: 'center'
             }}>
-                <TouchableOpacity activeOpacity={0.6} onPress={handleGoback} style={{ ...styles.BackButton,
+                <Pressable hitSlop={10} android_ripple={{color: state.themeHue.primary_dark, radius: 28, borderless: true }} onPress={handleGoback} style={{ ...styles.BackButton,
                     backgroundColor: special ? undefined : state.themeHue.primary_dark,
                 }}>
                     {
@@ -30,7 +30,7 @@ export default function ContentViewHeader({screenType, special}) {
                     }
                    
                 
-                </TouchableOpacity>
+                </Pressable>
                 <Text style={{fontSize: 18, fontWeight: '600', color:special ? '#FFF' : state.theme === 'LIGHT' ? '#000' : '#FFF'}}>Back</Text> 
             </View>
             

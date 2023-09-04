@@ -8,7 +8,7 @@ import { useStateValue } from '../StateProvider';
 
 const win = Dimensions.get('window').width-20
 
-export default function ImageComponent({imageSrc, imagePosition, special, index}) {
+export default function ImageComponent({imageSrc, imagePosition, special, index, filename}) {
 
   const [inView, setInView] = useState()
   const [state, dispatch] = useStateValue()
