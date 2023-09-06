@@ -1,5 +1,5 @@
 import { View, Text, Image, StyleSheet, Pressable, Dimensions, PixelRatio, ImageBackground} from 'react-native'
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect, useCallback} from 'react'
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withSpring, withTiming} from 'react-native-reanimated'
 import { useNavigation } from '@react-navigation/native'
 import { useStateValue } from '../StateProvider'
@@ -33,9 +33,9 @@ export default function VideoThumbnail({imageSrc, ratio, index, modificationTime
 
   const win = Dimensions.get('window').width/2 -10.2
 
-  const handleInView = (inView) => {
+  const handleInView =useCallback((inView) => {
     setInView(inView)
-  }
+  }, [])
   
   const saveButtonAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -53,7 +53,7 @@ export default function VideoThumbnail({imageSrc, ratio, index, modificationTime
     }
   })
 
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
     if(contentSaved){
       return
     }
@@ -64,12 +64,12 @@ export default function VideoThumbnail({imageSrc, ratio, index, modificationTime
       easing: Easing.elastic(3)
     })
     saveContent(videoURL)
-  } 
+  }, [])
 
-  const handleOnPress = () => {
+  const handleOnPress = useCallback(() => {
     navigation.navigate('VideoView', {index : index});
     setDisplayNavRef(false);
-  }
+  }, [])
 
   return (
     <InView triggerOnce={true} onChange={(inView) => handleInView(inView)}>

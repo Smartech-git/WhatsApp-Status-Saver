@@ -9,6 +9,7 @@ export const saveContent = async (content) => {
     try {
         const asset = await MediaLibrary.createAssetAsync(content);
         const album = await MediaLibrary.getAlbumAsync(folder);
+        console.log(album)
         if (album == null) {
           await MediaLibrary.createAlbumAsync(folder, asset, false);
           console.log("sucessfully saved")
@@ -22,10 +23,10 @@ export const saveContent = async (content) => {
 }
 
 export const checkSavedContent = async (content) => {
-    
     const album = await MediaLibrary.getAlbumAsync(folder);
-    const { assets } = await MediaLibrary.getAssetsAsync({album: album, mediaType: ['photo', 'video'], sortBy: "modificationTime", first: maxAssetLength})
+    const { assets } = await MediaLibrary.getAssetsAsync({album: album, mediaType: ['photo', 'video'], sortBy: "modificationTime", first: album.assetCount})
     let fileNames = assets.map(item => item.filename)
+  
     return fileNames.includes(content)
     
 }

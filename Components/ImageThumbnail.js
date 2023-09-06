@@ -1,5 +1,5 @@
 import { View, Text, Image, StyleSheet, Pressable, Dimensions, PixelRatio, ImageBackground} from 'react-native'
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect, useCallback} from 'react'
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withSpring, withTiming} from 'react-native-reanimated'
 import { useNavigation } from '@react-navigation/native'
 import { useStateValue } from '../StateProvider'
@@ -12,7 +12,7 @@ import { useIsFocused } from '@react-navigation/native';
 
 export default function ImageThumbnail({imageSrc, ratio, index, modificationTime, filename}) {
   const [state, dispatch] = useStateValue()
-  const [contentSaved, setContentSaved] = useState(false)
+  const [contentSaved, setContentSaved] = useState()
   const [inView, setInView] = useState()
   const scaleValue = useSharedValue(0.5)
   const savedTagValue = useSharedValue(8)
@@ -21,18 +21,17 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
 
   const win = Dimensions.get('window').width/2 -10.2
 
-  const handleInView = (inView) => {
+  const handleInView = useCallback((inView) => {
     setInView(inView)
-  }
+  }, [])
 
   useEffect(() =>{
-   
     const prepare = async () =>{
       let saved = await checkSavedContent(filename)
       if(saved){
         savedTagValue.value = 0
         scaleValue.value =  1
-        setContentSaved(true)
+        setContentSaved(true) 
       }else {
         setContentSaved(false)
       }
@@ -57,7 +56,7 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
     }
   })
 
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
     if(contentSaved){
       return
     }
@@ -69,12 +68,12 @@ export default function ImageThumbnail({imageSrc, ratio, index, modificationTime
     })
     saveContent(imageSrc)
 
-  } 
+  }, [])
 
-  const handleOnPress = () => {
+  const handleOnPress = useCallback(() => {
     navigation.navigate('ImageView', {index : index});
     setDisplayNavRef(false);
-  }
+  }, [])
 
   return (
     <InView  triggerOnce={true} onChange={(inView) => handleInView(inView)}>

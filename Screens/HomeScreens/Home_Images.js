@@ -23,8 +23,8 @@ export default function Home_Images({route, navigation}) {
   const startPosition = useSharedValue(0)
   const [refreshing, setRefreshing] = useState(false)
   let {totalViewedImages, dataSize} = viewedStatusImagesStats
+  const [extraData,setExtraData] = useState()
 
-  
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     
@@ -70,40 +70,40 @@ export default function Home_Images({route, navigation}) {
        backgroundColor: state.themeHue.primary,
     }}>
      
-      <View style={{opacity: state.loadingStateImages ? 1: 0, position: 'absolute', width: '100%'}}>
+      <View style={{opacity: state.loadingStateImages ? 1 : 0, position: 'absolute', width: '100%'}}>
         <Loading/>
       </View>
       <View  style={{opacity: state.loadingStateImages ? 0 : 1}}>
-          <GestureDetector  gesture={panGestureEvent}>
-            <Animated.View style={[{width:'100%', height: "100%"}, animatedStyle]}>
-              <IOMasonryFlashList
-                data={viewedImagesArr}
-                renderItem={({item, index})=> <ImageThumbnail key={item.filename} filename={item.filename} modificationTime={item.modificationTime} ratio={item.ratio} index ={index} imageSrc={item.URL}/>}
-                extraData={[viewedImagesArr.length]}
-                keyExtractor={(item) => item.filename}
-                numColumns = {2}
-                estimatedItemSize={50}
-                contentContainerStyle = {{
-                paddingBottom: 50,
-                }}
-                decelerationRate = 'normal'
-                persistentScrollbar = {false}
-                overScrollMode = 'never'
-                showsVerticalScrollIndicator = {false}
-                onScroll={(e) => handleVerticalScroll(e, contentOffsetBottom, setContentOffsetTop, setContentOffsetBottom)}
-                onScrollEndDrag={(e) => handleScrollEndDrag(e)}
-                ListHeaderComponent={<ListHeader totalViewedContent={totalViewedImages} dataSize={dataSize} text='Total viewed images/data size' />}
-                ListFooterComponent = {<ListFooter/>}
-                refreshControl = {
-                  <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={onRefresh}
-                    colors={["#00D426"]}
-                    progressBackgroundColor = {'#fff'}
-                  />
-                }
-              />
-            </Animated.View>
+        <GestureDetector  gesture={panGestureEvent}>
+          <Animated.View style={[{width:'100%', height: "100%"}, animatedStyle]}>
+            <IOMasonryFlashList
+              data={viewedImagesArr}
+              renderItem={({item, index})=> <ImageThumbnail key={item.filename} filename={item.filename} modificationTime={item.modificationTime} ratio={item.ratio} index ={index} imageSrc={item.URL}/>}
+              extraData={viewedImagesArr.length}
+              keyExtractor={(item) => item.filename}
+              numColumns = {2}
+              estimatedItemSize={100}
+              contentContainerStyle = {{
+              paddingBottom: 50,
+              }}
+              decelerationRate = 'normal'
+              persistentScrollbar = {false}
+              overScrollMode = 'never'
+              showsVerticalScrollIndicator = {false}
+              onScroll={(e) => handleVerticalScroll(e, contentOffsetBottom, setContentOffsetTop, setContentOffsetBottom)}
+              onScrollEndDrag={(e) => handleScrollEndDrag(e)}
+              ListHeaderComponent={<ListHeader totalViewedContent={totalViewedImages} dataSize={dataSize} text='Total viewed images/data size' />}
+              ListFooterComponent = {<ListFooter/>}
+              refreshControl = {
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  colors={["#00D426"]}
+                  progressBackgroundColor = {'#fff'}
+                />
+              }
+            />
+          </Animated.View>
         </GestureDetector> 
       </View>
          

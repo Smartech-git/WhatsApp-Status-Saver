@@ -1,5 +1,5 @@
 import { View, FlatList, StatusBar, Dimensions, Text, StyleSheet, TouchableOpacity, PixelRatio, Image, Pressable} from 'react-native'
-import React, {useEffect, useState, useRef} from 'react'
+import React, {useEffect, useState, useRef,useCallback} from 'react'
 import { viewedImagesArr } from '../../Utilities/ViewedStatusManager';
 import ImageComponent from '../../Components/ImageComponent';
 import { useStateValue } from '../../StateProvider';
@@ -40,13 +40,13 @@ export default function Image_view({route}) {
     itemVisiblePercentThreshold: win
   })
 
-  const handleSave = async () => {
+  const handleSave = useCallback(() => {
     if(contentSaved){
         return
       }  
     setContentSaved(true)
     saveContent(contentURL) 
-  }
+  })
   
     return (
         <View style={{
@@ -85,7 +85,7 @@ export default function Image_view({route}) {
                     <View style={{
                         alignItems: 'center'
                     }}>
-                        <Pressable onPress={handleSave}  hitSlop={10} android_ripple={{color: state.themeHue.primary_dark, radius: 28, borderless: true }} style={{ ...Styles.Botton,
+                        <Pressable onPressIn={handleSave}  hitSlop={10} android_ripple={{color: state.themeHue.primary_dark, radius: 28, borderless: true }} style={{ ...Styles.Botton,
                             backgroundColor: contentSaved ? '#00D426' : state.themeHue.primary_dark,
                         }}>
                             { contentSaved ? <Animated.Image style={{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}} source={require('../../assets/Icons/SavedIcon.png')}/>

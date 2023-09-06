@@ -9,6 +9,7 @@ export const FILE_PATH = [
   
 export let viewedImagesArr = []
 export let viewedVideosArr = []
+export let viewedImagesArrLength = viewedImagesArr.length
 
 
 let imageAlbum = [];
