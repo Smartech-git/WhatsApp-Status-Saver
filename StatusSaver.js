@@ -19,6 +19,7 @@ import { NavigationContainer} from '@react-navigation/native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import * as FileSystem from 'expo-file-system';
 import { FILE_PATH } from './Utilities/ViewedStatusManager';
+import LocalNotification from './Components/LocalNotification';
 
 
 const BottomTab = createBottomTabNavigator()
@@ -157,6 +158,7 @@ export default function StatusSaver() {
         flex: 1,
         backgroundColor: state.themeHue.primary
     }}>
+      <LocalNotification/>
       {
         state.permissionState === false ? (
           <PermissionScreen/> 

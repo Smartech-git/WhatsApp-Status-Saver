@@ -3,7 +3,9 @@ export const themeHueLight = {
     primary_dark: '#E9ECEF',
     primary_veryDark: '#F2F2F2',
     borderColor: '#D9D9D9',
-    secondary: '#00D426'
+    secondary: '#00D426',
+    localNotification: '#E9ECEF',
+    localNotificationBorder: '#D1D1D1'
 }
 
 export const themeHueDark = {
@@ -11,7 +13,9 @@ export const themeHueDark = {
     primary_dark: '#1A3848',
     primary_veryDark: '#0A1014',
     borderColor: '#0A1014',
-    secondary: '#00D426'
+    secondary: '#00D426',
+    localNotification: '#1A3848',
+    localNotificationBorder: '#617986'
 }
 
 export let initialState = {

@@ -10,6 +10,7 @@ export default function ContentViewHeader({screenType, special}) {
     const handleGoback = () =>{
         navigation.goBack();
     }
+    
     return (
         <View style={{...styles.Header,
         }}>

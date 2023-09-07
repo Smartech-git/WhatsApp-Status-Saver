@@ -9,7 +9,7 @@ export const saveContent = async (content) => {
     try {
         const asset = await MediaLibrary.createAssetAsync(content);
         const album = await MediaLibrary.getAlbumAsync(folder);
-        console.log(album)
+        
         if (album == null) {
           await MediaLibrary.createAlbumAsync(folder, asset, false);
           console.log("sucessfully saved")
@@ -18,7 +18,7 @@ export const saveContent = async (content) => {
           console.log("sucessfully saved")
         }
       } catch (e) {
-        console.log(e)
+        
       }
 }
 

@@ -9,6 +9,7 @@ import Animated, { Easing, useAnimatedStyle, useSharedValue, withSpring, withTim
 import { setDisplayNavRef} from '../../Utilities/GestureHandler';
 import { checkSavedContent, saveContent } from '../../Utilities/contentManger';
 import { actionTypes } from '../../Reducer';
+import { notifyRef } from '../../Components/LocalNotification';
 
 const IOPagerView = withIO(FlatList);
 const win = Dimensions.get('window').width
@@ -17,8 +18,7 @@ export default function Image_view({route}) {
    let contentIndex = route.params.index
    const [render, setRender] = useState(true);
    const [state, dispatch] =  useStateValue();
-   const [contentSaved, setContentSaved] = useState(false)
-   const [contentURL, setcontentURL] = useState()
+   const [contentProps, setContentProps] = useState({saved: false, url: undefined})
   
 
    useEffect(() =>{
@@ -30,9 +30,8 @@ export default function Image_view({route}) {
 
   const onViewableItemsChanged = useRef(async ({changed}) =>{
     const filename = changed[0].key
-    setcontentURL(changed[0].item.URL)
-    const saved = await checkSavedContent(filename);
-    setContentSaved(saved)
+    const contentSaved = await checkSavedContent(filename);
+    setContentProps({saved: contentSaved, url: changed[0].item.URL })
 
   })
 
@@ -41,12 +40,18 @@ export default function Image_view({route}) {
   })
 
   const handleSave = useCallback(() => {
-    if(contentSaved){
+    if(contentProps.saved){
         return
-      }  
-    setContentSaved(true)
-    saveContent(contentURL) 
-  })
+      }
+    setContentProps((prev) => {
+        return {
+            ...prev,
+            saved: true
+        }
+    })
+    saveContent(contentProps.url) 
+    notifyRef("Image saved to your gallary")
+  }, [])
   
     return (
         <View style={{
@@ -85,16 +90,16 @@ export default function Image_view({route}) {
                     <View style={{
                         alignItems: 'center'
                     }}>
-                        <Pressable onPressIn={handleSave}  hitSlop={10} android_ripple={{color: state.themeHue.primary_dark, radius: 28, borderless: true }} style={{ ...Styles.Botton,
-                            backgroundColor: contentSaved ? '#00D426' : state.themeHue.primary_dark,
+                        <Pressable onPress={handleSave}  hitSlop={10} android_ripple={{color: state.themeHue.primary_dark, radius: 28, borderless: true }} style={{ ...Styles.Botton,
+                            backgroundColor: contentProps.saved ? '#00D426' : state.themeHue.primary_dark,
                         }}>
-                            { contentSaved ? <Animated.Image style={{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}} source={require('../../assets/Icons/SavedIcon.png')}/>
+                            { contentProps.saved ? <Animated.Image style={{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}} source={require('../../assets/Icons/SavedIcon.png')}/>
                                            : state.theme === 'LIGHT' ?  <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}} source={require('../../assets/Icons/SaveIcon_light.png')} />
                                            : <Image style={{width: PixelRatio.getPixelSizeForLayoutSize(12), height: PixelRatio.getPixelSizeForLayoutSize(12)}} source={require('../../assets/Icons/SaveIcon.png')} />
                             }  
                         
                         </Pressable>
-                        <Text style={{fontSize: 14, fontWeight: '900', color: state.theme === 'LIGHT' ? '#000' : '#FFF'}}>{contentSaved ? 'Saved' : 'Save'}</Text> 
+                        <Text style={{fontSize: 14, fontWeight: '900', color: state.theme === 'LIGHT' ? '#000' : '#FFF'}}>{contentProps.saved? 'Saved' : 'Save'}</Text> 
                     </View>
 
                     <View style={{
